@@ -15,17 +15,20 @@ GCOV_FLAGS					= -fprofile-arcs -ftest-coverage -fPIC
 VALGRIND_FLAGS				= --log-file="valgrind.txt" --track-origins=yes --trace-children=yes --leak-check=full --leak-resolution=med
 
 SRC_CONTAINERS_DIR			= s21_containers.h/
+SRC_CONTAINERS_DIRS			= $(shell find $(SRC_CONTAINERS_DIR) -type d)
 SRC_CONTAINERSPLUS_DIR		= s21_containersplus.h/
+SRC_CONTAINERSPLUS_DIRS		= $(shell find $(SRC_CONTAINERSPLUS_DIR) -type d)
 SRC_TESTS_DIR				= tests/
 OBJ_CONTAINERS_DIR			= ../obj/containers/
 OBJ_CONTAINERSPLUS_DIR		= ../obj/containersplus/
 OBJ_TESTS_DIR				= ../obj/tests/
 
+
 CONTAINERS_LIBRARY			= s21_containers.a
 CONTAINERSPLUS_LIBRARY		= s21_containersplus.a
 BUILD_FOLDERS				:= $(shell mkdir -p $(OBJ_CONTAINERS_DIR); mkdir -p $(OBJ_CONTAINERSPLUS_DIR); mkdir -p $(OBJ_TESTS_DIR))
-SRC_CONTAINERS				:= $(wildcard $(SRC_CONTAINERS_DIR)list/*.cpp $(SRC_CONTAINERS_DIR)map/*.cpp $(SRC_CONTAINERS_DIR)queue/*.cpp $(SRC_CONTAINERS_DIR)set/*.cpp $(SRC_CONTAINERS_DIR)stack/*.cpp $(SRC_CONTAINERS_DIR)vector/*.cpp)
-SRC_CONTAINERSPLUS			:= $(wildcard $(SRC_CONTAINERSPLUS_DIR)array/*.cpp $(SRC_CONTAINERSPLUS_DIR)multiset/*.cpp)
+SRC_CONTAINERS				:= $(foreach dir, $(SRC_CONTAINERS_DIRS), $(wildcard $(dir)/*.cpp))
+SRC_CONTAINERSPLUS			:= $(foreach dir, $(SRC_CONTAINERSPLUS_DIRS), $(wildcard $(dir)/*.cpp))
 SRC_TESTS					:= $(wildcard $(SRC_TESTS_DIR)*.cpp)
 OBJ_CONTAINERS				:= $(patsubst %.cpp, $(OBJ_CONTAINERS_DIR)%.o, $(notdir $(SRC_CONTAINERS)))
 OBJ_CONTAINERSPLUS			:= $(patsubst %.cpp, $(OBJ_CONTAINERSPLUS_DIR)%.o, $(notdir $(SRC_CONTAINERSPLUS)))
