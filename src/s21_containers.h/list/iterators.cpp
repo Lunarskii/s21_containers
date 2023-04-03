@@ -38,3 +38,13 @@ template<typename value_type>
 bool List<value_type>::ListIterator::operator!=(const ListIterator& other) const {
     return !(*this == other);
 }
+
+template<typename value_type>
+typename List<value_type>::reference List<value_type>::ListIterator::operator*() const {
+    return node_->data;
+}
+
+template<typename value_type>
+typename List<value_type>::pointer List<value_type>::ListIterator::operator->() const {
+    return &node_->data;
+}
