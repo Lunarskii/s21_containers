@@ -10,14 +10,15 @@ class List {
     public:
         class Node;
         class ListIterator;
-        // class ListConstIterator;
+        class ListConstIterator;
     
         using value_type = T;
         using reference = T&;
         using const_reference = const T&;
         using pointer = T*;
+        using const_pointer  = const T*;
         using iterator = List<T>::ListIterator;
-        // using const_iterator = List<const T>::ListConstIterator;
+        using const_iterator = List<T>::ListConstIterator;
         using size_type = std::size_t;
 
 
@@ -35,7 +36,9 @@ class List {
 
 
         iterator begin();                                       // returns an iterator to the beginning
+        const_iterator begin() const;
         iterator end();                                         // returns an iterator to the end
+        const_iterator end() const;
         const_reference front();                                // access the first element
         const_reference back();                                 // access the last element
         void clear();                                           // clears the contents
@@ -45,9 +48,12 @@ class List {
         void push_front(const_reference value);                 // adds an element to the head
         void pop_front();                                       // removes the first element
 
+        /*                  OPERATORS                                                           */             
+        List<value_type>& operator=(List &&other);                                 // assignment operator overload for moving an object
+
     private:
-        Node *head;
-        Node *tail;
+        Node *head{nullptr};
+        Node *tail{nullptr};
 };
 
 template <typename value_type>
@@ -84,15 +90,38 @@ class List<value_type>::ListIterator {
         reference operator*() const;
         pointer operator->() const;
             
-    private:
+    protected:
         Node* node_{nullptr};
 };
 
-// template <typename value_type>
-// class List<value_type>::ListConstIterator {
-//     public:
-//     private:
-// };
+template <typename value_type>
+class List<value_type>::ListConstIterator : public ListIterator { // <value_type>
+    public:
+        // наследуем конструкторы базового класса
+        // using ListIterator::ListIterator;
+
+        // конструктор копирования
+        ListConstIterator(Node *node);
+
+        // Конструктор копирования
+        ListConstIterator(const ListIterator& other);
+
+        // Операторы инкремента и декремента
+        ListConstIterator& operator++();
+        ListConstIterator& operator--();
+        ListConstIterator operator++(int);
+        ListConstIterator operator--(int);
+
+        // Операторы сравнения
+        bool operator==(const ListConstIterator& other) const;
+        bool operator!=(const ListConstIterator& other) const;
+
+        // Операторы доступа к элементам
+        const_reference operator*() const;
+        const_pointer operator->() const;
+    private:
+        Node* node_{nullptr};
+};
 
 #include "list.tpp"
 #include "iterators.tpp"
