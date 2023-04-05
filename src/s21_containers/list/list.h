@@ -30,23 +30,23 @@ class List {
         List(List &&other);                                  // move constructor      
         ~List();                                             // destructor
 
-        // void erase(int index);
-        // typename S21List<T>::Node* insert(int index, double data);
-
-
-
+        /*                  METHODS                                                             */
+        size_type size();                                       // returns the number of elements
         iterator begin();                                       // returns an iterator to the beginning
         const_iterator begin() const;
         iterator end();                                         // returns an iterator to the end
         const_iterator end() const;
         const_reference front();                                // access the first element
         const_reference back();                                 // access the last element
-        void clear();                                           // clears the contents
         bool empty();                                           // checks whether the container is empty
+        void clear();                                           // clears the contents
+        void reverse();                                         // reverses the order of the elements
+        void swap(List& other);                                 // swaps the contents
         void push_back(const_reference value);                  // adds an element to the end
         void pop_back();                                        // removes the last element
         void push_front(const_reference value);                 // adds an element to the head
         void pop_front();                                       // removes the first element
+        void swap_elements(value_type &a, value_type &b);
 
         /*                  OPERATORS                                                           */             
         List<value_type>& operator=(List &&other);                                 // assignment operator overload for moving an object
@@ -90,7 +90,7 @@ class List<value_type>::ListIterator {
         reference operator*() const;
         pointer operator->() const;
             
-    protected:
+    private:
         Node* node_{nullptr};
 };
 
@@ -102,9 +102,6 @@ class List<value_type>::ListConstIterator : public ListIterator { // <value_type
 
         // конструктор копирования
         ListConstIterator(Node *node);
-
-        // Конструктор копирования
-        ListConstIterator(const ListIterator& other);
 
         // Операторы инкремента и декремента
         ListConstIterator& operator++();

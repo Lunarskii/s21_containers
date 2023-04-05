@@ -60,9 +60,6 @@ template<typename value_type>
 List<value_type>::ListConstIterator::ListConstIterator(Node *node) : node_(node) {}
 
 template<typename value_type>
-List<value_type>::ListConstIterator::ListConstIterator(const ListIterator& other) : ListIterator(other), node_(other.node_) {}
-
-template<typename value_type>
 typename List<value_type>::ListConstIterator& List<value_type>::ListConstIterator::operator++() {
     node_ = node_->next;
     return *this;

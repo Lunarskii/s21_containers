@@ -44,32 +44,59 @@ List<value_type>::~List() {
     while (head != nullptr) pop_front();
 }
 
+template <typename value_type>
+typename List<value_type>::size_type List<value_type>::size() {
+    size_type n = 0;
+
+    if (!empty()) {
+        for (iterator it = begin(); it != end(); ++it) n++;
+    }
+
+    return n;
+}
+
 template<typename value_type>
 typename List<value_type>::iterator List<value_type>::begin() {
-    iterator it(head);
-
-    return it;
+    if (head != nullptr) {
+        iterator it(head);
+        return it;
+    } else {
+        iterator it(nullptr);
+        return it;
+    }
 }
 
 template<typename value_type>
 typename List<value_type>::const_iterator List<value_type>::begin() const {
-    const_iterator it(head);
-
-    return it;
+    if (head != nullptr) {
+        const_iterator it(head);
+        return it;
+    } else {
+        const_iterator it(nullptr);
+        return it;
+    }
 }
 
 template<typename value_type>
 typename List<value_type>::iterator List<value_type>::end() {
-    iterator it(tail->next);
-
-    return it;
+    if (tail != nullptr) {
+        iterator it(tail->next);
+        return it;
+    } else {
+        iterator it(nullptr);
+        return it;
+    }
 }
 
 template<typename value_type>
 typename List<value_type>::const_iterator List<value_type>::end() const {
-    const_iterator it(tail->next);
-
-    return it;
+    if (tail != nullptr) {
+        const_iterator it(tail->next);
+        return it;
+    } else {
+        const_iterator it(nullptr);
+        return it;
+    }
 }
 
 template<typename value_type>
@@ -83,13 +110,34 @@ typename List<value_type>::const_reference List<value_type>::back() {
 }
 
 template<typename value_type>
+bool List<value_type>::empty() {
+    return head == nullptr && tail == nullptr;
+}
+
+template<typename value_type>
 void List<value_type>::clear() {
     this->~List();
 }
 
 template<typename value_type>
-bool List<value_type>::empty() {
-    return head == nullptr && tail == nullptr;
+void List<value_type>::reverse() {
+    iterator it_left = begin();
+    iterator it_right(tail);
+
+    for (int i = 0; i < size() / 2; i++, ++it_left, --it_right) {
+        swap_elements(*it_left, *it_right);
+    }
+}
+
+template<typename value_type>
+void List<value_type>::swap(List& other) {
+    Node *tempHead = head;
+    Node *tempTail = tail;
+    
+    head = other.head;
+    tail = other.tail;
+    other.head = tempHead;
+    other.tail = tempTail;
 }
 
 template<typename value_type>
@@ -147,6 +195,13 @@ template<typename value_type>
 List<value_type>& List<value_type>::operator=(List &&other) {
     this->clear();
     new (this) List(other);
+}
+
+template<typename value_type>
+void List<value_type>::swap_elements(value_type &a, value_type &b) {
+    value_type temp = a;
+    a = b;
+    b = temp;
 }
 
 #endif  // SRC_S21_CONTAINERS_H_LIST_LIST_TPP_
