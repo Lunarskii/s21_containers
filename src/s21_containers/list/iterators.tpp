@@ -3,11 +3,17 @@
 
 // <ListIterator>
 template<typename value_type>
-List<value_type>::ListIterator::ListIterator(Node *node) : node_(node) {}
+List<value_type>::ListIterator::ListIterator(Node *node, Node *head) : node_(node), head_(head) {}
 
 template<typename value_type>
 typename List<value_type>::ListIterator& List<value_type>::ListIterator::operator++() {
-    node_ = node_->next;
+    if (head_ != nullptr) {
+        if (node_ != nullptr) {
+            node_ = node_->next;
+        } else {
+            node_ = head_;
+        }
+    }
     return *this;
 }
 

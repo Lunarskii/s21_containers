@@ -45,6 +45,11 @@ List<value_type>::~List() {
 }
 
 template <typename value_type>
+typename List<value_type>::size_type List<value_type>::max_size() { // проверить правильно ли работает данный метод
+    return std::numeric_limits<size_type>::max();
+}
+
+template <typename value_type>
 typename List<value_type>::size_type List<value_type>::size() {
     size_type n = 0;
 
@@ -55,10 +60,33 @@ typename List<value_type>::size_type List<value_type>::size() {
     return n;
 }
 
+template <typename value_type>
+typename List<value_type>::iterator List<value_type>::insert(iterator pos, const_reference value) {
+    if (empty() || pos.node_ == nullptr) { // список пуст или итератор находится за последним элементом
+        push_back(value);
+        iterator it(tail);
+        return it;
+    } else if (pos.node_->prev == nullptr) { // итератор находится на первом элементе
+        push_front(value);
+        iterator it(head);
+        return it;
+    } else { // все остальные случаи, когда итератор находится не в начале и не в конце списка
+        Node *nextNode = pos.node_;
+        Node *prevNode = pos.node_->prev;
+        Node *newNode = new Node(value, prevNode, nextNode);
+
+        prevNode->next = newNode;
+        nextNode->prev = newNode;
+
+        iterator it(newNode);
+        return it;
+    }
+}
+
 template<typename value_type>
 typename List<value_type>::iterator List<value_type>::begin() {
     if (head != nullptr) {
-        iterator it(head);
+        iterator it(head, head);
         return it;
     } else {
         iterator it(nullptr);
@@ -112,6 +140,28 @@ typename List<value_type>::const_reference List<value_type>::back() {
 template<typename value_type>
 bool List<value_type>::empty() {
     return head == nullptr && tail == nullptr;
+}
+
+template<typename value_type>
+void List<value_type>::erase(iterator pos) {
+    if (pos.node_ == nullptr) {
+        std::cerr << "Invalid pointer" << std::endl;
+        std::abort();
+    } else {
+        if (pos.node_->prev == nullptr) { // если первый элемент
+            pop_front();
+        } else if (pos.node->next == nullptr) { // если последний элемент
+            pop_back();
+        } else { // если элемент не в конце и не в начале
+            Node *temp = pos.node_;
+            Node *prevNode = pos.node_->prev;
+            Node *nextNode = pos.node_->next;
+
+            prevNode->next = nextNode;
+            nextNode->prev = prevNode;
+            delete temp;
+        }
+    }
 }
 
 template<typename value_type>

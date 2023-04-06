@@ -31,7 +31,9 @@ class List {
         ~List();                                             // destructor
 
         /*                  METHODS                                                             */
+        size_type max_size();                                   // returns the maximum possible number of elements
         size_type size();                                       // returns the number of elements
+        iterator insert(iterator pos, const_reference value);   // inserts elements into concrete pos and returns the iterator that points to the new element
         iterator begin();                                       // returns an iterator to the beginning
         const_iterator begin() const;
         iterator end();                                         // returns an iterator to the end
@@ -39,6 +41,7 @@ class List {
         const_reference front();                                // access the first element
         const_reference back();                                 // access the last element
         bool empty();                                           // checks whether the container is empty
+        void erase(iterator pos);                               // erases an element at pos
         void clear();                                           // clears the contents
         void reverse();                                         // reverses the order of the elements
         void swap(List& other);                                 // swaps the contents
@@ -74,7 +77,7 @@ class List<value_type>::ListIterator {
         ListIterator() = default;
 
         // Конструктор с указанием начального узла
-        ListIterator(Node *node);
+        ListIterator(Node *node, Node *head = nullptr);
 
         // Операторы инкремента и декремента
         ListIterator& operator++();
@@ -90,8 +93,9 @@ class List<value_type>::ListIterator {
         reference operator*() const;
         pointer operator->() const;
             
-    private:
+    public: // private
         Node* node_{nullptr};
+        Node* head_{nullptr};
 };
 
 template <typename value_type>
@@ -100,7 +104,7 @@ class List<value_type>::ListConstIterator : public ListIterator { // <value_type
         // наследуем конструкторы базового класса
         // using ListIterator::ListIterator;
 
-        // конструктор копирования
+        // Конструктор с указанием начального узла
         ListConstIterator(Node *node);
 
         // Операторы инкремента и декремента
@@ -116,7 +120,8 @@ class List<value_type>::ListConstIterator : public ListIterator { // <value_type
         // Операторы доступа к элементам
         const_reference operator*() const;
         const_pointer operator->() const;
-    private:
+
+    public: // private
         Node* node_{nullptr};
 };
 
