@@ -1,10 +1,13 @@
-#ifndef SRC_S21_CONTAINERS_H_LIST_LIST_H_
-#define SRC_S21_CONTAINERS_H_LIST_LIST_H_
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_LIST_LIST_H_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_LIST_LIST_H_
 #pragma once
 
 #include <cstddef>
 #include <initializer_list>
+#include <limits>
+#include <algorithm>
 
+namespace s21 {
 template <typename T>
 class List {
     public:
@@ -23,24 +26,28 @@ class List {
 
 
         /*                  CONSTRUCTORS/DESTRUCTORS                                            */
-        List();                                              // default constructor, creates an empty list
-        List(size_type n);                                   // parameterized constructor, creates the list of size n
-        List(std::initializer_list<value_type> const &items);// initializer list constructor, creates a list initizialized using std::initializer_list
-        List(const List &other);                             // copy constructor 
-        List(List &&other);                                  // move constructor      
-        ~List();                                             // destructor
+        List();                                                 // default constructor, creates an empty list
+        List(size_type n);                                      // parameterized constructor, creates the list of size n
+        List(std::initializer_list<value_type> const &items);   // initializer list constructor, creates a list initizialized using std::initializer_list
+        List(const List &other);                                // copy constructor 
+        List(List &&other);                                     // move constructor      
+        ~List();                                                // destructor
 
         /*                  METHODS                                                             */
         size_type max_size();                                   // returns the maximum possible number of elements
         size_type size();                                       // returns the number of elements
         iterator insert(iterator pos, const_reference value);   // inserts elements into concrete pos and returns the iterator that points to the new element
         iterator begin();                                       // returns an iterator to the beginning
-        const_iterator begin() const;
         iterator end();                                         // returns an iterator to the end
-        const_iterator end() const;
+        const_iterator begin() const;                           // returns an const iterator to the beginning
+        const_iterator end() const;                             // returns an const iterator to the end
         const_reference front();                                // access the first element
         const_reference back();                                 // access the last element
         bool empty();                                           // checks whether the container is empty
+        void splice(const_iterator pos, List& other);           // transfers elements from list other starting from pos
+        void unique();                                          // removes consecutive duplicate elements
+        void merge(List& other);                                // merges two sorted lists
+        void sort();                                            // sorts the elements
         void erase(iterator pos);                               // erases an element at pos
         void clear();                                           // clears the contents
         void reverse();                                         // reverses the order of the elements
@@ -49,10 +56,19 @@ class List {
         void pop_back();                                        // removes the last element
         void push_front(const_reference value);                 // adds an element to the head
         void pop_front();                                       // removes the first element
-        void swap_elements(value_type &a, value_type &b);
+
+        template <typename... Args>
+        void emplace_back(Args&&... args);                      // appends new elements to the end of the container
+
+        template <typename... Args>
+        void emplace_front(Args&&... args);                     // appends new elements to the top of the container
+
+        template <typename... Args>
+        iterator emplace(const_iterator pos, Args&&... args);   // inserts new elements into the container directly before pos
 
         /*                  OPERATORS                                                           */             
-        List<value_type>& operator=(List &&other);                                 // assignment operator overload for moving an object
+        List<value_type>& operator=(const List& other);                                 // assignment operator overload for moving an object
+        List<value_type>& operator=(List&& other);
 
     private:
         Node *head{nullptr};
@@ -77,7 +93,10 @@ class List<value_type>::ListIterator {
         ListIterator() = default;
 
         // Конструктор с указанием начального узла
-        ListIterator(Node *node, Node *head = nullptr);
+        ListIterator(Node *node, Node *head = nullptr, Node *tail = nullptr);
+
+        // Конструктор копирования из ListConstIterator
+        ListIterator(ListConstIterator& it);
 
         // Операторы инкремента и декремента
         ListIterator& operator++();
@@ -89,6 +108,10 @@ class List<value_type>::ListIterator {
         bool operator==(const ListIterator& other) const;
         bool operator!=(const ListIterator& other) const;
 
+        // Операторы перемещения/сложения
+        ListIterator operator+(size_type n) const;
+        ListIterator operator-(size_type n) const;
+
         // Операторы доступа к элементам
         reference operator*() const;
         pointer operator->() const;
@@ -96,16 +119,15 @@ class List<value_type>::ListIterator {
     public: // private
         Node* node_{nullptr};
         Node* head_{nullptr};
+        Node* tail_{nullptr};
 };
 
 template <typename value_type>
-class List<value_type>::ListConstIterator : public ListIterator { // <value_type>
+class List<value_type>::ListConstIterator : public ListIterator {
     public:
-        // наследуем конструкторы базового класса
-        // using ListIterator::ListIterator;
-
-        // Конструктор с указанием начального узла
-        ListConstIterator(Node *node);
+        ListConstIterator() = default;
+        ListConstIterator(const ListIterator& it);
+        ListConstIterator(Node* node, Node* head = nullptr, Node* tail = nullptr);
 
         // Операторы инкремента и декремента
         ListConstIterator& operator++();
@@ -119,13 +141,16 @@ class List<value_type>::ListConstIterator : public ListIterator { // <value_type
 
         // Операторы доступа к элементам
         const_reference operator*() const;
-        const_pointer operator->() const;
+        const_reference operator->() const;
 
     public: // private
-        Node* node_{nullptr};
+        ListIterator it_;
 };
+
+}  // namespace s21
 
 #include "list.tpp"
 #include "iterators.tpp"
+#include "const_iterators.tpp"
 
 #endif  // SRC_S21_CONTAINERS_H_LIST_LIST_H_

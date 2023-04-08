@@ -1,9 +1,12 @@
-#ifndef SRC_S21_CONTAINERS_H_LIST_ITERATORS_TPP_
-#define SRC_S21_CONTAINERS_H_LIST_ITERATORS_TPP_
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_LIST_ITERATORS_TPP_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_LIST_ITERATORS_TPP_
 
-// <ListIterator>
+namespace s21 {
 template<typename value_type>
-List<value_type>::ListIterator::ListIterator(Node *node, Node *head) : node_(node), head_(head) {}
+List<value_type>::ListIterator::ListIterator(Node *node, Node *head, Node *tail) : node_(node), head_(head), tail_(tail) {}
+
+template<typename value_type>
+List<value_type>::ListIterator::ListIterator(ListConstIterator& it) : node_(it.it_.node_) {}
 
 template<typename value_type>
 typename List<value_type>::ListIterator& List<value_type>::ListIterator::operator++() {
@@ -19,7 +22,17 @@ typename List<value_type>::ListIterator& List<value_type>::ListIterator::operato
 
 template<typename value_type>
 typename List<value_type>::ListIterator& List<value_type>::ListIterator::operator--() {
-    node_ = node_->prev;
+    if (tail_ != nullptr) { 
+        if (node_ != nullptr) {
+            if (node_->prev != nullptr) {
+                node_ = node_->prev;
+            } else {
+                node_ = tail_->next;
+            }
+        } else {
+            node_ = tail_;
+        }
+    }
     return *this;
 }
 
@@ -48,68 +61,30 @@ bool List<value_type>::ListIterator::operator!=(const ListIterator& other) const
 }
 
 template<typename value_type>
+typename List<value_type>::ListIterator List<value_type>::ListIterator::operator+(size_type n) const {
+    ListIterator it(*this);
+    for (; n != 0; --n) ++it;
+    return it;
+}
+
+template<typename value_type>
+typename List<value_type>::ListIterator List<value_type>::ListIterator::operator-(size_type n) const {
+    ListIterator it(*this);
+    for (; n != 0; --n) --it;
+    return it;
+}
+
+template<typename value_type>
 typename List<value_type>::reference List<value_type>::ListIterator::operator*() const {
-    if (node_ == nullptr) {
+    if (node_ == nullptr && tail_ != nullptr) { // это если мы пытаемся разыменовать tail_->next, который в оригинале дублирует значение из tail_
+        return tail_->data;
+    } else if (node_ != nullptr) {
+        return node_->data;
+    } else {
         throw std::invalid_argument("Invalid index");
     }
-
-    return node_->data;
 }
 
-template<typename value_type>
-typename List<value_type>::pointer List<value_type>::ListIterator::operator->() const {
-    return &node_->data;
-}
+}  // namespace s21
 
-// <ListConstIterator>
-template<typename value_type>
-List<value_type>::ListConstIterator::ListConstIterator(Node *node) : node_(node) {}
-
-template<typename value_type>
-typename List<value_type>::ListConstIterator& List<value_type>::ListConstIterator::operator++() {
-    node_ = node_->next;
-    return *this;
-}
-
-template<typename value_type>
-typename List<value_type>::ListConstIterator& List<value_type>::ListConstIterator::operator--() {
-    node_ = node_->prev;
-    return *this;
-}
-
-template<typename value_type>
-typename List<value_type>::ListConstIterator List<value_type>::ListConstIterator::operator++(int) {
-    ListConstIterator it(*this);
-    ++(*this);
-    return it;
-}
-
-template<typename value_type>
-typename List<value_type>::ListConstIterator List<value_type>::ListConstIterator::operator--(int) {
-    ListConstIterator it(*this);
-    --(*this);
-    return it;
-}
-
-template<typename value_type>
-bool List<value_type>::ListConstIterator::operator==(const ListConstIterator& other) const {
-    return node_ == other.node_;
-}
-
-template<typename value_type>
-bool List<value_type>::ListConstIterator::operator!=(const ListConstIterator& other) const {
-    return !(*this == other);
-}
-
-template<typename value_type>
-typename List<value_type>::const_reference List<value_type>::ListConstIterator::operator*() const {
-    return node_->data;
-}
-
-template<typename value_type>
-typename List<value_type>::const_pointer List<value_type>::ListConstIterator::operator->() const {
-    return &node_->data;
-}
-
-
-#endif  // SRC_S21_CONTAINERS_H_LIST_ITERATORS_TPP_
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_LIST_ITERATORS_TPP_
