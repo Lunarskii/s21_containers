@@ -1,6 +1,6 @@
 #ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_LIST_LIST_H_
 #define CPP2_S21_CONTAINERS_S21_CONTAINERS_LIST_LIST_H_
-#pragma once
+// #pragma once
 
 #include <cstddef>
 #include <initializer_list>
@@ -19,11 +19,10 @@ class List {
         using reference = T&;
         using const_reference = const T&;
         using pointer = T*;
-        using const_pointer  = const T*;
+        using const_pointer  = const T*; // посмотреть нужен ли вообще
         using iterator = List<T>::ListIterator;
         using const_iterator = List<T>::ListConstIterator;
         using size_type = std::size_t;
-
 
         /*                  CONSTRUCTORS/DESTRUCTORS                                            */
         List();                                                 // default constructor, creates an empty list
@@ -67,7 +66,7 @@ class List {
         iterator emplace(const_iterator pos, Args&&... args);   // inserts new elements into the container directly before pos
 
         /*                  OPERATORS                                                           */             
-        List<value_type>& operator=(const List& other);                                 // assignment operator overload for moving an object
+        List<value_type>& operator=(const List& other);         // assignment operator overload for moving an object
         List<value_type>& operator=(List&& other);
 
     private:
@@ -114,7 +113,7 @@ class List<value_type>::ListIterator {
 
         // Операторы доступа к элементам
         reference operator*() const;
-        pointer operator->() const;
+        // pointer operator->() const;
             
     public: // private
         Node* node_{nullptr};
@@ -141,7 +140,7 @@ class List<value_type>::ListConstIterator : public ListIterator {
 
         // Операторы доступа к элементам
         const_reference operator*() const;
-        const_reference operator->() const;
+        // const_reference operator->() const;
 
     public: // private
         ListIterator it_;
