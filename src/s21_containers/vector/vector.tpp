@@ -1,32 +1,40 @@
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_VECTOR_TPP_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_VECTOR_TPP_
+
+namespace s21 {
 //==================================================================================
 // Member functions
 //==================================================================================
 
 template <typename value_type>
-Vector<value_type>::Vector() : capacity_(0), size_(0), data_(nullptr) {}
+Vector<value_type>::Vector() : data_(nullptr), size_(0), capacity_(0) {}
 
 template <typename value_type>
 Vector<value_type>::Vector(size_type n)
-    : capacity_(n), size_(n), data_(new T[n]) {}
+    : data_(new value_type[n]), size_(n), capacity_(n) {}
 
 template <typename value_type>
 Vector<value_type>::Vector(std::initializer_list<value_type> const& items)
-    : capacity_(items.size()), size_(items.size()), data_(new T[items.size()]) {
+    : data_(new value_type[items.size()]),
+      size_(items.size()),
+      capacity_(items.size()) {
   std::copy(items.begin(), items.end(), data_);
 }
 
 template <typename value_type>
 Vector<value_type>::Vector(const Vector& v)
-    : capacity_(v.capacity_), size_(v.size_), data_(new T[v.capacity_]) {
+    : data_(new value_type[v.capacity_]),
+      size_(v.size_),
+      capacity_(v.capacity_) {
   std::copy(v.data_, v.data_ + v.size_, data_);
 }
 
 template <typename value_type>
 Vector<value_type>::Vector(Vector&& v)
-    : capacity_(v.capacity_), size_(v.size_), data_(v.data_) {
-  v.capacity_ = 0;
-  v.size_ = 0;
+    : data_(v.data_), size_(v.size_), capacity_(v.capacity_) {
   v.data_ = nullptr;
+  v.size_ = 0;
+  v.capacity_ = 0;
 }
 
 template <typename value_type>
@@ -35,34 +43,17 @@ Vector<value_type>::~Vector() {
 }
 
 template <typename value_type>
-Vector<value_type>& Vector<value_type>::operator=(const Vector& v) {
-  if (this == &v) {
-    return *this;
-  }
-
-  delete[] data_;
-  capacity_ = v.capacity_;
-  size_ = v.size_;
-  data_ = new T[capacity_];
-  std::copy(v.data_, v.data_ + v.size_, data_);
-
-  return *this;
-}
-
-template <typename value_type>
 Vector<value_type>& Vector<value_type>::operator=(Vector&& v) {
-  if (this == &v) {
-    return *this;
+  if (this != &v) {
+    delete[] data_;
+    data_ = v.data_;
+    size_ = v.size_;
+    capacity_ = v.capacity_;
+
+    v.data_ = nullptr;
+    v.size_ = 0;
+    v.capacity_ = 0;
   }
-
-  delete[] data_;
-  capacity_ = v.capacity_;
-  size_ = v.size_;
-  data_ = v.data_;
-  v.capacity_ = 0;
-  v.size_ = 0;
-  v.data_ = nullptr;
-
   return *this;
 }
 
@@ -73,7 +64,7 @@ Vector<value_type>& Vector<value_type>::operator=(Vector&& v) {
 template <typename value_type>
 typename Vector<value_type>::reference Vector<value_type>::at(size_type pos) {
   if (pos >= size_) {
-    throw std::out_of_range("Vector index out of range");
+    throw std::out_of_range("Vector::at() - Index out of range");
   }
   return data_[pos];
 }
@@ -96,7 +87,7 @@ typename Vector<value_type>::const_reference Vector<value_type>::back() const {
 
 template <typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::data() {
-  return data_;
+  return iterator(data_);
 }
 
 //==================================================================================
@@ -105,22 +96,22 @@ typename Vector<value_type>::iterator Vector<value_type>::data() {
 
 template <typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::begin() {
-  return data_;
+  return iterator(data_);
 }
 
 template <typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::end() {
-  return data_ + size_;
+  return iterator(data_ + size_);
 }
 
 template <typename value_type>
 typename Vector<value_type>::const_iterator Vector<value_type>::begin() const {
-  return data_;
+  return const_iterator(data_);
 }
 
 template <typename value_type>
 typename Vector<value_type>::const_iterator Vector<value_type>::end() const {
-  return data_ + size_;
+  return const_iterator(data_ + size_);
 }
 
 //==================================================================================
@@ -139,20 +130,18 @@ typename Vector<value_type>::size_type Vector<value_type>::size() const {
 
 template <typename value_type>
 typename Vector<value_type>::size_type Vector<value_type>::max_size() const {
-  return std::numeric_limits<size_type>::max();
+  return std::numeric_limits<size_type>::max() / sizeof(value_type);
 }
 
 template <typename value_type>
 void Vector<value_type>::reserve(size_type new_capacity) {
-  if (new_capacity <= capacity_) {
-    return;
+  if (new_capacity > capacity_) {
+    pointer new_data = new value_type[new_capacity];
+    std::copy(data_, data_ + size_, new_data);
+    delete[] data_;
+    data_ = new_data;
+    capacity_ = new_capacity;
   }
-
-  T* new_data = new T[new_capacity];
-  std::copy(data_, data_ + size_, new_data);
-  delete[] data_;
-  data_ = new_data;
-  capacity_ = new_capacity;
 }
 
 template <typename value_type>
@@ -162,15 +151,13 @@ typename Vector<value_type>::size_type Vector<value_type>::capacity() const {
 
 template <typename value_type>
 void Vector<value_type>::shrink_to_fit() {
-  if (capacity_ == size_) {
-    return;
+  if (size_ < capacity_) {
+    pointer new_data = new value_type[size_];
+    std::copy(data_, data_ + size_, new_data);
+    delete[] data_;
+    data_ = new_data;
+    capacity_ = size_;
   }
-
-  T* new_data = new T[size_];
-  std::copy(data_, data_ + size_, new_data);
-  delete[] data_;
-  data_ = new_data;
-  capacity_ = size_;
 }
 
 //==================================================================================
@@ -185,24 +172,23 @@ void Vector<value_type>::clear() {
 template <typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::insert(
     iterator pos, const_reference value) {
-  size_type index = pos - data_;
+  size_type index = pos - begin();
   if (size_ == capacity_) {
-    reserve(capacity_ * 2);
+    reserve(capacity_ == 0 ? 1 : capacity_ * 2);
   }
-
-  for (size_type i = size_; i > index; --i) {
-    data_[i] = data_[i - 1];
+  iterator new_pos = begin() + index;
+  for (iterator it = end(); it != new_pos; --it) {
+    *it = *(it - 1);
   }
-  data_[index] = value;
+  *new_pos = value;
   ++size_;
-  return data_ + index;
+  return new_pos;
 }
 
 template <typename value_type>
 void Vector<value_type>::erase(iterator pos) {
-  size_type index = pos - data_;
-  for (size_type i = index; i < size_ - 1; ++i) {
-    data_[i] = data_[i + 1];
+  for (iterator it = pos; it != end() - 1; ++it) {
+    *it = *(it + 1);
   }
   --size_;
 }
@@ -224,7 +210,10 @@ void Vector<value_type>::pop_back() {
 
 template <typename value_type>
 void Vector<value_type>::swap(Vector& other) {
-  std::swap(capacity_, other.capacity_);
-  std::swap(size_, other.size_);
   std::swap(data_, other.data_);
+  std::swap(size_, other.size_);
+  std::swap(capacity_, other.capacity_);
 }
+
+}  // namespace s21
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_VECTOR_TPP_

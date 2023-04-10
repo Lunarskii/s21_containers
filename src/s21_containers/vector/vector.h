@@ -2,31 +2,37 @@
 #define SRC_S21_CONTAINERS_H_VECTOR_VECTOR_H_
 #pragma once
 
+#include <algorithm>
 #include <cstddef>
 #include <initializer_list>
+#include <limits>
+#include <stdexcept>
+#include <utility>
 
+namespace s21 {
 template <typename T>
 class Vector {
  public:
+  class VectorConstIterator;
+  class VectorIterator;
   // Member types
   using value_type = T;
   using reference = T&;
   using const_reference = const T&;
-  using iterator = T*;
-  using const_iterator = const T*;
-  using size_type = std::size_t;
+  using pointer = T*;
+  using const_pointer = const T*;
+  using iterator = Vector<T>::VectorIterator<T>;
+  using const_iterator = Vector<T>::VectorConstIterator<T>;
+  using size_type = size_t;
 
   // Member functions
-  Vector();                      // default constructor
-  explicit Vector(size_type n);  // parameterized constructor
-  Vector(std::initializer_list<value_type> const&
-             items);        // initializer list constructor
-  Vector(const Vector& v);  // copy constructor
-  Vector(Vector&& v);       // move constructor
-  ~Vector();                // destructor
-
-  Vector& operator=(const Vector& v);  // copy assignment operator
-  Vector& operator=(Vector&& v);       // move assignment operator
+  Vector();
+  Vector(size_type n);
+  Vector(std::initializer_list<value_type> const& items);
+  Vector(const Vector& v);
+  Vector(Vector&& v);
+  ~Vector();
+  Vector& operator=(Vector&& v);
 
   // Element access
   reference at(size_type pos);
@@ -58,11 +64,75 @@ class Vector {
   void swap(Vector& other);
 
  private:
-  size_type capacity_;
+  // Private member variables
+  pointer data_;
   size_type size_;
-  T* data_;
+  size_type capacity_;
+};
+
+template <typename T>
+class VectorIterator {
+ public:
+  // Constructor
+  VectorIterator(pointer ptr);
+
+  // Access the element pointed to by the iterator
+  reference operator*();
+
+  // Move the iterator forward to the next element
+  VectorIterator& operator++();
+
+  // Move the iterator backward to the previous element
+  VectorIterator& operator--();
+
+  // Post-increment iterator
+  VectorIterator operator++(int);
+
+  // Post-decrement iterator
+  VectorIterator operator--(int);
+
+  // Compare two iterators for equality
+  bool operator==(const VectorIterator& other) const;
+
+  // Compare two iterators for inequality
+  bool operator!=(const VectorIterator& other) const;
+
+ private:
+  pointer ptr_;
+};
+
+template <typename T>
+class VectorConstIterator {
+ public:
+  // Constructor
+  VectorConstIterator(const_pointer ptr);
+
+  // Access the element pointed to by the iterator
+  const_reference operator*() const;
+
+  // Move the iterator forward to the next element
+  VectorConstIterator& operator++();
+
+  // Move the iterator backward to the previous element
+  VectorConstIterator& operator--();
+
+  // Post-increment iterator
+  VectorConstIterator operator++(int);
+
+  // Post-decrement iterator
+  VectorConstIterator operator--(int);
+
+  // Compare two iterators for equality
+  bool operator==(const VectorConstIterator& other) const;
+
+  // Compare two iterators for inequality
+  bool operator!=(const VectorConstIterator& other) const;
+
+ private:
+  const_pointer ptr_;
 };
 
 #include "vector.tpp"
-
+#include "vector_iterators.tpp"
+}  // namespace s21
 #endif  // SRC_S21_CONTAINERS_H_VECTOR_VECTOR_H_
