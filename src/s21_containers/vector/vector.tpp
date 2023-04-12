@@ -76,6 +76,12 @@ typename Vector<value_type>::reference Vector<value_type>::operator[](
 }
 
 template <typename value_type>
+typename Vector<value_type>::const_reference Vector<value_type>::operator[](
+    size_type pos) const {
+  return data_[pos];
+}
+
+template <typename value_type>
 typename Vector<value_type>::const_reference Vector<value_type>::front() const {
   return data_[0];
 }
@@ -90,9 +96,9 @@ typename Vector<value_type>::iterator Vector<value_type>::data() {
   return iterator(data_);
 }
 
-//==================================================================================
+// ==================================================================================
 // Vector Iterators
-//==================================================================================
+// ==================================================================================
 
 template <typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::begin() {

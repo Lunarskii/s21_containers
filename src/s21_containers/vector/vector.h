@@ -21,8 +21,8 @@ class Vector {
   using const_reference = const T&;
   using pointer = T*;
   using const_pointer = const T*;
-  using iterator = Vector<T>::VectorIterator<T>;
-  using const_iterator = Vector<T>::VectorConstIterator<T>;
+  using iterator = Vector<T>::VectorIterator;
+  using const_iterator = Vector<T>::VectorConstIterator;
   using size_type = size_t;
 
   // Member functions
@@ -34,9 +34,10 @@ class Vector {
   ~Vector();
   Vector& operator=(Vector&& v);
 
-  // Element access
+  // // Element access
   reference at(size_type pos);
   reference operator[](size_type pos);
+  const_reference operator[](size_type pos) const;
   const_reference front() const;
   const_reference back() const;
   iterator data();
@@ -70,8 +71,8 @@ class Vector {
   size_type capacity_;
 };
 
-template <typename T>
-class VectorIterator {
+template <typename value_type>
+class Vector<value_type>::VectorIterator {
  public:
   // Constructor
   VectorIterator(pointer ptr);
@@ -97,12 +98,16 @@ class VectorIterator {
   // Compare two iterators for inequality
   bool operator!=(const VectorIterator& other) const;
 
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // iterator operator+(int n) const;
+
  private:
   pointer ptr_;
+  // T* ptr_;
 };
 
-template <typename T>
-class VectorConstIterator {
+template <typename value_type>
+class Vector<value_type>::VectorConstIterator {
  public:
   // Constructor
   VectorConstIterator(const_pointer ptr);
@@ -132,7 +137,7 @@ class VectorConstIterator {
   const_pointer ptr_;
 };
 
+}  // namespace s21
 #include "vector.tpp"
 #include "vector_iterators.tpp"
-}  // namespace s21
 #endif  // SRC_S21_CONTAINERS_H_VECTOR_VECTOR_H_
