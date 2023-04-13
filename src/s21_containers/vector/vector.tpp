@@ -11,7 +11,9 @@ Vector<value_type>::Vector() : data_(nullptr), size_(0), capacity_(0) {}
 
 template <typename value_type>
 Vector<value_type>::Vector(size_type n)
-    : data_(new value_type[n]), size_(n), capacity_(n) {}
+    : data_(new value_type[n]), size_(n), capacity_(n) {
+  std::fill_n(data_, n, value_type());
+}
 
 template <typename value_type>
 Vector<value_type>::Vector(std::initializer_list<value_type> const& items)

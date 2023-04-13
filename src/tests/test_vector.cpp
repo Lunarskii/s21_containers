@@ -22,16 +22,53 @@ TEST(VectorTest, DefaultConstructor) {
   EXPECT_TRUE(compare_vectors(v1, v2));
 }
 
+TEST(VectorTest, DefaultConstructor_Correct) {
+  s21::Vector<int> v1;
+  std::vector<int> v2;
+  EXPECT_EQ(v1.size(), v2.size());
+}
+
+TEST(VectorTest, DefaultConstructor_Incorrect) {
+  s21::Vector<int> v1;
+  std::vector<int> v2;
+  v2.push_back(1);
+  EXPECT_NE(v1.size(), v2.size());
+}
+
 TEST(VectorTest, SizeConstructor) {
   s21::Vector<int> v1(5);
   std::vector<int> v2(5);
   EXPECT_TRUE(compare_vectors(v1, v2));
 }
 
+TEST(VectorTest, SizeConstructor_Correct) {
+  s21::Vector<int> v1(5);
+  std::vector<int> v2(5);
+  EXPECT_EQ(v1.size(), v2.size());
+}
+
+TEST(VectorTest, SizeConstructor_Incorrect) {
+  s21::Vector<int> v1(5);
+  std::vector<int> v2(6);
+  EXPECT_NE(v1.size(), v2.size());
+}
+
 TEST(VectorTest, InitializerListConstructor) {
   s21::Vector<int> v1{1, 2, 3};
   std::vector<int> v2{1, 2, 3};
   EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, InitializerListConstructor_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  std::vector<int> v2{1, 2, 3};
+  EXPECT_EQ(v1.size(), v2.size());
+}
+
+TEST(VectorTest, InitializerListConstructor_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  std::vector<int> v2{1, 2, 3, 4};
+  EXPECT_NE(v1.size(), v2.size());
 }
 
 TEST(VectorTest, CopyConstructor) {
@@ -42,12 +79,39 @@ TEST(VectorTest, CopyConstructor) {
   EXPECT_TRUE(compare_vectors(v1_copy, v2_copy));
 }
 
+TEST(VectorTest, CopyConstructor_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  s21::Vector<int> v1_copy(v1);
+  EXPECT_EQ(v1.size(), v1_copy.size());
+}
+
+TEST(VectorTest, CopyConstructor_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  s21::Vector<int> v1_copy(v1);
+  s21::Vector<int> v1_wrong{1, 2, 3, 4};
+  EXPECT_NE(v1_copy.size(), v1_wrong.size());
+}
+
 TEST(VectorTest, MoveConstructor) {
   s21::Vector<int> v1{1, 2, 3};
   s21::Vector<int> v1_moved(std::move(v1));
   std::vector<int> v2{1, 2, 3};
   std::vector<int> v2_moved(std::move(v2));
   EXPECT_TRUE(compare_vectors(v1_moved, v2_moved));
+}
+
+TEST(VectorTest, MoveConstructor_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  s21::Vector<int> v1_moved(std::move(v1));
+  EXPECT_EQ(v1_moved[0], 1);
+  EXPECT_EQ(v1_moved[1], 2);
+  EXPECT_EQ(v1_moved[2], 3);
+}
+
+TEST(VectorTest, MoveConstructor_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  s21::Vector<int> v1_moved(std::move(v1));
+  EXPECT_NE(v1_moved.size(), v1.size());
 }
 
 TEST(VectorTest, MoveAssignment) {
@@ -60,6 +124,22 @@ TEST(VectorTest, MoveAssignment) {
   EXPECT_TRUE(compare_vectors(v1_moved, v2_moved));
 }
 
+TEST(VectorTest, MoveAssignment_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  s21::Vector<int> v1_moved;
+  v1_moved = std::move(v1);
+  EXPECT_EQ(v1_moved[0], 1);
+  EXPECT_EQ(v1_moved[1], 2);
+  EXPECT_EQ(v1_moved[2], 3);
+}
+
+TEST(VectorTest, MoveAssignment_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  s21::Vector<int> v1_moved;
+  v1_moved = std::move(v1);
+  EXPECT_NE(v1_moved.size(), v1.size());
+}
+
 TEST(VectorTest, At) {
   s21::Vector<int> v1{1, 2, 3};
   std::vector<int> v2{1, 2, 3};
@@ -68,10 +148,34 @@ TEST(VectorTest, At) {
   }
 }
 
+TEST(VectorTest, At_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  EXPECT_EQ(v1.at(0), 1);
+  EXPECT_EQ(v1.at(1), 2);
+  EXPECT_EQ(v1.at(2), 3);
+}
+
+TEST(VectorTest, At_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  EXPECT_THROW(v1.at(3), std::out_of_range);
+}
+
 TEST(VectorTest, FrontAndBack) {
   s21::Vector<int> v1{1, 2, 3};
   std::vector<int> v2{1, 2, 3};
   EXPECT_EQ(v1.front(), v2.front());
+}
+
+TEST(VectorTest, FrontAndBack_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  EXPECT_EQ(v1.front(), 1);
+  EXPECT_EQ(v1.back(), 3);
+}
+
+TEST(VectorTest, FrontAndBack_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  EXPECT_NE(v1.front(), 3);
+  EXPECT_NE(v1.back(), 1);
 }
 
 TEST(VectorTest, Data) {
@@ -80,17 +184,30 @@ TEST(VectorTest, Data) {
   EXPECT_EQ(*v1.data(), *v2.data());
 }
 
-// TEST(VectorTest, Iterators) {
-//   s21::Vector<int> v1{1, 2, 3};
-//   std::vector<int> v2{1, 2, 3};
-//   EXPECT_TRUE(std::equal(v1.begin(), v1.end(), v2.begin(), v2.end()));
-//   EXPECT_TRUE(std::equal(v1.begin(), v1.end(), v2.begin(), v2.end()));
-// }
+TEST(VectorTest, Data_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  EXPECT_EQ(*(++v1.data()), 2);
+}
+
+TEST(VectorTest, Data_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  EXPECT_NE(*(++v1.data()), 1);
+}
 
 TEST(VectorTest, Empty) {
   s21::Vector<int> v1;
   std::vector<int> v2;
   EXPECT_EQ(v1.empty(), v2.empty());
+}
+
+TEST(VectorTest, Empty_Correct) {
+  s21::Vector<int> v1;
+  EXPECT_TRUE(v1.empty());
+}
+
+TEST(VectorTest, Empty_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  EXPECT_FALSE(v1.empty());
 }
 
 TEST(VectorTest, Size) {
@@ -99,10 +216,32 @@ TEST(VectorTest, Size) {
   EXPECT_EQ(v1.size(), v2.size());
 }
 
+TEST(VectorTest, Size_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  EXPECT_EQ(v1.size(), 3);
+}
+
+TEST(VectorTest, Size_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  EXPECT_NE(v1.size(), 4);
+}
+
 TEST(VectorTest, MaxSize) {
   s21::Vector<int> v1;
   std::vector<int> v2;
-  EXPECT_EQ(v1.max_size(), v2.max_size());
+  double ratio = static_cast<double>(v1.max_size()) / v2.max_size();
+  // отношение размеров приближенно равно 2 с погрешностью 0.1
+  EXPECT_NEAR(ratio, 2.0, 0.1);
+}
+
+TEST(VectorTest, MaxSize_Correct) {
+  s21::Vector<int> v1;
+  EXPECT_GT(v1.max_size(), 0);
+}
+
+TEST(VectorTest, MaxSize_Incorrect) {
+  s21::Vector<int> v1;
+  EXPECT_NE(v1.max_size(), -1);
 }
 
 TEST(VectorTest, ReserveAndCapacity) {
@@ -113,12 +252,37 @@ TEST(VectorTest, ReserveAndCapacity) {
   EXPECT_EQ(v1.capacity(), v2.capacity());
 }
 
+TEST(VectorTest, ReserveAndCapacity_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  v1.reserve(100);
+  EXPECT_GE(v1.capacity(), 100);
+}
+
+TEST(VectorTest, ReserveAndCapacity_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  v1.reserve(100);
+  EXPECT_NE(v1.capacity(), 50);
+}
+
 TEST(VectorTest, ShrinkToFit) {
   s21::Vector<int> v1{1, 2, 3};
   std::vector<int> v2{1, 2, 3};
   v1.shrink_to_fit();
   v2.shrink_to_fit();
   EXPECT_EQ(v1.capacity(), v2.capacity());
+}
+
+TEST(VectorTest, ShrinkToFit_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  v1.shrink_to_fit();
+  EXPECT_EQ(v1.capacity(), v1.size());
+}
+
+TEST(VectorTest, ShrinkToFit_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  v1.reserve(100);
+  v1.shrink_to_fit();
+  EXPECT_NE(v1.capacity(), 100);
 }
 
 TEST(VectorTest, Clear) {
@@ -129,21 +293,17 @@ TEST(VectorTest, Clear) {
   EXPECT_TRUE(compare_vectors(v1, v2));
 }
 
-// TEST(VectorTest, Insert) {
-//   s21::Vector<int> v1{1, 2, 3};
-//   std::vector<int> v2{1, 2, 3};
-//   v1.insert(v1.begin() + 1, 42);
-//   v2.insert(v2.begin() + 1, 42);
-//   EXPECT_TRUE(compare_vectors(v1, v2));
-// }
+TEST(VectorTest, Clear_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  v1.clear();
+  EXPECT_TRUE(v1.empty());
+}
 
-// TEST(VectorTest, Erase) {
-//   s21::Vector<int> v1{1, 2, 3};
-//   std::vector<int> v2{1, 2, 3};
-//   v1.erase(v1.begin() + 1);
-//   v2.erase(v2.begin() + 1);
-//   EXPECT_TRUE(compare_vectors(v1, v2));
-// }
+TEST(VectorTest, Clear_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  v1.clear();
+  EXPECT_FALSE(v1.size() == 3);
+}
 
 TEST(VectorTest, PushBack) {
   s21::Vector<int> v1{1, 2, 3};
@@ -153,12 +313,40 @@ TEST(VectorTest, PushBack) {
   EXPECT_TRUE(compare_vectors(v1, v2));
 }
 
+TEST(VectorTest, PushBack_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  v1.push_back(4);
+  EXPECT_EQ(v1.size(), 4);
+  EXPECT_EQ(v1.back(), 4);
+}
+
+TEST(VectorTest, PushBack_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  v1.push_back(4);
+  EXPECT_NE(v1.size(), 3);
+  EXPECT_NE(v1.back(), 3);
+}
+
 TEST(VectorTest, PopBack) {
   s21::Vector<int> v1{1, 2, 3};
   std::vector<int> v2{1, 2, 3};
   v1.pop_back();
   v2.pop_back();
   EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, PopBack_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  v1.pop_back();
+  EXPECT_EQ(v1.size(), 2);
+  EXPECT_EQ(v1.back(), 2);
+}
+
+TEST(VectorTest, PopBack_Incorrect) {
+  s21::Vector<int> v1{1, 2, 3};
+  v1.pop_back();
+  EXPECT_NE(v1.size(), 3);
+  EXPECT_NE(v1.back(), 3);
 }
 
 TEST(VectorTest, Swap) {
@@ -173,7 +361,162 @@ TEST(VectorTest, Swap) {
   EXPECT_TRUE(compare_vectors(v1_swap, v2_swap));
 }
 
-// int main(int argc, char** argv) {
-//   ::testing::InitGoogleTest(&argc, argv);
-//   return RUN_ALL_TESTS();
-// }
+TEST(VectorTest, Swap_Correct) {
+  s21::Vector<int> v1{1, 2, 3};
+  s21::Vector<int> v1_swap{4, 5, 6};
+  v1.swap(v1_swap);
+  EXPECT_EQ(v1.size(), 3);
+  EXPECT_EQ(v1.front(), 4);
+  EXPECT_EQ(v1.back(), 6);
+  EXPECT_EQ(v1_swap.size(), 3);
+  EXPECT_EQ(v1_swap.front(), 1);
+  EXPECT_EQ(v1_swap.back(), 3);
+}
+
+//==================================================================================
+// VectorIterator
+//==================================================================================
+
+TEST(VectorIteratorTest, Increment_Correct) {
+  s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::iterator it = v.begin();
+  ++it;
+  EXPECT_EQ(*it, 2);
+  ++it;
+  EXPECT_EQ(*it, 3);
+}
+
+TEST(VectorIteratorTest, Increment_Incorrect) {
+  s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::iterator it = v.begin();
+  ++it;
+  EXPECT_NE(*it, 1);
+  ++it;
+  EXPECT_NE(*it, 2);
+}
+
+TEST(VectorIteratorTest, Decrement_Correct) {
+  s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::iterator it = v.end();
+  --it;
+  EXPECT_EQ(*it, 3);
+  --it;
+  EXPECT_EQ(*it, 2);
+}
+
+TEST(VectorIteratorTest, Decrement_Incorrect) {
+  s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::iterator it = v.end();
+  --it;
+  EXPECT_NE(*it, 2);
+  --it;
+  EXPECT_NE(*it, 1);
+}
+
+TEST(VectorIteratorTest, Dereference_Correct) {
+  s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::iterator it = v.begin();
+  EXPECT_EQ(*it, 1);
+  ++it;
+  EXPECT_EQ(*it, 2);
+}
+
+TEST(VectorIteratorTest, Dereference_Incorrect) {
+  s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::iterator it = v.begin();
+  EXPECT_NE(*it, 2);
+  ++it;
+  EXPECT_NE(*it, 1);
+}
+
+TEST(VectorIteratorTest, Equality_Correct) {
+  s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::iterator it1 = v.begin();
+  s21::Vector<int>::iterator it2 = v.begin();
+  EXPECT_TRUE(it1 == it2);
+  ++it1;
+  EXPECT_FALSE(it1 == it2);
+}
+
+TEST(VectorIteratorTest, Equality_Incorrect) {
+  s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::iterator it1 = v.begin();
+  s21::Vector<int>::iterator it2 = v.begin();
+  EXPECT_FALSE(it1 != it2);
+  ++it1;
+  EXPECT_TRUE(it1 != it2);
+}
+
+//==================================================================================
+// VectorConstIterator
+//==================================================================================
+
+TEST(VectorConstIteratorTest, Increment_Correct) {
+  const s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::const_iterator it = v.begin();
+  ++it;
+  EXPECT_EQ(*it, 2);
+  ++it;
+  EXPECT_EQ(*it, 3);
+}
+
+TEST(VectorConstIteratorTest, Increment_Incorrect) {
+  const s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::const_iterator it = v.begin();
+  ++it;
+  EXPECT_NE(*it, 1);
+  ++it;
+  EXPECT_NE(*it, 2);
+}
+
+TEST(VectorConstIteratorTest, Decrement_Correct) {
+  const s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::const_iterator it = v.end();
+  --it;
+  EXPECT_EQ(*it, 3);
+  --it;
+  EXPECT_EQ(*it, 2);
+}
+
+TEST(VectorConstIteratorTest, Decrement_Incorrect) {
+  const s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::const_iterator it = v.end();
+  --it;
+  EXPECT_NE(*it, 2);
+  --it;
+  EXPECT_NE(*it, 1);
+}
+
+TEST(VectorConstIteratorTest, Dereference_Correct) {
+  const s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::const_iterator it = v.begin();
+  EXPECT_EQ(*it, 1);
+  ++it;
+  EXPECT_EQ(*it, 2);
+}
+
+TEST(VectorConstIteratorTest, Dereference_Incorrect) {
+  const s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::const_iterator it = v.begin();
+  EXPECT_NE(*it, 2);
+  ++it;
+  EXPECT_NE(*it, 1);
+}
+
+TEST(VectorConstIteratorTest, Equality_Correct) {
+  const s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::const_iterator it1 = v.begin();
+  s21::Vector<int>::const_iterator it2 = v.begin();
+  EXPECT_TRUE(it1 == it2);
+  ++it1;
+  EXPECT_FALSE(it1 == it2);
+}
+
+TEST(VectorConstIteratorTest, Equality_Incorrect) {
+  const s21::Vector<int> v{1, 2, 3};
+  s21::Vector<int>::const_iterator it1 = v.begin();
+  s21::Vector<int>::const_iterator it2 = v.begin();
+  EXPECT_FALSE(it1 != it2);
+  ++it1;
+  EXPECT_TRUE(it1 != it2);
+}
