@@ -1,6 +1,5 @@
-
-
-
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_BINARYTREE_ITERATORS_TPP_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_BINARYTREE_ITERATORS_TPP_
 
 template<typename value_type>
 BinaryTree<value_type>::BinaryTreeIterator::BinaryTreeIterator(Node* node, Node* root) : node_(node), root_(root) {}
@@ -73,3 +72,5 @@ typename BinaryTree<value_type>::const_reference BinaryTree<value_type>::BinaryT
         // return size(); если элемента не существует, то нужно вернуть размер бинарного дерева
     }
 }
+
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_BINARYTREE_ITERATORS_TPP_

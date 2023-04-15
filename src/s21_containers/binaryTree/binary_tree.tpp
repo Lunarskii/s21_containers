@@ -1,4 +1,5 @@
-
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_BINARYTREE_BINARY_TREE_TPP_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_BINARYTREE_BINARY_TREE_TPP_
 
 template<typename value_type>
 BinaryTree<value_type>::Node::Node(const value_type& d, Node* l, Node* r, Node* p) : data(d), left(l), right(r), parent(p) {}
@@ -289,3 +290,5 @@ typename BinaryTree<value_type>::BinaryTree& BinaryTree<value_type>::operator=(B
 
     return *this;
 }
+
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_BINARYTREE_BINARY_TREE_TPP_

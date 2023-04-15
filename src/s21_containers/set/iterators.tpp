@@ -1,4 +1,5 @@
-
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_SET_ITERATORS_TPP_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_SET_ITERATORS_TPP_
 
 namespace s21 {
 
@@ -43,3 +44,5 @@ template<typename value_type>
 typename set<value_type>::const_reference set<value_type>::SetIterator::operator*() const { return *it_; }
 
 }  // namespace s21
+
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_SET_ITERATORS_TPP_

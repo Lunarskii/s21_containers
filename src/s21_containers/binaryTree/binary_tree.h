@@ -1,4 +1,5 @@
-
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_BINARYTREE_BINARY_TREE_H_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_BINARYTREE_BINARY_TREE_H_
 
 #include <limits>
 
@@ -108,3 +109,5 @@ class BinaryTree<value_type>::BinaryTreeIterator {
 
 #include "binary_tree.tpp"
 #include "iterators.tpp"
+
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_BINARYTREE_BINARY_TREE_H_

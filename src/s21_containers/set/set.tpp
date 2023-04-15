@@ -1,4 +1,5 @@
-
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_SET_SET_TPP_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_SET_SET_TPP_
 
 namespace s21 {
 template<typename value_type>
@@ -111,3 +112,5 @@ typename set<value_type>::set& set<value_type>::operator=(set& other) {
 }
 
 }  // namespace s21
+
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_SET_SET_TPP_

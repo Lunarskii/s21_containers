@@ -1,5 +1,5 @@
-#ifndef SRC_S21_CONTAINERS_H_SET_SET_H_
-#define SRC_S21_CONTAINERS_H_SET_SET_H_
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_SET_SET_H_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_SET_SET_H_
 // #pragma once
 
 #include "../binaryTree/binary_tree.h"
@@ -88,4 +88,4 @@ class set<value_type>::SetIterator {
 #include "set.tpp"
 #include "iterators.tpp"
 
-#endif  // SRC_S21_CONTAINERS_H_SET_SET_H_
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_SET_SET_H_
