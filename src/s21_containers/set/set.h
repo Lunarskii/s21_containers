@@ -2,19 +2,20 @@
 #define SRC_S21_CONTAINERS_H_SET_SET_H_
 // #pragma once
 
-// #include "binary_tree.h"
+#include "../binaryTree/binary_tree.h"
 
 namespace s21 {
 template<typename T>
-class set : public BinaryTree {
+class set {
     public:
         class SetIterator;
-        class SetConstIterator;
 
         using key_type = T;
         using value_type = T;
         using reference = T&;
         using const_reference = const T&;
+        using iterator = set<T>::SetIterator;
+        using const_iterator = set<T>::SetIterator;
         // using iterator = typename BinaryTree<T, Compare>::iterator;
         // using const_iterator = typename BinaryTree<T, Compare>::const_iterator;
         using size_type = std::size_t;
@@ -24,9 +25,9 @@ class set : public BinaryTree {
         /*                  CONSTRUCTORS/DESTRUCTORS                                            */
         set();                                                      // default constructor, creates empty set
         set(std::initializer_list<value_type> const &items);        // initializer list constructor, creates the set initizialized using std::initializer_list
-        set(const set &s);                                          // copy constructor
-        set(set &&s);                                               // move constructor
-        ~set();                                                     // destructor
+        set(const set &other);                                          // copy constructor
+        set(set &&other);                                               // move constructor
+        ~set() = default;                                                     // destructor
 
         /*                  METHODS                                                             */
         iterator begin();                                           // returns an iterator to the beginning
@@ -37,24 +38,54 @@ class set : public BinaryTree {
         size_type max_size();                                       // returns the maximum possible number of elements
 
         void clear();                                               // clears the contents
-        std::pair<iterator, bool> insert(const value_type& value);  // inserts node and returns iterator to where the element is in the container and bool denoting whether the insertion took place
+        std::pair<iterator, bool> insert(const_reference value);  // inserts node and returns iterator to where the element is in the container and bool denoting whether the insertion took place
         void erase(iterator pos);                                   // erases element at pos
         void swap(set& other);                                      // swaps the contents
         void merge(set& other);                                     // splices nodes from another container
 
-        iterator find(const Key& key);                              // finds element with specific key
-        bool contains(const Key& key);                              // checks if the container contains element with specific key
+        iterator find(const_reference key);                              // finds element with specific key
+        bool contains(const_reference key);                              // checks if the container contains element with specific key
 
-        vector<std::pair<iterator,bool>> emplace(Args&&... args);   // inserts new elements into the container
+        template <typename... Args>
+        std::pair<iterator, bool> emplace(Args&&... args);   // inserts new elements into the container
 
         /*                  OPERATORS                                                           */    
-        operator=(set &&s);                                         // assignment operator overload for moving object
+        set& operator=(set&& other);                                         // assignment operator overload for moving object
+        set& operator=(set& other);
 
     private:
+        BinaryTree<value_type> tree;
+};
+
+template<typename value_type>
+class set<value_type>::SetIterator {
+    public:
+        SetIterator() = default;
+        SetIterator(typename BinaryTree<value_type>::iterator it);
+        
+        // Операторы инкремента и декремента
+        SetIterator& operator++();
+        SetIterator& operator--();
+        SetIterator operator++(int);
+        SetIterator operator--(int);
+
+        // Операторы сравнения
+        bool operator==(const SetIterator& other) const;
+        bool operator!=(const SetIterator& other) const;
+
+        // Операторы перемещения/сложения
+        SetIterator operator+(size_type n) const;
+        SetIterator operator-(size_type n) const;
+
+        // Операторы доступа к элементам
+        const_reference operator*() const;
+    private:
+        typename BinaryTree<value_type>::BinaryTreeIterator it_;
 };
 
 }  // namespace s21
 
 #include "set.tpp"
+#include "iterators.tpp"
 
 #endif  // SRC_S21_CONTAINERS_H_SET_SET_H_
