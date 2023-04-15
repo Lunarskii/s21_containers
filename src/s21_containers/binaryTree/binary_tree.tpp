@@ -1,146 +1,291 @@
 
 
 template<typename value_type>
-BinaryTree<value_type>::Node::Node(const value_type& d, Node* l, Node* r, Node* u) : data(d), left(l), right(r), up(u) {}
+BinaryTree<value_type>::Node::Node(const value_type& d, Node* l, Node* r, Node* p) : data(d), left(l), right(r), parent(p) {}
 
 template<typename value_type>
 BinaryTree<value_type>::BinaryTree() : root(nullptr) {}
 
 template<typename value_type>
-BinaryTree<value_type>::BinaryTree() {
-    deleteTree();
+BinaryTree<value_type>::BinaryTree(std::initializer_list<value_type> const &items) {
+    for (auto &i : items) {
+        insert(i);
+    }
 }
 
-// template<typename value_type>
-// void BinaryTree<value_type>::insert(value_type data) {
-//     if (root == nullptr) {
-//         root = new Node(data);
-//     } else {
-//         Node* node_ = root;
-//         Node* parent_ = nullptr;
-
-//         while (node_ != nullptr || data != node_->data) {
-//             parent_ = node_;
-//             if (data < node_->data) {
-//                 node_ = node_->left;
-//             } else if (data > node_->data) {
-//                 node_ = node_->right;
-//             }
-//         }
-//         if (node_ == nullptr) {
-//             node_ = new Node(data);
-//             node_->up = parent_;
-//         }
-//     }
-// }
+template<typename value_type>
+BinaryTree<value_type>::BinaryTree(const BinaryTree& other) {
+    for (iterator it = other.begin(); it != other.end(); ++it) {
+        insert(*it);
+    }
+}
 
 template<typename value_type>
-void BinaryTree<value_type>::insert(const_reference data, Node*& node, Node* up) {
+BinaryTree<value_type>::BinaryTree(BinaryTree&& other) : root(other.root) {
+    other.root = nullptr;
+}
+
+template<typename value_type>
+BinaryTree<value_type>::~BinaryTree() {
+    clear(root);
+}
+
+template<typename value_type>
+std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type>::insert(const_reference data, Node*& node, Node* parent) {
     if (node == nullptr) {
-        if (up == nullptr) {
-            node = new Node(data);
-        } else {
-            node = new Node(data, nullptr, nullptr, up);
-        }
+        node = new Node(data, nullptr, nullptr, parent);
+        return { iterator(node), true };
     } else {
         if (data < node->data) {
             insert(data, node->left, node);
         } else if (data > node->data) {
             insert(data, node->right, node);
+        } else {
+            return { iterator(node), false };
         }
     }
+
+    return { iterator(nullptr), false }; // добавил для избежания ошибки, проверить потом чего не хватает
 }
 
-// template<typename value_type>
-// void BinaryTree<value_type>::remove(value_type data) {
-//     if (root != nullptr) {
-//         Node* node_ = root;
-
-//         while (node_ != nullptr || data != node_->data) {
-//             if (data < node_->data) {
-//                 node_ = node_->left;
-//             } else if (data > node_->data) {
-//                 node_ = node_->right;
-//             }
-//         }
-//         if (node_ != nullptr && data == node_->data) {
-
-//         }
-//     }
-// }
+template<typename value_type>
+std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type>::insert(const_reference data) {
+    return insert(data, root, nullptr);
+}
 
 template<typename value_type>
-void BinaryTree<value_type>::remove(const_reference data, Node* node) {
+typename BinaryTree<value_type>::Node* BinaryTree<value_type>::erase(const_reference data, Node* node) {
     if (node == nullptr) {
-        return;
+        throw std::runtime_error("такого элемента нема");
+        // return;
     }
 
     if (data < node->data) {
-        remove(data, node->left);
+        erase(data, node->left);
     } else if (data > node->data) {
-        remove(data, node->right);
-    } else {
-        if (data == node->data) {
-            Node* tempNode = node;
-
+        erase(data, node->right);
+    } else if (data == node->data) {
+        if (node->left == nullptr && node->right == nullptr) {
+            Node* parent = node->parent;
             
+            if (parent != nullptr) {
+                if (data > parent->data) {
+                    parent->right = nullptr;
+                } else if (data < parent->data) {
+                    parent->left = nullptr;
+                }
+            } else {
+                root = nullptr;
+            }
+
+            delete node;
+        } else if (node->left == nullptr) {
+            Node* parent = node->parent;
+            Node* temp = node;
+
+            if (parent != nullptr) {
+                if (data > parent->data) {
+                    parent->right = node->right;
+                } else if (data < parent->data) {
+                    parent->left = node->right;
+                }
+            } else {
+                root = node->right;
+            }
+            node = node->right;
+            node->parent = parent;
+
+            delete temp;
+        } else if (node->right == nullptr) {
+            Node* parent = node->parent;
+            Node* temp = node;
+
+            if (parent != nullptr) {
+                if (data > parent->data) {
+                    parent->right = node->left;
+                } else if (data < parent->data) {
+                    parent->left = node->left;
+                }
+            } else {
+                root = node->left;
+            }
+            node = node->left;
+            node->parent = parent;
+
+            delete temp;
         } else {
-            return; // не дописано возвращение булевого значения false
+            Node* temp = findMinValue(node->right);
+            node->data = temp->data;
+            node->right = erase(temp->data, node->right);
         }
+    } else {
+        throw std::runtime_error("data not found");
+        // Если такого элемента нет
     }
-}
 
-// метод немного не ищет минимальное, я его для ремува использовал .-.
-template<typename value_type>
-typename BinaryTree<value_type>::Node* BinaryTree<value_type>::findMinValue(Node* node) {
-    if (node->left != nullptr) {
-        return findMinValue(node->left);
-    }
+    return nullptr; // добавил для избежания ошибки, проверить потом чего не хватает
 }
 
 template<typename value_type>
-void BinaryTree<value_type>::deleteTree(Node *node) {
+void BinaryTree<value_type>::erase(const_reference data) {
+    erase(data, root);
+}
+
+template<typename value_type>
+bool BinaryTree<value_type>::empty() const {
+    return root == nullptr;
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::size_type BinaryTree<value_type>::size() const {
+    size_type size = 0;
+
+    for (iterator it = begin(); it != end(); ++it) {
+        ++size;
+    }
+
+    return size;
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::size_type BinaryTree<value_type>::max_size() const {
+    return std::numeric_limits<size_type>::max() / sizeof(Node) / 3;
+}
+
+template<typename value_type>
+void BinaryTree<value_type>::clear(Node* node) {
     if (node != nullptr) {
-        deleteTree(node->left);
-        deleteTree(node->right);
+        clear(node->left);
+        clear(node->right);
         delete node;
     }
 }
 
 template<typename value_type>
-void BinaryTree<value_type>::printTree(Node *node) {
-    if (node != nullptr) {
-        printTree(node->left);
-        printTree(node->right);
-        std::cout << node->data << std::endl;
-    }
+void BinaryTree<value_type>::clear() {
+    clear(root);
+    root = nullptr;
 }
 
 template<typename value_type>
-typename BinaryTree<value_type>::iterator BinaryTree<value_type>::begin() {
-    if (root != nullptr) {
-        Node* node = root;
+typename BinaryTree<value_type>::iterator BinaryTree<value_type>::find(const_reference key) {
+    Node* node = root;
 
-        while (node->left != nullptr) {
+    while (node != nullptr) {
+        if (key < node->data) {
             node = node->left;
+        } else if (key > node->data) {
+            node = node->right;
+        } else if (key == node->data) {
+            return iterator(node);
+        } else {
+            break;
         }
-        return iterator(node);
+    }
+
+    return iterator(end());
+}
+
+template<typename value_type>
+bool BinaryTree<value_type>::contains(const_reference key) {
+    Node* node = root;
+
+    while (node != nullptr) {
+        if (key < node->data) {
+            node = node->left;
+        } else if (key > node->data) {
+            node = node->right;
+        } else if (key == node->data) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * 
+ * STL:
+ * 
+ * Процесс слияния начинается с наименьшего элемента каждого множества. 
+ * Сравниваются два наименьших элемента, и наименьший из них добавляется в результирующее множество. 
+ * Затем процесс повторяется для следующих двух наименьших элементов, 
+ * и так далее, пока все элементы не будут добавлены в результирующее множество.
+ * 
+ * Примечание: Если элементы в двух множествах имеют одинаковый ключ, то слияния не происходит и данный элемент
+ * не будет перемещен(удален во втором множестве т.е.)
+ * 
+*/
+template<typename value_type>
+void BinaryTree<value_type>::merge(BinaryTree& other) {   
+    for (iterator it = other.begin(); it != other.end(); ++it) {
+        if (!contains(*it)) {
+            insert(*it);
+            other.erase(*it);
+        }
+    }
+}
+
+template<typename value_type>
+template <typename... Args>
+std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type>::emplace(Args&&... args) {
+    std::pair<iterator, bool> it;
+
+    for (auto &&item : {std::forward<Args>(args)...}) {
+        it = insert(item);
+    }
+
+    return it;
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::Node* BinaryTree<value_type>::findMinValue(Node* node) {
+    Node* temp = node;
+    while (temp->left != nullptr) {
+        temp = temp->left;
+    }
+    return temp;
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::Node* BinaryTree<value_type>::findMaxValue(Node* node) {
+    Node* temp = node;
+    while (temp->right != nullptr) {
+        temp = temp->right;;
+    }
+    return temp;
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::iterator BinaryTree<value_type>::begin() const {
+    if (root != nullptr) {
+        return iterator(findMinValue(root), root);
     } else {
         return iterator(nullptr);
     }
 }
 
 template<typename value_type>
-typename BinaryTree<value_type>::iterator BinaryTree<value_type>::end() {
-    if (root != nullptr) {
-        Node* node = root;
-
-        while (node->right != nullptr) {
-            node = node->right;
-        }
-        return iterator(node);
-    } else {
-        return iterator(nullptr);
-    }
+typename BinaryTree<value_type>::iterator BinaryTree<value_type>::end() const {
+    return iterator(nullptr, root);
 }
 
+template<typename value_type>
+typename BinaryTree<value_type>::BinaryTree& BinaryTree<value_type>::operator=(const BinaryTree& other) {
+    if (this != &other) {
+        clear();
+        new (this) BinaryTree(other);
+    }
+
+    return *this;
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::BinaryTree& BinaryTree<value_type>::operator=(BinaryTree&& other) {
+    if (this != &other) {
+        clear();
+        new (this) BinaryTree(std::move(other));
+    }
+
+    return *this;
+}

@@ -1,13 +1,12 @@
 
 
-#include <iostream>
+#include <limits>
 
 template<typename T>
 class BinaryTree {
     public:
         class Node;
         class BinaryTreeIterator;
-        class BinaryTreeConstIterator;
 
         using key_type = T;
         using value_type = T;
@@ -16,7 +15,8 @@ class BinaryTree {
         using pointer = T*;
         using const_pointer = const T*;
         using iterator = BinaryTree<T>::BinaryTreeIterator;
-        using const_iterator = BinaryTree<T>::BinaryTreeConstIterator;
+        using size_type = std::size_t;
+        // using const_iterator = BinaryTree<T>::BinaryTreeConstIterator;
 
         /*                  CONSTRUCTORS/DESTRUCTORS                                            */
         BinaryTree();
@@ -26,40 +26,49 @@ class BinaryTree {
         ~BinaryTree(); 
 
         /*                  METHODS                                                             */
-        // void insert(value_type data);
-        void insert(const_reference data, Node*& node = root, Node* up = nullptr);
-        // void remove(value_type data);
-        void remove(const_reference data, Node* node = root);
-        Node* findMinValue(Node* node);
-
-
-        void deleteTree(Node *node = root);
-        void printTree(Node *node = root);
-
-        iterator begin();
-        iterator end();
-        // const_iterator cbegin();
-        // const_iterator cend();
+        std::pair<iterator, bool> insert(const_reference data, Node*& node, Node* parent = nullptr);
+        std::pair<iterator, bool> insert(const_reference data);
+        Node* erase(const_reference data, Node* node);
+        void erase(const_reference data);
+        bool empty() const;
+        size_type size() const;
+        size_type max_size() const;
+        void clear(Node* node);
+        void clear();
+        iterator find(const_reference key);
+        bool contains(const_reference key);
+        void merge(BinaryTree& other);
 
         
+        template <typename... Args>
+        std::pair<iterator, bool> emplace(Args&&... args);
+
+
+        static Node* findMinValue(Node* node);
+        static Node* findMaxValue(Node* node);
+
+        iterator begin() const;
+        iterator end() const;
+
 
 
         /*                  OPERATORS                                                           */   
+        BinaryTree& operator=(const BinaryTree& other);
+        BinaryTree& operator=(BinaryTree&& other);
 
     private:
         Node* root{nullptr};
-        // Node* node_{nullptr};
 };
 
 template<typename value_type>
 class BinaryTree<value_type>::Node {
     public:
         // скорее всего left и right вообще не требуются в конструкторе
-        Node(const value_type& d = value_type{}, Node* l = nullptr, Node* r = nullptr, Node* u = nullptr);
+        Node(const value_type& d = value_type{}, Node* l = nullptr, Node* r = nullptr, Node* p = nullptr);
         value_type data;
         Node* left;
         Node* right;
-        Node* up;
+        Node* parent;
     private:
 };
 
@@ -70,7 +79,7 @@ class BinaryTree<value_type>::BinaryTreeIterator {
         BinaryTreeIterator() = default;
 
         // Конструктор с указанием начального узла
-        BinaryTreeIterator(Node *node);
+        BinaryTreeIterator(Node* node, Node* root = nullptr);
 
         // Конструктор копирования из BinaryTreeConstIterator
         // BinaryTreeIterator(BinaryTreeConstIterator& it);
@@ -90,18 +99,12 @@ class BinaryTree<value_type>::BinaryTreeIterator {
         // BinaryTreeIterator operator-(size_type n) const;
 
         // Операторы доступа к элементам
-        reference operator*() const;
+        const_reference operator*() const;
         // pointer operator->() const;
     private:
-        Node *node_;
-};
-
-template<typename value_type>
-class BinaryTree<value_type>::BinaryTreeConstIterator {
-    public:
-    private:
+        Node* node_{nullptr};
+        Node* root_{nullptr};
 };
 
 #include "binary_tree.tpp"
 #include "iterators.tpp"
-#include "const_iterators.tpp"
