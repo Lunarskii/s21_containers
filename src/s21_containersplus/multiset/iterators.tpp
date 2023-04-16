@@ -1,4 +1,5 @@
-
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_ITERATORS_TPP_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_ITERATORS_TPP_
 
 namespace s21 {
 
@@ -37,3 +38,5 @@ template<typename value_type>
 typename multiset<value_type>::const_reference multiset<value_type>::MultisetIterator::operator*() const { return *it_; }
 
 }  // namespace s21
+
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_ITERATORS_TPP_

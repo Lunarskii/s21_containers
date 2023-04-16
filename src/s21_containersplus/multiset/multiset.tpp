@@ -1,4 +1,5 @@
-
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_MULTISET_TPP_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_MULTISET_TPP_
 
 namespace s21 {
 
@@ -127,3 +128,5 @@ typename multiset<value_type>::multiset& multiset<value_type>::operator=(const m
 }
 
 }  // namespace s21
+
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_MULTISET_TPP_

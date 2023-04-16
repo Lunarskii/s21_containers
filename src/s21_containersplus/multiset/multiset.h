@@ -1,5 +1,5 @@
-#ifndef SRC_S21_CONTAINERSPLUS_H_MULTISET_H_
-#define SRC_S21_CONTAINERSPLUS_H_MULTISET_H_
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_MULTISET_H_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_MULTISET_H_
 
 #include <initializer_list>
 #include <limits>
@@ -90,4 +90,4 @@ class multiset<value_type>::MultisetIterator {
 #include "multiset.tpp"
 #include "iterators.tpp"
 
-#endif  // SRC_S21_CONTAINERSPLUS_H_MULTISET_H_
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_MULTISET_H_
