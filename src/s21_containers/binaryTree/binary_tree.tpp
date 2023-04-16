@@ -17,7 +17,10 @@ BinaryTree<value_type>::BinaryTree(std::initializer_list<value_type> const &item
 template<typename value_type>
 BinaryTree<value_type>::BinaryTree(const BinaryTree& other) {
     for (iterator it = other.begin(); it != other.end(); ++it) {
-        insert(*it);
+        // insert(*it);
+        // заменил на мультиинсерт потому что при tree = other.tree 
+        // у мультисета происходит исчезновение всех повторяющихся элементов(((
+        multiInsert(*it);
     }
 }
 
@@ -52,6 +55,36 @@ std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type
 template<typename value_type>
 std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type>::insert(const_reference data) {
     return insert(data, root, nullptr);
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::iterator BinaryTree<value_type>::multiInsert(const_reference data, Node*& node, Node* parent) {
+    if (node == nullptr) {
+        node = new Node(data, nullptr, nullptr, parent);
+        return iterator(node);
+    } else {
+        if (data < node->data) {
+            multiInsert(data, node->left, node);
+        } else if (data > node->data) {
+            multiInsert(data, node->right, node);
+        } else {
+            if (node->left == nullptr) {
+                multiInsert(data, node->left, node);
+            } else {
+                Node* newNode = new Node(data, node->left, nullptr, node);
+                node->left->parent = newNode;
+                node->left = newNode;
+                return iterator(newNode);
+            }
+        }
+    }
+
+    return iterator(nullptr);
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::iterator BinaryTree<value_type>::multiInsert(const_reference data) {
+    return multiInsert(data, root, nullptr);
 }
 
 template<typename value_type>
@@ -117,6 +150,7 @@ typename BinaryTree<value_type>::Node* BinaryTree<value_type>::erase(const_refer
         } else {
             Node* temp = findMinValue(node->right);
             node->data = temp->data;
+            ++temp->data; // для того чтобы родитель различался от узла, с которым меняются
             node->right = erase(temp->data, node->right);
         }
     } else {
@@ -124,7 +158,7 @@ typename BinaryTree<value_type>::Node* BinaryTree<value_type>::erase(const_refer
         // Если такого элемента нет
     }
 
-    return nullptr; // добавил для избежания ошибки, проверить потом чего не хватает
+    return node; // добавил для избежания ошибки, проверить потом чего не хватает
 }
 
 template<typename value_type>
@@ -178,9 +212,10 @@ typename BinaryTree<value_type>::iterator BinaryTree<value_type>::find(const_ref
         } else if (key > node->data) {
             node = node->right;
         } else if (key == node->data) {
+            while (node->left != nullptr && node->left->data == key) {
+                node = node->left;
+            }
             return iterator(node);
-        } else {
-            break;
         }
     }
 
@@ -228,6 +263,41 @@ void BinaryTree<value_type>::merge(BinaryTree& other) {
 }
 
 template<typename value_type>
+void BinaryTree<value_type>::multiMerge(BinaryTree& other) {
+    for (iterator it = other.begin(); it != other.end(); ++it) {
+        multiInsert(*it);
+    }
+    other.clear();
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::size_type BinaryTree<value_type>::count(const_reference key) {
+    size_type n = 0;
+
+    for (iterator it = find(key); it != end() && *it == key; ++it, ++n) {}
+
+    return n;
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::iterator BinaryTree<value_type>::lower_bound(const_reference key) {
+    iterator it = begin();
+
+    for (; it != end() && *it < key; ++it) {}
+
+    return it;
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::iterator BinaryTree<value_type>::upper_bound(const_reference key) {
+    iterator it = begin();
+
+    for (; it != end() && *it <= key; ++it) {}
+
+    return it;
+}
+
+template<typename value_type>
 template <typename... Args>
 std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type>::emplace(Args&&... args) {
     std::pair<iterator, bool> it;
@@ -237,6 +307,18 @@ std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type
     }
 
     return it;
+}
+
+template<typename value_type>
+template <typename... Args>
+std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type>::multiEmplace(Args&&... args) {
+    iterator it;
+
+    for (auto &&item : {std::forward<Args>(args)...}) {
+        it = multiInsert(item);
+    }
+
+    return { it, true };
 }
 
 template<typename value_type>

@@ -2,6 +2,7 @@
 #define CPP2_S21_CONTAINERS_S21_CONTAINERS_BINARYTREE_BINARY_TREE_H_
 
 #include <limits>
+#include <initializer_list>
 
 template<typename T>
 class BinaryTree {
@@ -29,6 +30,8 @@ class BinaryTree {
         /*                  METHODS                                                             */
         std::pair<iterator, bool> insert(const_reference data, Node*& node, Node* parent = nullptr);
         std::pair<iterator, bool> insert(const_reference data);
+        iterator multiInsert(const_reference data, Node*& node, Node* parent = nullptr);
+        iterator multiInsert(const_reference data);
         Node* erase(const_reference data, Node* node);
         void erase(const_reference data);
         bool empty() const;
@@ -39,11 +42,17 @@ class BinaryTree {
         iterator find(const_reference key);
         bool contains(const_reference key);
         void merge(BinaryTree& other);
+        void multiMerge(BinaryTree& other);
+        size_type count(const_reference key);
+        iterator lower_bound(const_reference key);
+        iterator upper_bound(const_reference key);
 
         
         template <typename... Args>
         std::pair<iterator, bool> emplace(Args&&... args);
 
+        template <typename... Args>
+        std::pair<iterator, bool> multiEmplace(Args&&... args);
 
         static Node* findMinValue(Node* node);
         static Node* findMaxValue(Node* node);
