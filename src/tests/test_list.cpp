@@ -18,27 +18,6 @@ bool listsEqual(List<int> L1, list<int> L2) {
     return true;
 }
 
-class Person {
-    public:
-        Person(const std::string& first_name,
-            const std::string& last_name,
-            int age,
-            const std::string& address,
-            const std::string& phone_number)
-            : first_name_(first_name)
-            , last_name_(last_name)
-            , age_(age)
-            , address_(address)
-            , phone_number_(phone_number) {}
-
-    public:
-        std::string first_name_;
-        std::string last_name_;
-        int age_;
-        std::string address_;
-        std::string phone_number_;
-};
-
 TEST(CONSTRUCTORS, DEFAULT_CONSTRUCTOR) {
     List<int> L1;
     list<int> L2;
@@ -563,7 +542,7 @@ TEST(METHOD_SPLICE, SPLICE_FIRST_ELEM) {
     List<int> L2 = {4, 5, 6};
     list<int> empty_list = {};
     list<int> result = {4, 5, 6, 1, 2, 3};
-    List<int>::const_iterator it = L1.begin();
+    List<int>::const_iterator it = L1.cbegin();
     L1.splice(it, L2);
     ASSERT_EQ(listsEqual(L1, result), true);
     ASSERT_EQ(listsEqual(L2, empty_list), true);
@@ -574,7 +553,7 @@ TEST(METHOD_SPLICE, SPLICE_SECOND_ELEM) {
     List<int> L2 = {4, 5, 6};
     list<int> empty_list = {};
     list<int> result = {1, 4, 5, 6, 2};
-    List<int>::const_iterator it = ++L1.begin();
+    List<int>::const_iterator it = ++L1.cbegin();
     L1.splice(it, L2);
     ASSERT_EQ(listsEqual(L1, result), true);
     ASSERT_EQ(listsEqual(L2, empty_list), true);
@@ -585,7 +564,7 @@ TEST(METHOD_SPLICE, SPLICE_TO_EMPTY_LIST) {
     List<int> L2 = {4, 5, 6};
     list<int> empty_list = {};
     list<int> result = {4, 5, 6};
-    List<int>::const_iterator it = L1.begin();
+    List<int>::const_iterator it = L1.cbegin();
     L1.splice(it, L2);
     ASSERT_EQ(listsEqual(L1, result), true);
     ASSERT_EQ(listsEqual(L2, empty_list), true);
@@ -596,7 +575,7 @@ TEST(METHOD_SPLICE, SPLICE_FROM_EMPTY_LIST) {
     List<int> L2 = {};
     list<int> empty_list = {};
     list<int> result = {1, 2, 3};
-    List<int>::const_iterator it = L1.begin();
+    List<int>::const_iterator it = L1.cbegin();
     L1.splice(it, L2);
     ASSERT_EQ(listsEqual(L1, result), true);
     ASSERT_EQ(listsEqual(L2, empty_list), true);
@@ -730,42 +709,42 @@ TEST(ITERATORS, EQUAL_OPERATOR) {
 }
 
 TEST(CONST_ITERATORS, PLUS_PLUS_OPERATOR) {
-    const List<int> L1 = {1, 2, 3};
-    const list<int> L2 = {1, 2, 3};
-    List<int>::const_iterator it_L1 = ++L1.begin();
-    list<int>::const_iterator it_L2 = ++L2.begin();
+    List<int> L1 = {1, 2, 3};
+    list<int> L2 = {1, 2, 3};
+    List<int>::const_iterator it_L1 = ++L1.cbegin();
+    list<int>::const_iterator it_L2 = ++L2.cbegin();
     ASSERT_EQ(*it_L1, *it_L2);
 }
 
 TEST(CONST_ITERATORS, MINUS_MINUS_OPERATOR) {
-    const List<int> L1 = {1, 2, 3};
-    const list<int> L2 = {1, 2, 3};
-    List<int>::const_iterator it_L1 = --L1.begin();
-    list<int>::const_iterator it_L2 = --L2.begin();
+    List<int> L1 = {1, 2, 3};
+    list<int> L2 = {1, 2, 3};
+    List<int>::const_iterator it_L1 = --L1.cbegin();
+    list<int>::const_iterator it_L2 = --L2.cbegin();
     ASSERT_EQ(*it_L1, *it_L2);
 }
 
 TEST(CONST_ITERATORS, OPERATOR_PLUS_PLUS) {
-    const List<int> L1 = {1, 2, 3};
-    const list<int> L2 = {1, 2, 3};
-    List<int>::const_iterator it_L1 = L1.begin()++;
-    list<int>::const_iterator it_L2 = L2.begin()++;
+    List<int> L1 = {1, 2, 3};
+    list<int> L2 = {1, 2, 3};
+    List<int>::const_iterator it_L1 = L1.cbegin()++;
+    list<int>::const_iterator it_L2 = L2.cbegin()++;
     ASSERT_EQ(*it_L1, *it_L2);
 }
 
 TEST(CONST_ITERATORS, OPERATOR_MINUS_MINUS) {
-    const List<int> L1 = {1, 2, 3};
-    const list<int> L2 = {1, 2, 3};
-    List<int>::const_iterator it_L1 = L1.begin()--;
-    list<int>::const_iterator it_L2 = L2.begin()--;
+    List<int> L1 = {1, 2, 3};
+    list<int> L2 = {1, 2, 3};
+    List<int>::const_iterator it_L1 = L1.cbegin()--;
+    list<int>::const_iterator it_L2 = L2.cbegin()--;
     ASSERT_EQ(*it_L1, *it_L2);
 }
 
 TEST(CONST_ITERATORS, DEREFERENCE_OPERATOR_EXISTING_LIST) {
-    const List<int> L1 = {1, 2, 3};
-    const list<int> L2 = {1, 2, 3};
-    List<int>::const_iterator it_L1 = L1.begin();
-    list<int>::const_iterator it_L2 = L2.begin();
+    List<int> L1 = {1, 2, 3};
+    list<int> L2 = {1, 2, 3};
+    List<int>::const_iterator it_L1 = L1.cbegin();
+    list<int>::const_iterator it_L2 = L2.cbegin();
     ASSERT_EQ(*it_L1, *it_L2);
 }
 
@@ -779,57 +758,36 @@ TEST(CONST_ITERATORS, DEREFERENCE_OPERATOR_NOT_EXISTING_LIST) {
 }
 
 TEST(CONST_ITERATORS, NOT_EQUAL_OPERATOR) {
-    const List<int> L1 = {1, 2, 3};
-    const list<int> L2 = {1, 2, 3};
-    ASSERT_EQ(L1.begin() != L1.begin(), L2.begin() != L2.begin());
+    List<int> L1 = {1, 2, 3};
+    list<int> L2 = {1, 2, 3};
+    ASSERT_EQ(L1.cbegin() != L1.cbegin(), L2.cbegin() != L2.cbegin());
 }
 
 TEST(CONST_ITERATORS, EQUAL_OPERATOR) {
-    const List<int> L1 = {1, 2, 3};
-    const list<int> L2 = {1, 2, 3};
-    ASSERT_EQ(L1.begin() == L1.begin(), L2.begin() == L2.begin());
-}
-
-TEST(METHOD_EMPLACE_BACK, EMPLACE_BACK) {
-    List<Person> L1;
-    list<Person> L2;
-    L1.emplace_back("John", "Doe", 30, "123 Main St.", "555-1234");
-    L2.emplace_back("John", "Doe", 30, "123 Main St.", "555-1234");
-    Person person_L1 = *(L1.begin());
-    Person person_L2 = *(L2.begin());
-    ASSERT_EQ(person_L1.first_name_, person_L2.first_name_);
-    ASSERT_EQ(person_L1.first_name_, person_L2.first_name_);
-    ASSERT_EQ(person_L1.age_, person_L2.age_);
-    ASSERT_EQ(person_L1.first_name_, person_L2.first_name_);
-    ASSERT_EQ(person_L1.first_name_, person_L2.first_name_);
-}
-
-TEST(METHOD_EMPLACE_FRONT, EMPLACE_FRONT) {
-    List<Person> L1;
-    list<Person> L2;
-    L1.emplace_front("John", "Doe", 30, "123 Main St.", "555-1234");
-    L2.emplace_front("John", "Doe", 30, "123 Main St.", "555-1234");
-    Person person_L1 = *(L1.begin());
-    Person person_L2 = *(L2.begin());
-    ASSERT_EQ(person_L1.first_name_, person_L2.first_name_);
-    ASSERT_EQ(person_L1.first_name_, person_L2.first_name_);
-    ASSERT_EQ(person_L1.age_, person_L2.age_);
-    ASSERT_EQ(person_L1.first_name_, person_L2.first_name_);
-    ASSERT_EQ(person_L1.first_name_, person_L2.first_name_);
+    List<int> L1 = {1, 2, 3};
+    list<int> L2 = {1, 2, 3};
+    ASSERT_EQ(L1.cbegin() == L1.cbegin(), L2.cbegin() == L2.cbegin());
 }
 
 TEST(METHOD_EMPLACE, EMPLACE) {
-    List<Person> L1;
-    list<Person> L2;
-    L1.emplace(L1.begin(), "John", "Doe", 30, "123 Main St.", "555-1234");
-    L2.emplace(L2.begin(), "John", "Doe", 30, "123 Main St.", "555-1234");
-    Person person_L1 = *(L1.begin());
-    Person person_L2 = *(L2.begin());
-    ASSERT_EQ(person_L1.first_name_, person_L2.first_name_);
-    ASSERT_EQ(person_L1.first_name_, person_L2.first_name_);
-    ASSERT_EQ(person_L1.age_, person_L2.age_);
-    ASSERT_EQ(person_L1.first_name_, person_L2.first_name_);
-    ASSERT_EQ(person_L1.first_name_, person_L2.first_name_);
+    List<int> L1 = {1, 2, 3};
+    list<int> L2 = {1, 4, 5, 6, 2, 3};
+    L1.emplace(++L1.begin(), 4, 5, 6);
+    ASSERT_EQ(listsEqual(L1, L2), true);
+}
+
+TEST(METHOD_EMPLACE_BACK, EMPLACE_BACK) {
+    List<int> L1 = {1, 2, 3};
+    list<int> L2 = {1, 2, 3, 4, 5, 6};
+    L1.emplace_back(4, 5, 6);
+    ASSERT_EQ(listsEqual(L1, L2), true);
+}
+
+TEST(METHOD_EMPLACE_FRONT, EMPLACE_FRONT) {
+    List<int> L1 = {1, 2, 3};
+    list<int> L2 = {4, 5, 6, 1, 2, 3};
+    L1.emplace_front(4, 5, 6);
+    ASSERT_EQ(listsEqual(L1, L2), true);
 }
 
 TEST(LIST, OPERATOR_EQUAL_COPY) {
