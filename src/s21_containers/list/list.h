@@ -19,7 +19,6 @@ class List {
         using reference = T&;
         using const_reference = const T&;
         using pointer = T*;
-        using const_pointer  = const T*; // посмотреть нужен ли вообще
         using iterator = List<T>::ListIterator;
         using const_iterator = List<T>::ListConstIterator;
         using size_type = std::size_t;
@@ -38,8 +37,8 @@ class List {
         iterator insert(iterator pos, const_reference value);   // inserts elements into concrete pos and returns the iterator that points to the new element
         iterator begin();                                       // returns an iterator to the beginning
         iterator end();                                         // returns an iterator to the end
-        const_iterator begin() const;                           // returns an const iterator to the beginning
-        const_iterator end() const;                             // returns an const iterator to the end
+        const_iterator cbegin() const;                           // returns an const iterator to the beginning
+        const_iterator cend() const;                             // returns an const iterator to the end
         const_reference front();                                // access the first element
         const_reference back();                                 // access the last element
         bool empty();                                           // checks whether the container is empty
@@ -66,8 +65,8 @@ class List {
         iterator emplace(const_iterator pos, Args&&... args);   // inserts new elements into the container directly before pos
 
         /*                  OPERATORS                                                           */             
-        List<value_type>& operator=(const List& other);         // assignment operator overload for moving an object
-        List<value_type>& operator=(List&& other);
+        List& operator=(const List& other);                     // assignment operator overload for moving an object
+        List& operator=(List&& other);                          // assignment operator overload for copy an object
 
     private:
         Node *head{nullptr};

@@ -24,15 +24,14 @@ List<value_type>::List(std::initializer_list<value_type> const &items) {
 
 template<typename value_type>
 List<value_type>::List(const List &other) {
-    for (const_iterator it = other.begin(); it != other.end(); ++it) {
+    for (const_iterator it = other.cbegin(); it != other.cend(); ++it) {
         push_back(*it);
     }
 }
 
 template<typename value_type>
-List<value_type>::List(List &&other) : head(other.head), tail(other.tail) {
-    other.head = nullptr;
-    other.tail = nullptr;
+List<value_type>::List(List &&other) {
+    swap(other);
 }
 
 template<typename value_type>
@@ -49,17 +48,9 @@ template <typename value_type>
 typename List<value_type>::size_type List<value_type>::size() {
     size_type n = 0;
 
-    if (!empty()) {
-        for (iterator it = begin(); it != end(); ++it) n++;
-    }
+    for (iterator it = begin(); it != end(); ++it) { ++n; }
 
     return n;
-}
-
-template<typename value_type>
-template<typename... Args>
-typename List<value_type>::iterator List<value_type>::emplace(const_iterator pos, Args&&... args) {
-    return insert(pos, value_type(std::forward<Args>(args)...));
 }
 
 template <typename value_type>
@@ -84,15 +75,24 @@ typename List<value_type>::iterator List<value_type>::insert(iterator pos, const
 
 template<typename value_type>
 typename List<value_type>::iterator List<value_type>::begin() {
-    if (head != nullptr) {
-        return iterator(head, head, tail);
+    if (empty()) {
+        return iterator(head);
     } else {
-        return iterator(nullptr);
+        return iterator(head, head, tail);
     }
 }
 
 template<typename value_type>
-typename List<value_type>::const_iterator List<value_type>::begin() const {
+typename List<value_type>::iterator List<value_type>::end() {
+    if (empty()) {
+        return iterator(tail);
+    } else {
+        return iterator(tail->next, head, tail);
+    }
+}
+
+template<typename value_type>
+typename List<value_type>::const_iterator List<value_type>::cbegin() const {
     if (head != nullptr) {
         return const_iterator(head, head, tail);
     } else {
@@ -101,16 +101,7 @@ typename List<value_type>::const_iterator List<value_type>::begin() const {
 }
 
 template<typename value_type>
-typename List<value_type>::iterator List<value_type>::end() {
-    if (tail != nullptr) {
-        return iterator(tail->next, head, tail);
-    } else {
-        return iterator(nullptr);
-    }
-}
-
-template<typename value_type>
-typename List<value_type>::const_iterator List<value_type>::end() const {
+typename List<value_type>::const_iterator List<value_type>::cend() const {
     if (tail != nullptr) {
         return const_iterator(tail->next, head, tail);
     } else {
@@ -120,21 +111,21 @@ typename List<value_type>::const_iterator List<value_type>::end() const {
 
 template<typename value_type>
 typename List<value_type>::const_reference List<value_type>::front() {
-    if (head == nullptr) {
+    if (empty()) {
         static const const_reference default_value{};
         return default_value;
     } else {
-        return head->data;
+        return *begin();
     }
 }
 
 template<typename value_type>
 typename List<value_type>::const_reference List<value_type>::back() {
-    if (tail == nullptr) {
+    if (empty()) {
         static const const_reference default_value{};
         return default_value;
     } else  {
-        return tail->data;
+        return *(--end());
     }
 }
 
@@ -167,31 +158,22 @@ void List<value_type>::merge(List& other) {
     iterator it_L2 = other.begin();
 
     clear();
-    while (it_L1 != tempList.end() || it_L2 != other.end()) {
-        if (it_L1 != tempList.end() && it_L2 != other.end()) {
-            if (*it_L1 < *it_L2) {
-                push_back(*it_L1);
-                it_L1++;
-            } else {
-                push_back(*it_L2);
-                it_L2++;
-            }
+    while (it_L1 != tempList.end() && it_L2 != other.end()) {
+        if (*it_L1 < *it_L2) {
+            push_back(*it_L1);
+            tempList.erase(it_L1++);
         } else {
-            if (it_L1 != tempList.end()) {
-                push_back(*it_L1);
-                it_L1++;
-            } else {
-                push_back(*it_L2);
-                it_L2++;
-            }
+            push_back(*it_L2);
+            other.erase(it_L2++);
         }
     }
-    other.clear();
+    splice(end(), tempList);
+    splice(end(), other);
 }
 
 template<typename value_type>
 void List<value_type>::sort() {
-    for (iterator it_i = begin(); it_i != end(); ++it_i) {
+    for (iterator it_i = ++begin(); it_i != end(); ++it_i) {
         value_type key = *it_i;
         iterator it_j = it_i - 1;
 
@@ -234,32 +216,41 @@ void List<value_type>::reverse() {
     iterator it_left = begin();
     iterator it_right = --end();
 
-    for (int i = 0; i < size() / 2; i++, ++it_left, --it_right) {
+    for (size_type i = 0; i < size() / 2; i++, ++it_left, --it_right) {
         std::swap(*it_left, *it_right);
     }
 }
 
 template<typename value_type>
 void List<value_type>::swap(List& other) {
-    Node *tempHead = head;
-    Node *tempTail = tail;
-    
-    head = other.head;
-    tail = other.tail;
-    other.head = tempHead;
-    other.tail = tempTail;
+    if (this != &other) {
+        std::swap(head, other.head);
+        std::swap(tail, other.tail);
+    }
+}
+
+template<typename value_type>
+template<typename... Args>
+typename List<value_type>::iterator List<value_type>::emplace(const_iterator pos, Args&&... args) {
+    auto args_list = std::initializer_list<value_type>{std::forward<Args>(args)...};
+
+    for (auto& i : args_list) {
+        insert(pos, i);
+    }
+
+    return pos;
 }
 
 template<typename value_type>
 template<typename... Args>
 void List<value_type>::emplace_back(Args&&... args) {
-    push_back(value_type(std::forward<Args>(args)...));
+    emplace(end(), args...);
 }
 
 template<typename value_type>
 template<typename... Args>
 void List<value_type>::emplace_front(Args&&... args) {
-    push_front(value_type(std::forward<Args>(args)...));
+    emplace(begin(), args...);
 }
 
 template<typename value_type>
@@ -304,10 +295,11 @@ void List<value_type>::pop_back() {
         Node *temp = tail;
 
         tail = tail->prev;
-        if (tail != nullptr)
+        if (tail != nullptr) {
             tail->next = nullptr;
-        else
+        } else {
             head = nullptr;
+        }
 
         delete temp;
     }
