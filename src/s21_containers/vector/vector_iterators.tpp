@@ -77,20 +77,73 @@ bool Vector<value_type>::VectorIterator::operator!=(
 // VectorConstIterator
 //==================================================================================
 
-// Constructor
 template <typename value_type>
 Vector<value_type>::VectorConstIterator::VectorConstIterator(const_pointer ptr)
-    : BaseIterator(ptr) {}
+    : ptr_(ptr) {}
 
-// Access the element pointed to by the iterator
 template <typename value_type>
-typename Vector<value_type>::VectorConstIterator::const_reference
+typename Vector<value_type>::const_reference
 Vector<value_type>::VectorConstIterator::operator*() const {
-  return BaseIterator::operator*();
+  return *ptr_;
 }
 
-// Все остальные методы VectorConstIterator наследуются от VectorIterator,
-// поэтому их не нужно определять здесь.
+template <typename value_type>
+typename Vector<value_type>::VectorConstIterator&
+Vector<value_type>::VectorConstIterator::operator++() {
+  ++ptr_;
+  return *this;
+}
+
+template <typename value_type>
+typename Vector<value_type>::VectorConstIterator&
+Vector<value_type>::VectorConstIterator::operator--() {
+  --ptr_;
+  return *this;
+}
+
+template <typename value_type>
+typename Vector<value_type>::VectorConstIterator
+Vector<value_type>::VectorConstIterator::operator++(int) {
+  VectorConstIterator temp(*this);
+  ++ptr_;
+  return temp;
+}
+
+template <typename value_type>
+typename Vector<value_type>::VectorConstIterator
+Vector<value_type>::VectorConstIterator::operator--(int) {
+  VectorConstIterator temp(*this);
+  --ptr_;
+  return temp;
+}
+
+template <typename value_type>
+bool Vector<value_type>::VectorConstIterator::operator==(
+    const VectorConstIterator& other) const {
+  return ptr_ == other.ptr_;
+}
+
+template <typename value_type>
+bool Vector<value_type>::VectorConstIterator::operator!=(
+    const VectorConstIterator& other) const {
+  return ptr_ != other.ptr_;
+}
+
+// template <typename value_type>
+// typename Vector<value_type>::VectorConstIterator
+// Vector<value_type>::VectorConstIterator::operator+(int n) const {
+//   VectorConstIterator temp = *this;
+//   temp.current += n;
+//   return temp;
+// }
+
+// template <typename value_type>
+// typename Vector<value_type>::VectorConstIterator
+// Vector<value_type>::VectorConstIterator::operator-(int n) const {
+//   VectorConstIterator temp = *this;
+//   temp.current -= n;
+//   return temp;
+// }
 
 }  // namespace s21
 #endif  // SRC_S21_CONTAINERS_H_VECTOR_VECTOR_ITERATORS_TPP_

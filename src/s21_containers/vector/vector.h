@@ -106,23 +106,37 @@ class Vector<value_type>::VectorIterator {
 };
 
 template <typename value_type>
-class Vector<value_type>::VectorConstIterator
-    : public Vector<value_type>::VectorIterator {
+class Vector<value_type>::VectorConstIterator {
  public:
-  using BaseIterator = typename Vector<value_type>::VectorIterator;
-  using const_reference = typename Vector<value_type>::const_reference;
-  using const_pointer = typename Vector<value_type>::const_pointer;
-
   // Constructor
-  // VectorConstIterator(const_pointer ptr) : BaseIterator(ptr) {}
   VectorConstIterator(const_pointer ptr);
 
   // Access the element pointed to by the iterator
-  // const_reference operator*() const { return BaseIterator::operator*(); }
   const_reference operator*() const;
 
-  // No need to re-define other methods, they will be inherited from
-  // VectorIterator
+  // Move the iterator forward to the next element
+  VectorConstIterator& operator++();
+
+  // Move the iterator backward to the previous element
+  VectorConstIterator& operator--();
+
+  // Post-increment iterator
+  VectorConstIterator operator++(int);
+
+  // Post-decrement iterator
+  VectorConstIterator operator--(int);
+
+  // Compare two iterators for equality
+  bool operator==(const VectorConstIterator& other) const;
+
+  // Compare two iterators for inequality
+  bool operator!=(const VectorConstIterator& other) const;
+
+  // VectorConstIterator operator+(int n) const;
+  // VectorConstIterator operator-(int n) const;
+
+ private:
+  const_pointer ptr_;
 };
 
 }  // namespace s21
