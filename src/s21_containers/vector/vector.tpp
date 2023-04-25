@@ -85,11 +85,21 @@ typename Vector<value_type>::const_reference Vector<value_type>::operator[](
 
 template <typename value_type>
 typename Vector<value_type>::const_reference Vector<value_type>::front() const {
+  if (size_ == 0)
+    throw std::out_of_range(
+        "s21::vector::front Using methods on a "
+        "zero sized container results "
+        "in the UB");
   return data_[0];
 }
 
 template <typename value_type>
 typename Vector<value_type>::const_reference Vector<value_type>::back() const {
+  if (size_ == 0)
+    throw std::out_of_range(
+        "s21::vector::front Using methods on a "
+        "zero sized container results "
+        "in the UB");
   return data_[size_ - 1];
 }
 
@@ -143,13 +153,18 @@ typename Vector<value_type>::size_type Vector<value_type>::max_size() const {
 
 template <typename value_type>
 void Vector<value_type>::reserve(size_type new_capacity) {
-  if (new_capacity > capacity_) {
-    pointer new_data = new value_type[new_capacity];
-    std::copy(data_, data_ + size_, new_data);
-    delete[] data_;
-    data_ = new_data;
-    capacity_ = new_capacity;
-  }
+  if (new_capacity <= capacity_) return;
+
+  if (new_capacity > max_size())
+    throw std::length_error(
+        "s21::vector::reserve Reserve capacity can't be larger than "
+        "Vector<T>::max_size()");
+
+  pointer new_data = new value_type[new_capacity];
+  std::copy(data_, data_ + size_, new_data);
+  delete[] data_;
+  data_ = new_data;
+  capacity_ = new_capacity;
 }
 
 template <typename value_type>
@@ -159,6 +174,8 @@ typename Vector<value_type>::size_type Vector<value_type>::capacity() const {
 
 template <typename value_type>
 void Vector<value_type>::shrink_to_fit() {
+  if (capacity_ == size_) return;
+
   if (size_ < capacity_) {
     pointer new_data = new value_type[size_];
     std::copy(data_, data_ + size_, new_data);
@@ -181,13 +198,22 @@ template <typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::insert(
     iterator pos, const_reference value) {
   size_type index = pos - begin();
+
+  if (index > size_)
+    throw std::out_of_range(
+        "s21::vector::insert Unable to insert into a position out of "
+        "range of begin() to end()");
+
   if (size_ == capacity_) {
     reserve(capacity_ == 0 ? 1 : capacity_ * 2);
   }
+
   iterator new_pos = begin() + index;
+
   for (iterator it = end(); it != new_pos; --it) {
     *it = *(it - 1);
   }
+
   *new_pos = value;
   ++size_;
   return new_pos;
@@ -221,6 +247,64 @@ void Vector<value_type>::swap(Vector& other) {
   std::swap(data_, other.data_);
   std::swap(size_, other.size_);
   std::swap(capacity_, other.capacity_);
+}
+
+//==================================================================================
+// Vector bonus part
+//==================================================================================
+
+template <typename value_type>
+template <typename... Args>
+typename Vector<value_type>::iterator Vector<value_type>::emplace(
+    iterator pos, Args&&... args) {
+  // size_type index = pos - begin();
+  // if (size_ + 1 > capacity_) {
+  //   reserve(capacity_ * 2);
+  // }
+  // for (size_type i = size_; i > index; --i) {
+  //   data_[i] = std::move(data_[i - 1]);
+  // }
+  // new (data_ + index) value_type(std::forward<Args>(args)...);
+  // ++size_;
+  // return iterator(data_ + index);
+
+  auto args_v = std::initializer_list<value_type>{std::forward<Args>(args)...};
+
+  for (auto& i : args_v) {
+    insert(pos, i);
+  }
+
+  return pos;
+
+  // iterator ret = nullptr;
+  // auto id = pos - begin();
+  // reserve(capacity_ + sizeof...(args));
+
+  // for (auto&& item : {std::forward<Args>(args)...})
+  //   ret = insert(begin() + id, item);
+
+  // return ret;
+}
+
+template <typename value_type>
+template <typename... Args>
+void Vector<value_type>::emplace_back(Args&&... args) {
+  // if (size_ + 1 > capacity_) {
+  //   reserve(capacity_ * 2);
+  // }
+  // if (data_) {
+  //   new (data_ + size_) value_type(std::forward<Args>(args)...);
+  // } else {
+  //   data_ = new value_type[1]{std::forward<Args>(args)...};
+  // }
+  // ++size_;
+
+  emplace(end(), args...);
+
+  // for (auto&& item : {std::forward<Args>(args)...}) {
+  //   push_back(item);
+  // }
+  // return end() - 1;
 }
 
 }  // namespace s21

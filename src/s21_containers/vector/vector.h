@@ -10,6 +10,13 @@
 #include <utility>
 
 namespace s21 {
+
+template <class T>
+class VectorIterator;
+
+template <class T>
+class VectorConstIterator;
+
 template <typename T>
 class Vector {
  public:
@@ -52,7 +59,7 @@ class Vector {
   bool empty() const;
   size_type size() const;
   size_type max_size() const;
-  void reserve(size_type size);
+  void reserve(size_type size);  // mb make it privat?
   size_type capacity() const;
   void shrink_to_fit();
 
@@ -63,6 +70,14 @@ class Vector {
   void push_back(const_reference value);
   void pop_back();
   void swap(Vector& other);
+
+  //>>>>>>>>>>>>>>>bonus part<<<<<<<<<<<<<<<<
+  template <typename... Args>
+  iterator emplace(iterator pos, Args&&... args);
+
+  template <typename... Args>
+  void emplace_back(Args&&... args);
+  //>>>>>>>>>>>>>>>bonus part<<<<<<<<<<<<<<<<
 
  private:
   // Private member variables
@@ -98,8 +113,9 @@ class Vector<value_type>::VectorIterator {
   // Compare two iterators for inequality
   bool operator!=(const VectorIterator& other) const;
 
-  // VectorIterator operator+(int n) const;
-  // VectorIterator operator-(int n) const;
+  VectorIterator operator+(int n) const;
+  VectorIterator operator-(int n) const;
+  ptrdiff_t operator-(const VectorIterator& other) const;
 
  private:
   pointer ptr_;
@@ -132,8 +148,9 @@ class Vector<value_type>::VectorConstIterator {
   // Compare two iterators for inequality
   bool operator!=(const VectorConstIterator& other) const;
 
-  // VectorConstIterator operator+(int n) const;
-  // VectorConstIterator operator-(int n) const;
+  VectorConstIterator operator+(int n) const;
+  VectorConstIterator operator-(int n) const;
+  ptrdiff_t operator-(const VectorConstIterator& other) const;
 
  private:
   const_pointer ptr_;

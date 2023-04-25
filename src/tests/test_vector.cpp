@@ -3,8 +3,8 @@
 #include "test_core.h"
 
 template <typename value_type>
-bool compare_vectors(const s21::Vector<value_type>& v1,
-                     const std::vector<value_type>& v2) {
+bool compare_vectors(const s21::Vector<value_type> &v1,
+                     const std::vector<value_type> &v2) {
   if (v1.size() != v2.size()) {
     return false;
   }
@@ -519,4 +519,167 @@ TEST(VectorConstIteratorTest, Equality_Incorrect) {
   EXPECT_FALSE(it1 != it2);
   ++it1;
   EXPECT_TRUE(it1 != it2);
+}
+
+//==================================================================================
+// VectorBonus
+//==================================================================================
+
+// TEST(VectorTest, EmplaceTest0_incorrect) {
+//   s21::Vector<int> v1;
+//   std::vector<int> v2;
+//   ASSERT_ANY_THROW(v2.emplace(v2.begin() + 1, 42));
+//   ASSERT_ANY_THROW(v1.emplace(v1.begin() + 1, 42));
+//   EXPECT_TRUE(compare_vectors(v1, v2));
+// }
+
+TEST(VectorTest, EmplaceTest0) {
+  s21::Vector<int> v1;
+  std::vector<int> v2;
+
+  v2.emplace(v2.begin(), 42);
+  v1.emplace(v1.begin(), 42);
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceTest1) {
+  s21::Vector<int> v1{1, 2, 3};
+  std::vector<int> v2{1, 2, 3};
+
+  v1.emplace(v1.begin() + 1, 42);
+  v2.emplace(v2.begin() + 1, 42);
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceTest12) {
+  s21::Vector<int> v1{1, 2, 3};
+  std::vector<int> v2{1, 2, 3};
+
+  v1.emplace(v1.begin() + 1, 4);
+  v2.emplace(v2.begin() + 1, 4);
+  v1.emplace(v1.begin() + 1, 5);
+  v2.emplace(v2.begin() + 1, 5);
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceTest2) {
+  s21::Vector<int> v1{1, 2, 3};
+  std::vector<int> v2{1, 2, 3};
+
+  v1.emplace(v1.begin(), 42);
+  v2.emplace(v2.begin(), 42);
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceTest3) {
+  s21::Vector<int> v1{1, 2, 3};
+  std::vector<int> v2{1, 2, 3};
+
+  v1.emplace(v1.end(), 42);
+  v2.emplace(v2.end(), 42);
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceTest4) {
+  s21::Vector<std::string> v1{"one", "two", "three"};
+  std::vector<std::string> v2{"one", "two", "three"};
+
+  v1.emplace(v1.begin() + 1, "four");
+  v2.emplace(v2.begin() + 1, "four");
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceBackTest1) {
+  s21::Vector<int> v1{1, 2, 3};
+  std::vector<int> v2{1, 2, 3};
+
+  v1.emplace_back(42);
+  v2.emplace_back(42);
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceBackTest2) {
+  s21::Vector<int> v1;
+  std::vector<int> v2;
+
+  v1.emplace_back(42);
+  v2.emplace_back(42);
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceBackTest3) {
+  s21::Vector<std::string> v1{"one", "two", "three"};
+  std::vector<std::string> v2{"one", "two", "three"};
+
+  v1.emplace_back("four");
+  v2.emplace_back("four");
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceBackTest5) {
+  s21::Vector<int> v1;
+  std::vector<int> v2;
+
+  for (int i = 0; i < 10; ++i) {
+    v1.emplace_back(i);
+    v2.emplace_back(i);
+  }
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceBackTest6) {
+  s21::Vector<double> v1{1.1, 2.2, 3.3};
+  std::vector<double> v2{1.1, 2.2, 3.3};
+
+  v1.emplace_back(4.4);
+  v2.emplace_back(4.4);
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceBackTest7) {
+  s21::Vector<std::string> v1;
+  std::vector<std::string> v2;
+
+  v1.emplace_back("test");
+  v2.emplace_back("test");
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceBackTest9) {
+  s21::Vector<int> v1;
+  std::vector<int> v2;
+
+  for (int i = 0; i < 1000; ++i) {
+    v1.emplace_back(i);
+    v2.emplace_back(i);
+  }
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
+}
+
+TEST(VectorTest, EmplaceBackTest10) {
+  s21::Vector<int> v1;
+  std::vector<int> v2;
+
+  v1.reserve(100);
+  v2.reserve(100);
+
+  for (int i = 0; i < 100; ++i) {
+    v1.emplace_back(i);
+    v2.emplace_back(i);
+  }
+
+  EXPECT_TRUE(compare_vectors(v1, v2));
 }
