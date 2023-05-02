@@ -17,7 +17,7 @@ class multiset {
         using reference = T&;
         using const_reference = const T&;
         using iterator = multiset<T>::MultisetIterator;
-        using const_iterator = multiset<T>::MultisetIterator;
+        using const_iterator = iterator;
         using size_type = std::size_t;
 
         /*                  CONSTRUCTORS/DESTRUCTORS                                            */
@@ -56,7 +56,7 @@ class multiset {
         multiset& operator=(const multiset& other);
 
     private:
-        BinaryTree<value_type> tree;
+        BinaryTree<value_type> tree = NUNIQUE;
 };
 
 template<typename value_type>

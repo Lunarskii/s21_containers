@@ -20,17 +20,11 @@ typename set<value_type>::SetIterator& set<value_type>::SetIterator::operator--(
 
 template<typename value_type>
 typename set<value_type>::SetIterator set<value_type>::SetIterator::operator++(int) {
-    // SetIterator it(*this);
-    // ++(*this);
-    // return it;
     return it_++;
 }
 
 template<typename value_type>
 typename set<value_type>::SetIterator set<value_type>::SetIterator::operator--(int) {
-    // SetIterator it(*this);
-    // --(*this);
-    // return it;
     return it_--;
 }
 

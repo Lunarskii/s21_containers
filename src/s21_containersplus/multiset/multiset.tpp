@@ -55,7 +55,7 @@ void multiset<value_type>::clear() {
 
 template <typename value_type>
 typename multiset<value_type>::iterator multiset<value_type>::insert(const_reference value) {
-    return iterator(tree.multiInsert(value));
+    return iterator(tree.insert(value).first);
 }
 
 template <typename value_type>
@@ -70,7 +70,7 @@ void multiset<value_type>::swap(multiset& other) {
 
 template <typename value_type>
 void multiset<value_type>::merge(multiset& other) {
-    tree.multiMerge(other.tree);
+    tree.merge(other.tree);
 }
 
 template <typename value_type>

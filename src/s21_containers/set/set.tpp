@@ -22,11 +22,6 @@ set<value_type>::set(set&& other) {
     tree = std::move(other.tree);
 }
 
-// template<typename value_type>
-// set<value_type>::~set() {
-//     clear();
-// }
-
 template<typename value_type>
 typename set<value_type>::iterator set<value_type>::begin() {
     return iterator(tree.begin());
@@ -102,7 +97,7 @@ typename set<value_type>::set& set<value_type>::operator=(set&& other) {
 }
 
 template<typename value_type>
-typename set<value_type>::set& set<value_type>::operator=(set& other) {
+typename set<value_type>::set& set<value_type>::operator=(const set& other) {
     if (this != &other) {
         clear();
         new (this) set(other);

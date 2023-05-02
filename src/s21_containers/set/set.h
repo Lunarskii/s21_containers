@@ -15,12 +15,8 @@ class set {
         using reference = T&;
         using const_reference = const T&;
         using iterator = set<T>::SetIterator;
-        using const_iterator = set<T>::SetIterator;
-        // using iterator = typename BinaryTree<T, Compare>::iterator;
-        // using const_iterator = typename BinaryTree<T, Compare>::const_iterator;
+        using const_iterator = iterator;
         using size_type = std::size_t;
-        // using iterator_category = std::bidirectional_iterator_tag;
-        // using difference_type = std::ptrdiff_t;
 
         /*                  CONSTRUCTORS/DESTRUCTORS                                            */
         set();                                                      // default constructor, creates empty set
@@ -51,7 +47,7 @@ class set {
 
         /*                  OPERATORS                                                           */    
         set& operator=(set&& other);                                         // assignment operator overload for moving object
-        set& operator=(set& other);
+        set& operator=(const set& other);
 
     private:
         BinaryTree<value_type> tree;
@@ -74,8 +70,8 @@ class set<value_type>::SetIterator {
         bool operator!=(const SetIterator& other) const;
 
         // Операторы перемещения/сложения
-        SetIterator operator+(size_type n) const;
-        SetIterator operator-(size_type n) const;
+        // SetIterator operator+(size_type n) const;
+        // SetIterator operator-(size_type n) const;
 
         // Операторы доступа к элементам
         const_reference operator*() const;
