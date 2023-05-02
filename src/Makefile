@@ -6,10 +6,10 @@ VALGRIND_FLAGS				= --log-file="valgrind.txt" --track-origins=yes --trace-childr
 
 SRC_TESTS					:= $(wildcard tests/*.cpp)
 
-all: 
+all: test clean
 
 test: $(SRC_TESTS)
-	$(CC) $(CFLAGS) $(SRC_TESTS) -o test $(LDFLAGS)
+	$(CC) $(SRC_TESTS) -o test $(LDFLAGS)
 	./test
 
 clean:
@@ -18,12 +18,12 @@ clean:
 	rm -rf *.info
 	rm -rf valgrind.txt
 
-# gcov_report: $(OBJ_TEST)
-# 	$(CC) $(CFLAGS) -o test $(OBJ_TEST) --coverage $(SRC_PROJECT) $(LDFLAGS)
-# 	./test
-# 	lcov -t "test" -o gcov.info -c -d .
-# 	genhtml -o report gcov.info
-# 	rm -rf ./*.gc*
+gcov_report: $(SRC_TESTS)
+	$(CC) $(SRC_TESTS) -o test --coverage $(SRC_PROJECT) $(LDFLAGS)
+	./test
+	lcov -t "test" -o gcov.info --no-external -c -d .
+	genhtml -o report gcov.info
+	rm -rf ./*.gc*
 
 open: 
 	open report/index.html
