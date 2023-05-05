@@ -1,3 +1,6 @@
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_STACK_STACK_TPP_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_STACK_STACK_TPP_
+
 namespace s21 {
 
 template <class T, class Container>
@@ -53,3 +56,4 @@ void Stack<T, Container>::swap(Stack &other) {
 }
 
 }  // namespace s21
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_STACK_STACK_TPP_

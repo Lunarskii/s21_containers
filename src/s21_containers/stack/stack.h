@@ -1,5 +1,5 @@
-#ifndef STACK_H
-#define STACK_H
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_STACK_STACK_H_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_STACK_STACK_H_
 
 #include "../vector/vector.h"
 
@@ -35,4 +35,4 @@ class Stack {
 }  // namespace s21
 
 #include "stack.tpp"
-#endif  // STACK_H
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_STACK_STACK_H_
