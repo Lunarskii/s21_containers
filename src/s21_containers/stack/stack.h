@@ -1,11 +1,11 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include "../vector/s21_vector.h"
+#include "../vector/vector.h"
 
 namespace s21 {
 
-template <class T, class Container = s21::vector<T>>
+template <class T, class Container = s21::Vector<T>>
 class Stack {
  public:
   using pointer = typename Container::pointer;

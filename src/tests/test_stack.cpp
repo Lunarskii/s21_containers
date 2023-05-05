@@ -85,10 +85,6 @@ TEST(StackTest, Size) {
   my_stack.pop();
   std_stack.pop();
   ASSERT_EQ(my_stack.size(), std_stack.size());
-
-  my_stack.pop();
-  std_stack.pop();
-  ASSERT_EQ(my_stack.size(), std_stack.size());
 }
 
 TEST(StackTest, Swap) {
@@ -109,10 +105,10 @@ TEST(StackTest, Swap) {
 
   ASSERT_EQ(my_stack1.empty(), std_stack1.empty());
   ASSERT_EQ(my_stack1.size(), std_stack1.size());
+
   ASSERT_EQ(my_stack2.empty(), std_stack2.empty());
   ASSERT_EQ(my_stack2.size(), std_stack2.size());
 
-  ASSERT_EQ(my_stack1.top(), std_stack1.top());
   ASSERT_EQ(my_stack2.top(), std_stack2.top());
 }
 

@@ -87,7 +87,7 @@ template <typename value_type>
 typename Vector<value_type>::const_reference Vector<value_type>::front() const {
   if (size_ == 0)
     throw std::out_of_range(
-        "s21::vector::front Using methods on a "
+        "s21::Vector::front Using methods on a "
         "zero sized container results "
         "in the UB");
   return data_[0];
@@ -97,7 +97,7 @@ template <typename value_type>
 typename Vector<value_type>::const_reference Vector<value_type>::back() const {
   if (size_ == 0)
     throw std::out_of_range(
-        "s21::vector::front Using methods on a "
+        "s21::Vector::front Using methods on a "
         "zero sized container results "
         "in the UB");
   return data_[size_ - 1];
@@ -157,7 +157,7 @@ void Vector<value_type>::reserve(size_type new_capacity) {
 
   if (new_capacity > max_size())
     throw std::length_error(
-        "s21::vector::reserve Reserve capacity can't be larger than "
+        "s21::Vector::reserve Reserve capacity can't be larger than "
         "Vector<T>::max_size()");
 
   pointer new_data = new value_type[new_capacity];
@@ -201,7 +201,7 @@ typename Vector<value_type>::iterator Vector<value_type>::insert(
 
   if (index > size_)
     throw std::out_of_range(
-        "s21::vector::insert Unable to insert into a position out of "
+        "s21::Vector::insert Unable to insert into a position out of "
         "range of begin() to end()");
 
   if (size_ == capacity_) {

@@ -22,6 +22,7 @@ class Vector {
  public:
   class VectorConstIterator;
   class VectorIterator;
+
   // Member types
   using value_type = T;
   using reference = T&;
