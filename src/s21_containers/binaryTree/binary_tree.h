@@ -69,7 +69,7 @@ public:
 
 private:
     Node *root{nullptr};
-    value_type type{UNIQUE};
+    int type{UNIQUE};
 };
 
 template<typename value_type>

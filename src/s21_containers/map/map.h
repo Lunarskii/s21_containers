@@ -12,10 +12,10 @@ class map {
 		using key_type = Key;
 		using mapped_type = T;
 		using value_type = std::pair<const key_type, mapped_type>;
-		using reference = T&;
-		using const_reference = const Key&;
+		using reference = value_type&;
+		using const_reference = const value_type&;
 		using iterator = map<Key, T>::MapIterator;
-		// using const_iterator = BinaryTree::const_iterator;
+		using const_iterator = const map<Key, T>::MapIterator;
 		using size_type = std::size_t;
 
 		map();
@@ -34,16 +34,15 @@ class map {
 		void clear();
 		std::pair<iterator, bool> insert(const value_type& value);
 		std::pair<iterator, bool> insert(const Key& key, const T& obj);
-		std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
+		// std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
 		void erase(iterator pos);
 		void swap(map& other);
 		void merge(map& other);
 
-		bool contains(const_reference key);
-
+		bool contains(const_reference element);
 		T& at(const Key& key);
 
-		map& operator=(map &other);
+		map& operator=(const map &other);
 		map& operator=(map &&other);
 		T& operator[](const Key& key);
 	
@@ -58,6 +57,7 @@ class map<Key, T>::MapIterator {
 		using key_type = Key;
 		using mapped_type = T;
 		using value_type = std::pair<const key_type, mapped_type>;
+        using const_reference = const value_type&;
 
         MapIterator() = default;
        	MapIterator(typename BinaryTree<value_type>::iterator it);
@@ -72,11 +72,7 @@ class map<Key, T>::MapIterator {
         bool operator==(const MapIterator& other) const;
         bool operator!=(const MapIterator& other) const;
 
-        // Операторы перемещения/сложения
-        // SetIterator operator+(size_type n) const;
-        // SetIterator operator-(size_type n) const;
-
-        // Операторы доступа к элементам
+        // Оператор доступа к элементам
         const_reference operator*() const;
     private:
         typename BinaryTree<value_type>::BinaryTreeIterator it_;

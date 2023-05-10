@@ -51,11 +51,26 @@ void map<Key, T>::clear() {
     tree.clear();
 }
 
-// template<typename Key, typename T>
-// std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert(const_reference value) {
-//     return tree.insert(value);
-// }
+template<typename Key, typename T>
+std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert(const value_type& value) {
+    return tree.insert(value);
+}
 
+template<typename Key, typename T>
+std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert(const Key& key, const T& obj) {
+    std::pair<Key, T> value = std::make_pair(key, obj);
+	return tree.insert(value);
+}
+
+// template<typename Key, typename T>
+// std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_or_assign(const Key& key, const T& obj) {
+// 	if (tree.contains(key) == 0) {
+// 		return insert(key, obj);
+// 	} else {
+// 		this[key] = obj;
+
+// 	}
+// }
 
 template<typename Key, typename T>
 void map<Key, T>::erase(iterator pos) {
@@ -73,8 +88,40 @@ void map<Key, T>::merge(map& other) {
 }
 
 template<typename Key, typename T>
-bool map<Key, T>::contains(const_reference key) {
-    return tree.contains(key);
+bool map<Key, T>::contains(const_reference element) {
+    return tree.contains(element);
+}
+
+template<typename Key, typename T>
+T& map<Key, T>::at(const Key& key) {
+	T& obj = nullptr;
+	MapIterator it;
+	it.it_ = tree.find(key);
+	obj = it.it_.second;
+	return obj;
+}
+
+template<typename Key, typename T>
+T& map<Key, T>::operator[](const Key& key) {
+	return at(key);
+}
+
+template<typename Key, typename T>
+typename map<Key, T>::map& map<Key, T>::operator=(const map& other) {
+    if (this != &other) {
+        clear();
+        new (this) map(other);
+    }
+
+    return *this;
+}
+
+template<typename Key, typename T>
+typename map<Key, T>::map& map<Key, T>::operator=(map&& other) {
+    clear();
+    new (this) map(std::move(other));
+
+    return *this;
 }
 
 }  // namespace s21
