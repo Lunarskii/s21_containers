@@ -15,7 +15,7 @@ class map {
 		using reference = value_type&;
 		using const_reference = const value_type&;
 		using iterator = map<Key, T>::MapIterator;
-		using const_iterator = const map<Key, T>::MapIterator;
+//		using const_iterator = const map<Key, T>::MapIterator; // Отдельный класс нужен Т-т
 		using size_type = std::size_t;
 
 		map();
@@ -34,17 +34,20 @@ class map {
 		void clear();
 		std::pair<iterator, bool> insert(const value_type& value);
 		std::pair<iterator, bool> insert(const Key& key, const T& obj);
-		// std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
+        // std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
 		void erase(iterator pos);
-		void swap(map& other);
-		void merge(map& other);
+        void swap(map& other);
+        void merge(map& other);
+
+        template <typename... Args>
+        std::pair<iterator, bool> emplace(Args&&... args);
 
 		bool contains(const_reference element);
-		T& at(const Key& key);
+		T& at(const Key& key); // Bounds checking?
 
 		map& operator=(const map &other);
 		map& operator=(map &&other);
-		T& operator[](const Key& key);
+		T& operator[](const Key& key); // Проверить, работает ли на несуществующем ключе
 	
 	private:
         BinaryTree<value_type> tree;

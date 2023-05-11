@@ -83,6 +83,106 @@ TEST(MAP_CONSTRUCTORS, MAP_MOVE_CONSTRUCTOR) {
     ASSERT_EQ(mapsEqual(M1, M3), true);
 }
 
+TEST(MAP_METHOD_AT, MAP_AT_IN_BOUNDS) {
+    s21::map<int, char> M1 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    std::map<int, char> M2 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    ASSERT_EQ(M1.at(2), M2.at(2));
+}
+
+//TEST(MAP_METHOD_AT, MAP_AT_OUT_OF_BOUNDS) {
+//    s21::map<int, char> M1 = {
+//            {1, 'a'},
+//            {2, 'b'},
+//            {3, 'c'}
+//    };
+//    std::map<int, char> M2 = {
+//            {1, 'a'},
+//            {2, 'b'},
+//            {3, 'c'}
+//    };
+//    ASSERT_EQ(M1.at(36), M2.at(36));
+//} пока не уверен, что есть проверка
+
+TEST(MAP_METHOD_EMPTY, MAP_EMPTY_DEFAULT_CONSTRUCTOR) {
+    s21::map<int, char> M1;
+    std::map<int, char> M2;
+    ASSERT_EQ(M1.empty(), M2.empty());
+}
+
+TEST(MAP_METHOD_EMPTY, MAP_EMPTY_LIST_CONSTRUCTOR) {
+    s21::map<int, char> M1 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    std::map<int, char> M2 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    ASSERT_EQ(M1.empty(), M2.empty());
+    s21::map<int, char> M3 = {};
+    std::map<int, char> M4 = {};
+    ASSERT_EQ(M3.empty(), M4.empty());
+    s21::map<int, char> M5 = {{1, 'a'}};
+    std::map<int, char> M6 = {{1, 'a'}};
+    ASSERT_EQ(M5.empty(), M6.empty());
+}
+
+TEST(MAP_METHOD_EMPTY, MAP_EMPTY_COPY_CONSTRUCTOR) {
+    s21::map<int, char> M1 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    s21::map<int, char> M2(M1);
+    std::map<int, char> M3 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    std::map<int, char> M4(M3);
+    ASSERT_EQ(M1.empty(), M3.empty());
+    ASSERT_EQ(M2.empty(), M4.empty());
+    s21::map<int, char> M5;
+    s21::map<int, char> M6(M5);
+    std::map<int, char> M7;
+    std::map<int, char> M8(M7);
+    ASSERT_EQ(M5.empty(), M7.empty());
+    ASSERT_EQ(M6.empty(), M8.empty());
+}
+
+TEST(MAP_METHOD_EMPTY, MAP_EMPTY_MOVE_CONSTRUCTOR) {
+    s21::map<int, char> M1 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    s21::map<int, char> M2(std::move(M1));
+    std::map<int, char> M3 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    std::map<int, char> M4(std::move(M3));
+    ASSERT_EQ(M1.empty(), M3.empty());
+    ASSERT_EQ(M2.empty(), M4.empty());
+    s21::map<int, char> M5;
+    s21::map<int, char> M6(std::move(M5));
+    std::map<int, char> M7;
+    std::map<int, char> M8(std::move(M7));
+    ASSERT_EQ(M5.empty(), M7.empty());
+    ASSERT_EQ(M6.empty(), M8.empty());
+}
+
 TEST(MAP_METHOD_SIZE, MAP_SIZE_DEFAULT_CONSTRUCTOR) {
     s21::map<int, char> M1;
     std::map<int, char> M2;
@@ -149,143 +249,6 @@ TEST(MAP_METHOD_MAX_SIZE, MAP_MAX_SIZE) {
             {3, 'c'}
     };
     EXPECT_NEAR(M1.max_size() / M2.max_size(), 1, 1);
-}
-
-TEST(MAP_METHOD_EMPTY, MAP_EMPTY_DEFAULT_CONSTRUCTOR) {
-    s21::map<int, char> M1;
-    std::map<int, char> M2;
-    ASSERT_EQ(M1.empty(), M2.empty());
-}
-
-TEST(MAP_METHOD_EMPTY, MAP_EMPTY_LIST_CONSTRUCTOR) {
-    s21::map<int, char> M1 = {
-            {1, 'a'},
-            {2, 'b'},
-            {3, 'c'}
-    };
-    std::map<int, char> M2 = {
-            {1, 'a'},
-            {2, 'b'},
-            {3, 'c'}
-    };
-    ASSERT_EQ(M1.empty(), M2.empty());
-    s21::map<int, char> M3 = {};
-    std::map<int, char> M4 = {};
-    ASSERT_EQ(M3.empty(), M4.empty());
-    s21::map<int, char> M5 = {1, 'a'};
-    std::map<int, char> M6 = {1, 'a'};
-    ASSERT_EQ(M5.empty(), M6.empty());
-}
-
-TEST(MAP_METHOD_EMPTY, MAP_EMPTY_COPY_CONSTRUCTOR) {
-    s21::map<int, char> M1 = {
-            {1, 'a'},
-            {2, 'b'},
-            {3, 'c'}
-    };
-    s21::map<int, char> M2(M1);
-    std::map<int, char> M3 = {
-            {1, 'a'},
-            {2, 'b'},
-            {3, 'c'}
-    };
-    std::map<int, char> M4(M3);
-    ASSERT_EQ(M1.empty(), M3.empty());
-    ASSERT_EQ(M2.empty(), M4.empty());
-    s21::map<int, char> M5;
-    s21::map<int, char> M6(M5);
-    std::map<int, char> M7;
-    std::map<int, char> M8(M7);
-    ASSERT_EQ(M5.empty(), M7.empty());
-    ASSERT_EQ(M6.empty(), M8.empty());
-}
-
-TEST(MAP_METHOD_EMPTY, MAP_EMPTY_MOVE_CONSTRUCTOR) {
-    s21::map<int, char> M1 = {
-            {1, 'a'},
-            {2, 'b'},
-            {3, 'c'}
-    };
-    s21::map<int, char> M2(std::move(M1));
-    std::map<int, char> M3 = {
-            {1, 'a'},
-            {2, 'b'},
-            {3, 'c'}
-    };
-    std::map<int, char> M4(std::move(M3));
-    ASSERT_EQ(M1.empty(), M3.empty());
-    ASSERT_EQ(M2.empty(), M4.empty());
-    s21::map<int, char> M5;
-    s21::map<int, char> M6(std::move(M5));
-    std::map<int, char> M7;
-    std::map<int, char> M8(std::move(M7));
-    ASSERT_EQ(M5.empty(), M7.empty());
-    ASSERT_EQ(M6.empty(), M8.empty());
-}
-
-TEST(MAP_METHOD_SWAP, MAP_SWAP_ONE_LIST_EMPTY1) {
-    s21::map<int, char> M1 = {
-            {1, 'a'},
-            {2, 'b'},
-            {3, 'c'}
-    };
-    s21::map<int, char> M2 = {};
-    std::map<int, char> M3 = {
-            {1, 'a'},
-            {2, 'b'},
-            {3, 'c'}
-    };
-    std::map<int, char> M4 = {};
-    M1.swap(M2);
-    M3.swap(M4);
-    ASSERT_EQ(mapsEqual(M1, M3), true);
-    ASSERT_EQ(mapsEqual(M2, M4), true);
-}
-
-TEST(MAP_METHOD_SWAP, MAP_SWAP_ONE_LIST_EMPTY2) {
-    s21::map<int, char> M1 = {};
-    s21::map<int, char> M2 = {
-            {1, 'a'},
-            {2, 'b'},
-            {3, 'c'}
-    };
-    std::map<int, char> M3 = {};
-    std::map<int, char> M4 = {
-            {1, 'a'},
-            {2, 'b'},
-            {3, 'c'}
-    };
-    M1.swap(M2);
-    M3.swap(M4);
-    ASSERT_EQ(mapsEqual(M1, M3), true);
-    ASSERT_EQ(mapsEqual(M2, M4), true);
-}
-
-TEST(MAP_METHOD_SWAP, MAP_SWAP_NUMBER_OF_ELEMENTS) {
-    s21::map<int, char> M1 = {
-            {1, 'a'},
-            {2, 'b'},
-            {3, 'c'}
-    };
-    s21::map<int, char> M2 = {
-            {4, 'd'},
-            {5, 'e'},
-            {6, 'f'}
-    };
-    std::map<int, char> M3 = {
-            {1, 'a'},
-            {2, 'b'},
-            {3, 'c'}
-    };
-    std::map<int, char> M4 = {
-            {4, 'd'},
-            {5, 'e'},
-            {6, 'f'}
-    };
-    M1.swap(M2);
-    M3.swap(M4);
-    ASSERT_EQ(mapsEqual(M1, M3), true);
-    ASSERT_EQ(mapsEqual(M2, M4), true);
 }
 
 TEST(MAP_METHOD_CLEAR, MAP_CLEAR) {
@@ -408,6 +371,71 @@ TEST(MAP_METHOD_ERASE, MAP_ERASE_TWO_CHILDREN) {
     ASSERT_EQ(mapsEqual(M1, M2), true);
 }
 
+TEST(MAP_METHOD_SWAP, MAP_SWAP_ONE_LIST_EMPTY1) {
+    s21::map<int, char> M1 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    s21::map<int, char> M2 = {};
+    std::map<int, char> M3 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    std::map<int, char> M4 = {};
+    M1.swap(M2);
+    M3.swap(M4);
+    ASSERT_EQ(mapsEqual(M1, M3), true);
+    ASSERT_EQ(mapsEqual(M2, M4), true);
+}
+
+TEST(MAP_METHOD_SWAP, MAP_SWAP_ONE_LIST_EMPTY2) {
+    s21::map<int, char> M1 = {};
+    s21::map<int, char> M2 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    std::map<int, char> M3 = {};
+    std::map<int, char> M4 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    M1.swap(M2);
+    M3.swap(M4);
+    ASSERT_EQ(mapsEqual(M1, M3), true);
+    ASSERT_EQ(mapsEqual(M2, M4), true);
+}
+
+TEST(MAP_METHOD_SWAP, MAP_SWAP_NUMBER_OF_ELEMENTS) {
+    s21::map<int, char> M1 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    s21::map<int, char> M2 = {
+            {4, 'd'},
+            {5, 'e'},
+            {6, 'f'}
+    };
+    std::map<int, char> M3 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    std::map<int, char> M4 = {
+            {4, 'd'},
+            {5, 'e'},
+            {6, 'f'}
+    };
+    M1.swap(M2);
+    M3.swap(M4);
+    ASSERT_EQ(mapsEqual(M1, M3), true);
+    ASSERT_EQ(mapsEqual(M2, M4), true);
+}
+
 TEST(MAP_METHOD_MERGE, MAP_MERGE_DIFFERENT_ELEMENTS) {
     s21::map<int, char> M1 = {
             {1, 'a'},
@@ -447,7 +475,23 @@ TEST(MAP_METHOD_CONTAINS, MAP_CONTAINS_EXISTING_ELEMENT) {
     ASSERT_EQ(M1.contains(std::pair<int, char>(10, 'd')), true);
 }
 
-TEST(MAP, MAP_OPERATOR_EQUAL_COPY_SAME_SET) {
+TEST(MAP_METHOD_EMPLACE, MAP_EMPLACE) {
+    s21::map<int, char> M1 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    std::map<int, char> M2 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'},
+            {4, 'd'},
+    };
+    M1.emplace(std::pair<int, char>(4, 'd'));
+    ASSERT_EQ(mapsEqual(M1, M2), true);
+}
+
+TEST(MAP_OPERATOR_OVERLOADS, MAP_OPERATOR_ASSIGNMENT_COPY_SAME_SET) {
     s21::map<int, char> M1 = {
             {50, 'a'},
             {25, 'b'},
@@ -465,7 +509,7 @@ TEST(MAP, MAP_OPERATOR_EQUAL_COPY_SAME_SET) {
     ASSERT_EQ(mapsEqual(M1, M2), true);
 }
 
-TEST(MAP, MAP_OPERATOR_EQUAL_MOVE_SAME_SET) {
+TEST(MAP_OPERATOR_OVERLOADS, MAP_OPERATOR_ASSIGNMENT_MOVE_SAME_SET) {
     s21::map<int, char> M1 = {
             {50, 'a'},
             {25, 'b'},
@@ -481,4 +525,172 @@ TEST(MAP, MAP_OPERATOR_EQUAL_MOVE_SAME_SET) {
     M1 = std::move(M1);
     M2 = std::move(M2);
     ASSERT_EQ(mapsEqual(M1, M2), true);
+}
+
+TEST(MAP_OPERATOR_OVERLOADS, MAP_OPERATOR_ACCESS) {
+    s21::map<int, char> M1 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    std::map<int, char> M2 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    ASSERT_EQ(M1[75], M2[75]);
+}
+
+TEST(MAP_OPERATOR_OVERLOADS, MAP_OPERATOR_INSERT) {
+    s21::map<int, char> M1 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    std::map<int, char> M2 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    M1[75] = 'a';
+    M2[75] = 'a';
+    ASSERT_EQ(M1[75], M2[75]);
+}
+
+TEST(MAP_ITERATORS, MAP_PLUS_PLUS_OPERATOR) {
+    s21::map<int, char> M1 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    std::map<int, char> M2 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    s21::map<int, char>::iterator it_M1 = ++M1.begin();
+    std::map<int, char>::iterator it_M2 = ++M2.begin();
+    ASSERT_EQ((*it_M1).first, (*it_M2).first);
+    ASSERT_EQ((*it_M1).second, (*it_M2).second);
+}
+
+TEST(MAP_ITERATORS, MAP_MINUS_MINUS_OPERATOR) {
+    s21::map<int, char> M1 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    std::map<int, char> M2 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    s21::map<int, char>::iterator it_M1 = --M1.end();
+    std::map<int, char>::iterator it_M2 = --M2.end();
+    ASSERT_EQ((*it_M1).first, (*it_M2).first);
+    ASSERT_EQ((*it_M1).second, (*it_M2).second);
+}
+
+TEST(MAP_ITERATORS, MAP_OPERATOR_PLUS_PLUS) {
+    s21::map<int, char> M1 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    std::map<int, char> M2 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    s21::map<int, char>::iterator it_M1 = M1.begin();
+    std::map<int, char>::iterator it_M2 = M2.begin();
+    ASSERT_EQ((*it_M1++).first, (*it_M2++).first);
+    ASSERT_EQ((*it_M1).second, (*it_M2).second);
+}
+
+TEST(MAP_ITERATORS, MAP_OPERATOR_MINUS_MINUS) {
+    s21::map<int, char> M1 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    std::map<int, char> M2 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    s21::map<int, char>::iterator it_M1 = M1.end();
+    std::map<int, char>::iterator it_M2 = M2.end();
+    ASSERT_EQ((*it_M1--).first, (*it_M2--).first);
+    ASSERT_EQ((*it_M1).second, (*it_M2).second);
+}
+
+TEST(MAP_ITERATORS, MAP_DEREFERENCE_OPERATOR_EXISTING_LIST) {
+    s21::map<int, char> M1 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    std::map<int, char> M2 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    ASSERT_EQ((*(M1.begin())).first, ((*M2.begin())).first);
+    ASSERT_EQ((*(M1.begin())).second, ((*M2.begin())).second);
+}
+
+TEST(MAP_ITERATORS, MAP_DEREFERENCE_OPERATOR_NOT_EXISTING_LIST) {
+    try {
+        s21::map<int, char>::iterator it_S1;
+        *it_S1;
+    } catch (const std::exception& e) {
+        ASSERT_STREQ(e.what(), "Invalid index");
+    }
+}
+
+TEST(MAP_ITERATORS, MAP_NOT_EQUAL_OPERATOR) {
+    s21::map<int, char> M1 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    std::map<int, char> M2 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    ASSERT_EQ(M1.begin() != M1.begin(), M2.begin() != M2.begin());
+}
+
+TEST(MAP_ITERATORS, MAP_EQUAL_OPERATOR) {
+    s21::map<int, char> M1 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    std::map<int, char> M2 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    ASSERT_EQ(M1.begin() == M1.begin(), M2.begin() == M2.begin());
 }

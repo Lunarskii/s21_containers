@@ -94,11 +94,16 @@ bool map<Key, T>::contains(const_reference element) {
 
 template<typename Key, typename T>
 T& map<Key, T>::at(const Key& key) {
-	T& obj = nullptr;
 	MapIterator it;
 	it.it_ = tree.find(key);
-	obj = it.it_.second;
+	T& obj = it.it_.second;
 	return obj;
+}
+
+template<typename Key, typename T>
+template <typename... Args>
+std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::emplace(Args&&... args) {
+    return tree.emplace(std::forward<Args>(args)...);
 }
 
 template<typename Key, typename T>
