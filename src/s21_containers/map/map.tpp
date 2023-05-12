@@ -94,10 +94,11 @@ bool map<Key, T>::contains(const_reference element) {
 
 template<typename Key, typename T>
 T& map<Key, T>::at(const Key& key) {
-	MapIterator it;
-	it.it_ = tree.find(key);
-	T& obj = it.it_.second;
-	return obj;
+//	MapIterator it;
+//	it.it_ = tree.find(key);
+//	T& obj = it.it_.second;
+    std::pair<int, char> value = *(tree.find(key));
+	return value.second;
 }
 
 template<typename Key, typename T>
