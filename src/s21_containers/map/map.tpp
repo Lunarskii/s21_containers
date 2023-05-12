@@ -62,15 +62,14 @@ std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert(const Key& k
 	return tree.insert(value);
 }
 
-// template<typename Key, typename T>
-// std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_or_assign(const Key& key, const T& obj) {
-// 	if (tree.contains(key) == 0) {
-// 		return insert(key, obj);
-// 	} else {
-// 		this[key] = obj;
-
-// 	}
-// }
+ template<typename Key, typename T>
+ std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_or_assign(const Key& key, const T& obj) {
+     std::pair<Key, T> value = std::make_pair(key, obj);
+     if (tree.contains(std::pair<Key, T>(key, 0)) == 0)
+ 		return insert(value);
+     at(key) = obj;
+     return {tree.find(value), 0};
+ }
 
 template<typename Key, typename T>
 void map<Key, T>::erase(iterator pos) {
@@ -94,10 +93,7 @@ bool map<Key, T>::contains(const_reference element) {
 
 template<typename Key, typename T>
 T& map<Key, T>::at(const Key& key) {
-//	MapIterator it;
-//	it.it_ = tree.find(key);
-//	T& obj = it.it_.second;
-    std::pair<int, char> value = *(tree.find(key));
+    std::pair<Key, T> value = *(tree.find(std::pair<Key, T>(key, 0)));
 	return value.second;
 }
 

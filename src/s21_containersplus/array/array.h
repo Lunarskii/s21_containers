@@ -16,7 +16,7 @@ namespace s21 {
         array(std::initializer_list<value_type> const &items);
         array(const array &other);
         array(array &&other);
-        ~array() = default; // спросить Даню??
+        ~array() = default; // очистить
 
         iterator begin();
         iterator end();

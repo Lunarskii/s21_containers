@@ -22,7 +22,7 @@ class map {
 		map(std::initializer_list<value_type> const &items);
 		map(const map &other);
 		map(map &&other);
-		~map() = default; // спросить Даню
+		~map() = default;
 
 		iterator begin();
 		iterator end();
@@ -34,7 +34,7 @@ class map {
 		void clear();
 		std::pair<iterator, bool> insert(const value_type& value);
 		std::pair<iterator, bool> insert(const Key& key, const T& obj);
-        // std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
+        std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
 		void erase(iterator pos);
         void swap(map& other);
         void merge(map& other);

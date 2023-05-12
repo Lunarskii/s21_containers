@@ -134,7 +134,6 @@ typename BinaryTree<value_type>::Node *BinaryTree<value_type>::erase(const_refer
         } else {
             Node *temp = findMinValue(node->right);
             node->data = temp->data;
-            ++temp->data; // для того чтобы родитель различался от узла, с которым меняются
             node->right = erase(temp->data, node->right);
         }
     } else {
