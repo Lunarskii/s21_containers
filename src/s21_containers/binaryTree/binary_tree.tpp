@@ -41,7 +41,7 @@ std::pair<typename BinaryTree<value_type>::iterator, bool>
 BinaryTree<value_type>::insert(const_reference data, Node *&node, Node *parent) {
     if (node == nullptr) {
         node = new Node(data, nullptr, nullptr, parent);
-        return {iterator(node), true};
+        return { iterator(node), true };
     } else {
         if (data < node->data) {
             insert(data, node->left, node);
@@ -57,13 +57,13 @@ BinaryTree<value_type>::insert(const_reference data, Node *&node, Node *parent) 
                     Node *newNode = new Node(data, node->left, nullptr, node);
                     node->left->parent = newNode;
                     node->left = newNode;
-                    return {iterator(newNode), true};
+                    return { iterator(newNode), true };
                 }
             }
         }
     }
 
-    return {iterator(nullptr), false}; // добавил для избежания ошибки, проверить потом чего не хватает
+    return { iterator(nullptr), false }; // добавил для избежания ошибки, проверить потом чего не хватает
 }
 
 template<typename value_type>
@@ -98,43 +98,11 @@ typename BinaryTree<value_type>::Node *BinaryTree<value_type>::erase(const_refer
 
             delete node;
         } else if (node->left == nullptr) {
-            Node *parent = node->parent;
-            Node *temp = node;
-
-            if (parent != nullptr) {
-                if (data > parent->data) {
-                    parent->right = node->right;
-                } else if (data < parent->data) {
-                    parent->left = node->right;
-                }
-            } else {
-                root = node->right;
-            }
-            node = node->right;
-            node->parent = parent;
-
-            delete temp;
+            removeNodeWithOneChild(node, node->right);
         } else if (node->right == nullptr) {
-            Node *parent = node->parent;
-            Node *temp = node;
-
-            if (parent != nullptr) {
-                if (data > parent->data) {
-                    parent->right = node->left;
-                } else if (data < parent->data) {
-                    parent->left = node->left;
-                }
-            } else {
-                root = node->left;
-            }
-            node = node->left;
-            node->parent = parent;
-
-            delete temp;
+            removeNodeWithOneChild(node, node->left);
         } else {
-            Node *temp = findMinValue(node->right);
-            node->data = temp->data;
-            node->right = erase(temp->data, node->right);
+            removeNodeWithTwoChildren(node);
         }
     } else {
         throw std::runtime_error("data not found");
@@ -142,6 +110,71 @@ typename BinaryTree<value_type>::Node *BinaryTree<value_type>::erase(const_refer
     }
 
     return node; // добавил для избежания ошибки, проверить потом чего не хватает
+}
+
+template<typename value_type>
+void BinaryTree<value_type>::removeNodeWithOneChild(Node*& node, Node* branch)
+{
+    Node *parent = node->parent;
+    Node *temp = node;
+
+    if (parent != nullptr)
+    {
+        if (parent->left == node)
+        {
+            parent->left = branch;
+        }
+        else
+        {
+            parent->right = branch;
+        }
+    }
+    else
+    {
+        root = branch;
+    }
+    node = branch;
+    node->parent = parent;
+
+    delete temp;
+}
+
+template<typename value_type>
+void BinaryTree<value_type>::removeNodeWithTwoChildren(Node* node)
+{
+    Node* temp = findMinValue(node->right);
+
+    if (temp->right != nullptr)
+    {
+        temp->right->parent = temp->parent;
+    }
+    temp->parent->right = temp->right;
+    temp->parent = node->parent;
+    if (node->parent != nullptr)
+    {
+        if (node->parent->left == node)
+        {
+            node->parent->left = temp;
+        }
+        else
+        {
+            node->parent->right = temp;
+        }
+    }
+    temp->left = node->left;
+    temp->right = node->right;
+    node->left->parent = temp;
+    if (node->right != nullptr)
+    {
+        node->right->parent = temp;
+    }
+
+    if (node == root)
+    {
+        root = temp;
+    }
+
+    delete node;
 }
 
 template<typename value_type>

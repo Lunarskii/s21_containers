@@ -38,6 +38,8 @@ public:
     std::pair<iterator, bool> insert(const_reference data);
     Node *erase(const_reference data, Node *node);
     void erase(const_reference data);
+    void removeNodeWithOneChild(Node*& node, Node* branch);
+    void removeNodeWithTwoChildren(Node* node);
     bool empty() const;
     size_type size() const;
     size_type max_size() const;
