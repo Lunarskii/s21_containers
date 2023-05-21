@@ -7,74 +7,74 @@ namespace s21 {
 //==================================================================================
 
 template <typename value_type>
-Vector<value_type>::VectorIterator::VectorIterator(pointer ptr) : ptr_(ptr) {}
+vector<value_type>::VectorIterator::VectorIterator(pointer ptr) : ptr_(ptr) {}
 
 template <typename value_type>
-typename Vector<value_type>::reference
-Vector<value_type>::VectorIterator::operator*() {
+typename vector<value_type>::reference
+vector<value_type>::VectorIterator::operator*() {
   return *ptr_;
 }
 
 template <typename value_type>
-typename Vector<value_type>::VectorIterator&
-Vector<value_type>::VectorIterator::operator++() {
+typename vector<value_type>::VectorIterator&
+vector<value_type>::VectorIterator::operator++() {
   ++ptr_;
   return *this;
 }
 
 template <typename value_type>
-typename Vector<value_type>::VectorIterator&
-Vector<value_type>::VectorIterator::operator--() {
+typename vector<value_type>::VectorIterator&
+vector<value_type>::VectorIterator::operator--() {
   --ptr_;
   return *this;
 }
 
 template <typename value_type>
-typename Vector<value_type>::VectorIterator
-Vector<value_type>::VectorIterator::operator++(int) {
+typename vector<value_type>::VectorIterator
+vector<value_type>::VectorIterator::operator++(int) {
   VectorIterator temp(*this);
   ++ptr_;
   return temp;
 }
 
 template <typename value_type>
-typename Vector<value_type>::VectorIterator
-Vector<value_type>::VectorIterator::operator--(int) {
+typename vector<value_type>::VectorIterator
+vector<value_type>::VectorIterator::operator--(int) {
   VectorIterator temp(*this);
   --ptr_;
   return temp;
 }
 
 template <typename value_type>
-bool Vector<value_type>::VectorIterator::operator==(
+bool vector<value_type>::VectorIterator::operator==(
     const VectorIterator& other) const {
   return ptr_ == other.ptr_;
 }
 
 template <typename value_type>
-bool Vector<value_type>::VectorIterator::operator!=(
+bool vector<value_type>::VectorIterator::operator!=(
     const VectorIterator& other) const {
   return ptr_ != other.ptr_;
 }
 
 template <typename value_type>
-typename Vector<value_type>::VectorIterator
-Vector<value_type>::VectorIterator::operator+(int n) const {
+typename vector<value_type>::VectorIterator
+vector<value_type>::VectorIterator::operator+(int n) const {
   VectorIterator temp = *this;
   for (int i = 0; i < n; i++) temp++;
   return temp;
 }
 
 template <typename value_type>
-typename Vector<value_type>::VectorIterator
-Vector<value_type>::VectorIterator::operator-(int n) const {
+typename vector<value_type>::VectorIterator
+vector<value_type>::VectorIterator::operator-(int n) const {
   VectorIterator temp = *this;
   for (int i = 0; i < n; i++) temp--;
   return temp;
 }
 
 template <typename value_type>
-ptrdiff_t Vector<value_type>::VectorIterator::operator-(
+ptrdiff_t vector<value_type>::VectorIterator::operator-(
     const VectorIterator& other) const {
   return ptr_ - other.ptr_;
 }
@@ -84,75 +84,75 @@ ptrdiff_t Vector<value_type>::VectorIterator::operator-(
 //==================================================================================
 
 template <typename value_type>
-Vector<value_type>::VectorConstIterator::VectorConstIterator(const_pointer ptr)
+vector<value_type>::VectorConstIterator::VectorConstIterator(const_pointer ptr)
     : ptr_(ptr) {}
 
 template <typename value_type>
-typename Vector<value_type>::const_reference
-Vector<value_type>::VectorConstIterator::operator*() const {
+typename vector<value_type>::const_reference
+vector<value_type>::VectorConstIterator::operator*() const {
   return *ptr_;
 }
 
 template <typename value_type>
-typename Vector<value_type>::VectorConstIterator&
-Vector<value_type>::VectorConstIterator::operator++() {
+typename vector<value_type>::VectorConstIterator&
+vector<value_type>::VectorConstIterator::operator++() {
   ++ptr_;
   return *this;
 }
 
 template <typename value_type>
-typename Vector<value_type>::VectorConstIterator&
-Vector<value_type>::VectorConstIterator::operator--() {
+typename vector<value_type>::VectorConstIterator&
+vector<value_type>::VectorConstIterator::operator--() {
   --ptr_;
   return *this;
 }
 
 template <typename value_type>
-typename Vector<value_type>::VectorConstIterator
-Vector<value_type>::VectorConstIterator::operator++(int) {
+typename vector<value_type>::VectorConstIterator
+vector<value_type>::VectorConstIterator::operator++(int) {
   VectorConstIterator temp(*this);
   ++ptr_;
   return temp;
 }
 
 template <typename value_type>
-typename Vector<value_type>::VectorConstIterator
-Vector<value_type>::VectorConstIterator::operator--(int) {
+typename vector<value_type>::VectorConstIterator
+vector<value_type>::VectorConstIterator::operator--(int) {
   VectorConstIterator temp(*this);
   --ptr_;
   return temp;
 }
 
 template <typename value_type>
-bool Vector<value_type>::VectorConstIterator::operator==(
+bool vector<value_type>::VectorConstIterator::operator==(
     const VectorConstIterator& other) const {
   return ptr_ == other.ptr_;
 }
 
 template <typename value_type>
-bool Vector<value_type>::VectorConstIterator::operator!=(
+bool vector<value_type>::VectorConstIterator::operator!=(
     const VectorConstIterator& other) const {
   return ptr_ != other.ptr_;
 }
 
 template <typename value_type>
-typename Vector<value_type>::VectorConstIterator
-Vector<value_type>::VectorConstIterator::operator+(int n) const {
+typename vector<value_type>::VectorConstIterator
+vector<value_type>::VectorConstIterator::operator+(int n) const {
   VectorConstIterator temp = *this;
   for (int i = 0; i < n; i++) temp++;
   return temp;
 }
 
 template <typename value_type>
-typename Vector<value_type>::VectorConstIterator
-Vector<value_type>::VectorConstIterator::operator-(int n) const {
+typename vector<value_type>::VectorConstIterator
+vector<value_type>::VectorConstIterator::operator-(int n) const {
   VectorConstIterator temp = *this;
   for (int i = 0; i < n; i++) temp--;
   return temp;
 }
 
 template <typename value_type>
-ptrdiff_t Vector<value_type>::VectorConstIterator::operator-(
+ptrdiff_t vector<value_type>::VectorConstIterator::operator-(
     const VectorConstIterator& other) const {
   return ptr_ - other.ptr_;
 }

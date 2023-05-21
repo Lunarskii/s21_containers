@@ -3,7 +3,7 @@
 #include "test_core.h"
 
 TEST(StackTest, DefaultConstructor) {
-  s21::Stack<int> my_stack;
+  s21::stack<int> my_stack;
   std::stack<int> std_stack;
 
   ASSERT_EQ(my_stack.empty(), std_stack.empty());
@@ -11,7 +11,7 @@ TEST(StackTest, DefaultConstructor) {
 }
 
 TEST(StackTest, PushAndTop) {
-  s21::Stack<int> my_stack;
+  s21::stack<int> my_stack;
   std::stack<int> std_stack;
 
   my_stack.push(1);
@@ -28,7 +28,7 @@ TEST(StackTest, PushAndTop) {
 }
 
 TEST(StackTest, Pop) {
-  s21::Stack<int> my_stack;
+  s21::stack<int> my_stack;
   std::stack<int> std_stack;
 
   my_stack.push(1);
@@ -57,7 +57,7 @@ TEST(StackTest, Pop) {
 }
 
 TEST(StackTest, Size) {
-  s21::Stack<int> my_stack;
+  s21::stack<int> my_stack;
   std::stack<int> std_stack;
 
   ASSERT_EQ(my_stack.size(), std_stack.size());
@@ -88,8 +88,8 @@ TEST(StackTest, Size) {
 }
 
 TEST(StackTest, Swap) {
-  s21::Stack<int> my_stack1;
-  s21::Stack<int> my_stack2;
+  s21::stack<int> my_stack1;
+  s21::stack<int> my_stack2;
   std::stack<int> std_stack1;
   std::stack<int> std_stack2;
 
@@ -113,7 +113,7 @@ TEST(StackTest, Swap) {
 }
 
 TEST(StackTest, CopyConstructor) {
-  s21::Stack<int> my_stack1;
+  s21::stack<int> my_stack1;
   std::stack<int> std_stack1;
 
   my_stack1.push(1);
@@ -123,7 +123,7 @@ TEST(StackTest, CopyConstructor) {
   std_stack1.push(2);
   std_stack1.push(3);
 
-  s21::Stack<int> my_stack2(my_stack1);
+  s21::stack<int> my_stack2(my_stack1);
   std::stack<int> std_stack2(std_stack1);
 
   ASSERT_EQ(my_stack1.empty(), std_stack1.empty());
@@ -135,7 +135,7 @@ TEST(StackTest, CopyConstructor) {
 }
 
 TEST(StackTest, MoveConstructor) {
-  s21::Stack<int> my_stack1;
+  s21::stack<int> my_stack1;
   std::stack<int> std_stack1;
 
   my_stack1.push(1);
@@ -145,7 +145,7 @@ TEST(StackTest, MoveConstructor) {
   std_stack1.push(2);
   std_stack1.push(3);
 
-  s21::Stack<int> my_stack2(std::move(my_stack1));
+  s21::stack<int> my_stack2(std::move(my_stack1));
   std::stack<int> std_stack2(std::move(std_stack1));
 
   ASSERT_EQ(my_stack2.empty(), std_stack2.empty());
@@ -154,7 +154,7 @@ TEST(StackTest, MoveConstructor) {
 }
 
 TEST(StackTest, MoveAssignmentOperator) {
-  s21::Stack<int> my_stack1;
+  s21::stack<int> my_stack1;
   std::stack<int> std_stack1;
 
   my_stack1.push(1);
@@ -164,7 +164,7 @@ TEST(StackTest, MoveAssignmentOperator) {
   std_stack1.push(2);
   std_stack1.push(3);
 
-  s21::Stack<int> my_stack2;
+  s21::stack<int> my_stack2;
   std::stack<int> std_stack2;
 
   my_stack2 = std::move(my_stack1);
@@ -176,7 +176,7 @@ TEST(StackTest, MoveAssignmentOperator) {
 }
 
 TEST(StackTest, InitializerListConstructor) {
-  s21::Stack<int> my_stack({1, 2, 3});
+  s21::stack<int> my_stack({1, 2, 3});
   std::stack<int> std_stack({1, 2, 3});
 
   ASSERT_EQ(my_stack.empty(), std_stack.empty());

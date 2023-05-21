@@ -5,14 +5,14 @@
 #include "test_core.h"
 
 TEST(QueueTest, DefaultConstructor) {
-  s21::Queue<int> q1;
+  s21::queue<int> q1;
   std::queue<int> q2;
   EXPECT_EQ(q1.empty(), q2.empty());
   EXPECT_EQ(q1.size(), q2.size());
 }
 
 TEST(QueueTest, InitializerListConstructor) {
-  s21::Queue<int> q1{1, 2, 3, 4};
+  s21::queue<int> q1{1, 2, 3, 4};
   std::queue<int> q2;
   q2.push(1);
   q2.push(2);
@@ -28,8 +28,8 @@ TEST(QueueTest, InitializerListConstructor) {
 }
 
 TEST(QueueTest, CopyConstructor) {
-  s21::Queue<int> q1{1, 2, 3, 4};
-  s21::Queue<int> q2(q1);
+  s21::queue<int> q1{1, 2, 3, 4};
+  s21::queue<int> q2(q1);
   std::queue<int> q3;
   q3.push(1);
   q3.push(2);
@@ -46,8 +46,8 @@ TEST(QueueTest, CopyConstructor) {
 }
 
 TEST(QueueTest, MoveConstructor1) {
-  s21::Queue<int> q1{1, 2, 3, 4};
-  s21::Queue<int> q2(std::move(q1));
+  s21::queue<int> q1{1, 2, 3, 4};
+  s21::queue<int> q2(std::move(q1));
   std::queue<int> q3;
   q3.push(1);
   q3.push(2);
@@ -64,8 +64,8 @@ TEST(QueueTest, MoveConstructor1) {
 }
 
 // TEST(QueueTest, AssignmentOperator) {
-//   s21::Queue<int> q1{1, 2, 3, 4};
-//   s21::Queue<int> q2;
+//   s21::queue<int> q1{1, 2, 3, 4};
+//   s21::queue<int> q2;
 //   q2 = q1;
 //   std::queue<int> q3;
 //   q3.push(1);
@@ -84,8 +84,8 @@ TEST(QueueTest, MoveConstructor1) {
 // }
 
 TEST(QueueTest, MoveAssignmentOperator) {
-  s21::Queue<int> q1{1, 2, 3, 4};
-  s21::Queue<int> q2;
+  s21::queue<int> q1{1, 2, 3, 4};
+  s21::queue<int> q2;
   q2 = std::move(q1);
   std::queue<int> q3;
   q3.push(1);
@@ -104,10 +104,10 @@ TEST(QueueTest, MoveAssignmentOperator) {
 }
 
 TEST(QueueTest, SwapTest) {
-  s21::Queue<int> q1{1, 2, 3};
-  s21::Queue<int> q2{4, 5, 6};
-  s21::Queue<int> q1_copy{q1};
-  s21::Queue<int> q2_copy{q2};
+  s21::queue<int> q1{1, 2, 3};
+  s21::queue<int> q2{4, 5, 6};
+  s21::queue<int> q1_copy{q1};
+  s21::queue<int> q2_copy{q2};
 
   q1.swap(q2);
 

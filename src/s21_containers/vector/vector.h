@@ -18,7 +18,7 @@ template <class T>
 class VectorConstIterator;
 
 template <typename T>
-class Vector {
+class vector {
  public:
   class VectorConstIterator;
   class VectorIterator;
@@ -29,18 +29,18 @@ class Vector {
   using const_reference = const T&;
   using pointer = T*;
   using const_pointer = const T*;
-  using iterator = Vector<T>::VectorIterator;
-  using const_iterator = Vector<T>::VectorConstIterator;
+  using iterator = vector<T>::VectorIterator;
+  using const_iterator = vector<T>::VectorConstIterator;
   using size_type = size_t;
 
   // Member functions
-  Vector();
-  Vector(size_type n);
-  Vector(std::initializer_list<value_type> const& items);
-  Vector(const Vector& v);
-  Vector(Vector&& v);
-  ~Vector();
-  Vector& operator=(Vector&& v);
+  vector();
+  vector(size_type n);
+  vector(std::initializer_list<value_type> const& items);
+  vector(const vector& v);
+  vector(vector&& v);
+  ~vector();
+  vector& operator=(vector&& v);
 
   // // Element access
   reference at(size_type pos);
@@ -60,7 +60,7 @@ class Vector {
   bool empty() const;
   size_type size() const;
   size_type max_size() const;
-  void reserve(size_type size);  // mb make it privat?
+  void reserve(size_type size);
   size_type capacity() const;
   void shrink_to_fit();
 
@@ -70,7 +70,7 @@ class Vector {
   void erase(iterator pos);
   void push_back(const_reference value);
   void pop_back();
-  void swap(Vector& other);
+  void swap(vector& other);
 
   //>>>>>>>>>>>>>>>bonus part<<<<<<<<<<<<<<<<
   template <typename... Args>
@@ -81,14 +81,13 @@ class Vector {
   //>>>>>>>>>>>>>>>bonus part<<<<<<<<<<<<<<<<
 
  private:
-  // Private member variables
-  pointer data_;
-  size_type size_;
-  size_type capacity_;
+  pointer data_{nullptr};
+  size_type size_{0};
+  size_type capacity_{0};
 };
 
 template <typename value_type>
-class Vector<value_type>::VectorIterator {
+class vector<value_type>::VectorIterator {
  public:
   // Constructor
   VectorIterator(pointer ptr);
@@ -123,7 +122,7 @@ class Vector<value_type>::VectorIterator {
 };
 
 template <typename value_type>
-class Vector<value_type>::VectorConstIterator {
+class vector<value_type>::VectorConstIterator {
  public:
   // Constructor
   VectorConstIterator(const_pointer ptr);
