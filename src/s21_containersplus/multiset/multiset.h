@@ -10,9 +10,6 @@ namespace s21 {
 template<typename T>
 class multiset {
     public:
-        class MultisetIterator;
-
-        using key_type = T;
         using value_type = T;
         using reference = T&;
         using const_reference = const T&;
