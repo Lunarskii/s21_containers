@@ -3,49 +3,60 @@
 
 namespace s21 {
 template<typename value_type>
-List<value_type>::ListConstIterator::ListConstIterator(const ListIterator& it) : it_(it) {}
+List<value_type>::ListConstIterator::ListConstIterator(const ListIterator& it)
+    : it_(it)
+{}
 
 template<typename value_type>
-List<value_type>::ListConstIterator::ListConstIterator(Node* node, Node* head, Node* tail) : it_(node, head, tail) {}
+List<value_type>::ListConstIterator::ListConstIterator(Node* node, Node* head, Node* tail)
+    : it_(node, head, tail)
+{}
 
 template<typename value_type>
-typename List<value_type>::ListConstIterator& List<value_type>::ListConstIterator::operator++() {
+typename List<value_type>::ListConstIterator& List<value_type>::ListConstIterator::operator++()
+{
     ++it_; 
     return *this; 
 }
 
 template<typename value_type>
-typename List<value_type>::ListConstIterator& List<value_type>::ListConstIterator::operator--() { 
+typename List<value_type>::ListConstIterator& List<value_type>::ListConstIterator::operator--()
+{
     --it_; 
     return *this; 
 }
 
 template<typename value_type>
-typename List<value_type>::ListConstIterator List<value_type>::ListConstIterator::operator++(int) { 
+typename List<value_type>::ListConstIterator List<value_type>::ListConstIterator::operator++(int)
+{
     ListConstIterator tmp(*this); 
     ++it_; 
     return tmp; 
 }
 
 template<typename value_type>
-typename List<value_type>::ListConstIterator List<value_type>::ListConstIterator::operator--(int) { 
+typename List<value_type>::ListConstIterator List<value_type>::ListConstIterator::operator--(int)
+{
     ListConstIterator tmp(*this); 
     --it_; 
     return tmp; 
 }
 
 template<typename value_type>
-bool List<value_type>::ListConstIterator::operator==(const ListConstIterator& other) const { 
+bool List<value_type>::ListConstIterator::operator==(const ListConstIterator& other) const
+{
     return it_ == other.it_; 
 }
 
 template<typename value_type>
-bool List<value_type>::ListConstIterator::operator!=(const ListConstIterator& other) const { 
+bool List<value_type>::ListConstIterator::operator!=(const ListConstIterator& other) const
+{
     return !(it_ == other.it_);
 }
 
 template<typename value_type>
-typename List<value_type>::const_reference List<value_type>::ListConstIterator::operator*() const { 
+typename List<value_type>::const_reference List<value_type>::ListConstIterator::operator*() const
+{
     return *it_; 
 }
 
