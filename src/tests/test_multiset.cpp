@@ -29,34 +29,34 @@ void printM2(std::multiset<int> M2) {
     std::cout << std::endl;
 }
 
-TEST(CONSTRUCTORS, MULTIMULTISET_DEFAULT_CONSTRUCTOR) {
+TEST(CONSTRUCTORS, MULTISET_DEFAULT_CONSTRUCTOR) {
     s21::multiset<int> M1;
     std::multiset<int> M2;
     ASSERT_EQ(setsEqual(M1, M2), true);
 }
 
-TEST(CONSTRUCTORS, MULTIMULTISET_LIST_CONSTRUCTOR) {
+TEST(CONSTRUCTORS, MULTISET_LIST_CONSTRUCTOR) {
     s21::multiset<int> M1 = {1, 2, 2, 3};
     std::multiset<int> M2 = {1, 2, 2, 3};
     ASSERT_EQ(setsEqual(M1, M2), true);
 }
 
-TEST(CONSTRUCTORS, MULTIMULTISET_COPY_CONSTRUCTOR) {
+TEST(CONSTRUCTORS, MULTISET_COPY_CONSTRUCTOR) {
     s21::multiset<int> M1 = {1, 2, 2, 3};
     s21::multiset<int> M2(M1);
     std::multiset<int> M3 = {1, 2, 2, 3};
     std::multiset<int> M4(M3);
-    ASSERT_EQ(setsEqual(M2, M4), true); 
-    ASSERT_EQ(setsEqual(M1, M3), true); 
+    ASSERT_EQ(setsEqual(M2, M4), true);
+    ASSERT_EQ(setsEqual(M1, M3), true);
 }
 
-TEST(CONSTRUCTORS, MULTIMULTISET_MOVE_CONSTRUCTOR) {
+TEST(CONSTRUCTORS, MULTISET_MOVE_CONSTRUCTOR) {
     s21::multiset<int> M1 = {1, 2, 2, 3};
     s21::multiset<int> M2(std::move(M1));
     std::multiset<int> M3 = {1, 2, 2, 3};
     std::multiset<int> M4(std::move(M3));
-    ASSERT_EQ(setsEqual(M2, M4), true); 
-    ASSERT_EQ(setsEqual(M1, M3), true); 
+    ASSERT_EQ(setsEqual(M2, M4), true);
+    ASSERT_EQ(setsEqual(M1, M3), true);
 }
 
 TEST(MULTISET, UNIQUE_TEST) {
@@ -152,7 +152,7 @@ TEST(METHOD_EMPTY, MULTISET_EMPTY_MOVE_CONSTRUCTOR) {
     ASSERT_EQ(S6.empty(), S8.empty());
 }
 
-TEST(METHOD_SWAP, MULTISET_SWAP_ONE_LIST_EMPTY1) {
+TEST(METHOD_SWAP, MULTISET_SWAP_ONE_MULTISET_EMPTY1) {
     s21::multiset<int> M1 = {1, 2, 2, 3};
     s21::multiset<int> M2 = {};
     std::multiset<int> M3 = {1, 2, 2, 3};
@@ -163,7 +163,7 @@ TEST(METHOD_SWAP, MULTISET_SWAP_ONE_LIST_EMPTY1) {
     ASSERT_EQ(setsEqual(M2, M4), true);
 }
 
-TEST(METHOD_SWAP, MULTISET_SWAP_ONE_LIST_EMPTY2) {
+TEST(METHOD_SWAP, MULTISET_SWAP_ONE_MULTISET_EMPTY2) {
     s21::multiset<int> M1 = {};
     s21::multiset<int> M2 = {1, 2, 2, 3};
     std::multiset<int> M3 = {};
@@ -261,7 +261,7 @@ TEST(METHOD_ERASE, MULTISET_ERASE_NO_CHILD) {
     ASSERT_EQ(setsEqual(M1, M2), true);
 }
 
-TEST(METHOD_ERASE, MULTISET_ERASE_TWO_CHILDREN) {
+TEST(METHOD_ERASE, MULTISET_ERASE_TWO_CHILDREN1) {
     s21::multiset<int> M1 = {3, 1, 2, 4, 5};
     std::multiset<int> M2 = {3, 1, 2, 4, 5};
     s21::multiset<int>::iterator it_S1 = ++M1.begin();
@@ -273,48 +273,56 @@ TEST(METHOD_ERASE, MULTISET_ERASE_TWO_CHILDREN) {
     ASSERT_EQ(setsEqual(M1, M2), true);
 }
 
+TEST(METHOD_ERASE, MULTISET_ERASE_TWO_CHILDREN2) {
+    s21::multiset<int> M1 = {10, 15, 12, 16};
+    std::multiset<int> M2 = {10, 15, 12, 16};
+    s21::multiset<int>::iterator it_S1 = ++M1.begin();
+    std::multiset<int>::iterator it_S2 = ++M2.begin();
+    ++it_S1;
+    ++it_S2;
+    M1.erase(it_S1);
+    M2.erase(it_S2);
+    ASSERT_EQ(setsEqual(M1, M2), true);
+}
+
 TEST(METHOD_MERGE, MULTISET_MERGE_DIFFERENT_ELEMENTS) {
-    s21::multiset<int> M1 = {1, 3, 5};
-    s21::multiset<int> M2 = {2, 4, 6};
-    std::multiset<int> M3 = {1, 3, 5};
-    std::multiset<int> M4 = {2, 4, 6};
-    M1.merge(M2);
-    M3.merge(M4);
-    ASSERT_EQ(setsEqual(M1, M3), true);
-    ASSERT_EQ(setsEqual(M2, M4), true);
+    s21::multiset<int> S1 = {1, 3, 5};
+    s21::multiset<int> S2 = {2, 4, 6};
+    std::multiset<int> S3 = {1, 3, 5, 2, 4, 6};
+    std::multiset<int> empty;
+    S1.merge(S2);
+    ASSERT_EQ(setsEqual(S1, S3), true);
+    ASSERT_EQ(setsEqual(S2, empty), true);
 }
 
 TEST(METHOD_MERGE, MULTISET_MERGE_IDENTICAL_ELEMENTS) {
-    s21::multiset<int> M1 = {1, 3, 5};
-    s21::multiset<int> M2 = {1, 3, 5};
-    std::multiset<int> M3 = {1, 3, 5};
-    std::multiset<int> M4 = {1, 3, 5};
-    M1.merge(M2);
-    M3.merge(M4);
-    ASSERT_EQ(setsEqual(M1, M3), true);
-    ASSERT_EQ(setsEqual(M2, M4), true);
+    s21::multiset<int> S1 = {1, 3, 5};
+    s21::multiset<int> S2 = {1, 3, 5};
+    std::multiset<int> S3 = {1, 3, 5, 1, 3, 5};
+    std::multiset<int> empty;
+    S1.merge(S2);
+    ASSERT_EQ(setsEqual(S1, S3), true);
+    ASSERT_EQ(setsEqual(S2, empty), true);
 }
 
 TEST(METHOD_MERGE, MULTISET_MERGE_FIRST_EMPTY) {
-    s21::multiset<int> M1 = {};
-    s21::multiset<int> M2 = {1, 3, 5};
-    std::multiset<int> M3 = {};
-    std::multiset<int> M4 = {1, 3, 5};
-    M1.merge(M2);
-    M3.merge(M4);
-    ASSERT_EQ(setsEqual(M1, M3), true);
-    ASSERT_EQ(setsEqual(M2, M4), true);
+    s21::multiset<int> S1 = {};
+    s21::multiset<int> S2 = {1, 3, 5};
+    std::multiset<int> S3 = {1, 3, 5};
+    std::multiset<int> empty;
+    S1.merge(S2);
+    ASSERT_EQ(setsEqual(S1, S3), true);
+    ASSERT_EQ(setsEqual(S2, empty), true);
 }
 
 TEST(METHOD_MERGE, MULTISET_MERGE_SECOND_EMPTY) {
-    s21::multiset<int> M1 = {1, 3, 5};
-    s21::multiset<int> M2 = {};
-    std::multiset<int> M3 = {1, 3, 5};
-    std::multiset<int> M4 = {};
-    M1.merge(M2);
-    M3.merge(M4);
-    ASSERT_EQ(setsEqual(M1, M3), true);
-    ASSERT_EQ(setsEqual(M2, M4), true);
+    s21::multiset<int> S1 = {1, 3, 5};
+    s21::multiset<int> S2 = {};
+    std::multiset<int> S3 = {1, 3, 5};
+    std::multiset<int> empty;
+    S1.merge(S2);
+    ASSERT_EQ(setsEqual(S1, S3), true);
+    ASSERT_EQ(setsEqual(S2, empty), true);
 }
 
 TEST(METHOD_FIND, MULTISET_FIND_EXISTING_ELEMENT) {
@@ -404,7 +412,7 @@ TEST(METHOD_EMPLACE, MULTISET_EMPLACE) {
     ASSERT_EQ(setsEqual(M1, M2), true);
 }
 
-TEST(SET, MULTISET_OPERATOR_EQUAL_COPY_NOT_EMPTY_LIST) {
+TEST(SET, MULTISET_OPERATOR_EQUAL_COPY_NOT_EMPTY_MULTISET) {
     s21::multiset<int> M1 = {50, 25, 25, 75, 10};
     s21::multiset<int> M2 = {50, 25, 75, 10, 40, 5, 5, 15, 35, 45, 80, 60, 70, 55, 90, 78};
     std::multiset<int> M3 = {50, 25, 25, 75, 10};
@@ -415,7 +423,7 @@ TEST(SET, MULTISET_OPERATOR_EQUAL_COPY_NOT_EMPTY_LIST) {
     ASSERT_EQ(setsEqual(M2, M4), true);
 }
 
-TEST(SET, MULTISET_OPERATOR_EQUAL_COPY_EMPTY_LIST) {
+TEST(SET, MULTISET_OPERATOR_EQUAL_COPY_EMPTY_MULTISET) {
     s21::multiset<int> M1 = {50, 25, 25, 75, 10};
     s21::multiset<int> M2 = {};
     std::multiset<int> M3 = {50, 25, 25, 75, 10};
@@ -434,7 +442,7 @@ TEST(SET, MULTISET_OPERATOR_EQUAL_COPY_SAME_SET) {
     ASSERT_EQ(setsEqual(M1, M2), true);
 }
 
-TEST(SET, MULTISET_OPERATOR_EQUAL_MOVE_NOT_EMPTY_LIST) {
+TEST(SET, MULTISET_OPERATOR_EQUAL_MOVE_NOT_EMPTY_MULTISET) {
     s21::multiset<int> M1 = {50, 25, 25, 75, 10};
     s21::multiset<int> M2 = {50, 25, 75, 10, 40, 5, 5, 15, 35, 45, 80, 60, 70, 55, 90, 78};
     std::multiset<int> M3 = {50, 25, 25, 75, 10};
@@ -445,7 +453,7 @@ TEST(SET, MULTISET_OPERATOR_EQUAL_MOVE_NOT_EMPTY_LIST) {
     ASSERT_EQ(setsEqual(M2, M4), true);
 }
 
-TEST(SET, MULTISET_OPERATOR_EQUAL_MOVE_EMPTY_LIST) {
+TEST(SET, MULTISET_OPERATOR_EQUAL_MOVE_EMPTY_MULTISET) {
     s21::multiset<int> M1 = {50, 25, 25, 75, 10};
     s21::multiset<int> M2 = {};
     std::multiset<int> M3 = {50, 25, 25, 75, 10};
@@ -468,7 +476,7 @@ TEST(ITERATORS, MULTISET_PLUS_PLUS_OPERATOR) {
     s21::multiset<int> M1 = {50, 25, 75, 10, 40, 5, 5, 15, 35, 45, 80, 60, 70, 55, 90, 78};
     std::multiset<int> M2 = {50, 25, 75, 10, 40, 5, 5, 15, 35, 45, 80, 60, 70, 55, 90, 78};
     ASSERT_EQ(*(++M1.begin()), *(++M2.begin()));
-    
+
 }
 
 TEST(ITERATORS, MULTISET_MINUS_MINUS_OPERATOR) {
@@ -498,13 +506,13 @@ TEST(ITERATORS, MULTISET_OPERATOR_MINUS_MINUS) {
     ASSERT_EQ(*it_S1, *it_S2);
 }
 
-TEST(ITERATORS, MULTISET_DEREFERENCE_OPERATOR_EXISTING_LIST_1) {
+TEST(ITERATORS, MULTISET_DEREFERENCE_OPERATOR_EXISTING_MULTISET_1) {
     s21::multiset<int> M1 = {50, 25, 75, 10, 40, 5, 5, 15, 35, 45, 80, 60, 70, 55, 90, 78};
     std::multiset<int> M2 = {50, 25, 75, 10, 40, 5, 5, 15, 35, 45, 80, 60, 70, 55, 90, 78};
     ASSERT_EQ(*M1.begin(), *M2.begin());
 }
 
-TEST(ITERATORS, MULTISET_DEREFERENCE_OPERATOR_NOT_EXISTING_LIST) {
+TEST(ITERATORS, MULTISET_DEREFERENCE_OPERATOR_NOT_EXISTING_MULTISET) {
     try {
         s21::multiset<int>::iterator it_S1;
         *it_S1;
