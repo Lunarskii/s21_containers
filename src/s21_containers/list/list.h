@@ -8,7 +8,7 @@
 
 namespace s21 {
 template <typename T>
-class List
+class list
 {
 public:
     class Node;
@@ -18,17 +18,17 @@ public:
     using value_type = T;
     using reference = T&;
     using const_reference = const T&;
-    using iterator = List<T>::ListIterator;
-    using const_iterator = List<T>::ListConstIterator;
+    using iterator = list<T>::ListIterator;
+    using const_iterator = list<T>::ListConstIterator;
     using size_type = std::size_t;
 
     /*                  CONSTRUCTORS/DESTRUCTORS                                            */
-    List();                                                 // default constructor, creates an empty list
-    List(size_type n);                                      // parameterized constructor, creates the list of size n
-    List(std::initializer_list<value_type> const &items);   // initializer list constructor, creates a list initizialized using std::initializer_list
-    List(const List &other);                                // copy constructor
-    List(List &&other);                                     // move constructor
-    ~List();                                                // destructor
+    list();                                                 // default constructor, creates an empty list
+    list(size_type n);                                      // parameterized constructor, creates the list of size n
+    list(std::initializer_list<value_type> const &items);   // initializer list constructor, creates a list initizialized using std::initializer_list
+    list(const list &other);                                // copy constructor
+    list(list &&other);                                     // move constructor
+    ~list();                                                // destructor
 
     /*                  METHODS                                                             */
     size_type max_size();                                   // returns the maximum possible number of elements
@@ -41,14 +41,14 @@ public:
     const_reference front();                                // access the first element
     const_reference back();                                 // access the last element
     bool empty();                                           // checks whether the container is empty
-    void splice(const_iterator pos, List& other);           // transfers elements from list other starting from pos
+    void splice(const_iterator pos, list& other);           // transfers elements from list other starting from pos
     void unique();                                          // removes consecutive duplicate elements
-    void merge(List& other);                                // merges two sorted lists
+    void merge(list& other);                                // merges two sorted lists
     void sort();                                            // sorts the elements
     void erase(iterator pos);                               // erases an element at pos
     void clear();                                           // clears the contents
     void reverse();                                         // reverses the order of the elements
-    void swap(List& other);                                 // swaps the contents
+    void swap(list& other);                                 // swaps the contents
     void push_back(const_reference value);                  // adds an element to the end
     void pop_back();                                        // removes the last element
     void push_front(const_reference value);                 // adds an element to the head
@@ -64,8 +64,8 @@ public:
     iterator emplace(const_iterator pos, Args&&... args);   // inserts new elements into the container directly before pos
 
     /*                  OPERATORS                                                           */
-    List& operator=(const List& other);                     // assignment operator overload for moving an object
-    List& operator=(List&& other);                          // assignment operator overload for copy an object
+    list& operator=(const list& other);                     // assignment operator overload for moving an object
+    list& operator=(list&& other);                          // assignment operator overload for copy an object
 
 private:
     Node *head{nullptr};
@@ -73,7 +73,7 @@ private:
 };
 
 template <typename value_type>
-class List<value_type>::Node
+class list<value_type>::Node
 {
     public:
         Node(const value_type& d = value_type{}, Node* p = nullptr, Node* n = nullptr);
@@ -83,7 +83,7 @@ class List<value_type>::Node
 };
 
 template <typename value_type>
-class List<value_type>::ListIterator
+class list<value_type>::ListIterator
 {
     public:
         ListIterator() = default;
@@ -107,7 +107,7 @@ class List<value_type>::ListIterator
 };
 
 template <typename value_type>
-class List<value_type>::ListConstIterator : public ListIterator
+class list<value_type>::ListConstIterator : public ListIterator
 {
     public:
         ListConstIterator() = default;

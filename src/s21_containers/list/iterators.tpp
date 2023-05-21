@@ -3,19 +3,19 @@
 
 namespace s21 {
 template<typename value_type>
-List<value_type>::ListIterator::ListIterator(Node *node, Node *head, Node *tail)
+list<value_type>::ListIterator::ListIterator(Node *node, Node *head, Node *tail)
     : node_(node)
     , head_(head)
     , tail_(tail)
 {}
 
 template<typename value_type>
-List<value_type>::ListIterator::ListIterator(ListConstIterator& it)
+list<value_type>::ListIterator::ListIterator(ListConstIterator& it)
     : node_(it.it_.node_)
 {}
 
 template<typename value_type>
-typename List<value_type>::ListIterator& List<value_type>::ListIterator::operator++()
+typename list<value_type>::ListIterator& list<value_type>::ListIterator::operator++()
 {
     if (head_ != nullptr)
     {
@@ -32,7 +32,7 @@ typename List<value_type>::ListIterator& List<value_type>::ListIterator::operato
 }
 
 template<typename value_type>
-typename List<value_type>::ListIterator& List<value_type>::ListIterator::operator--()
+typename list<value_type>::ListIterator& list<value_type>::ListIterator::operator--()
 {
     if (tail_ != nullptr)
     {
@@ -56,7 +56,7 @@ typename List<value_type>::ListIterator& List<value_type>::ListIterator::operato
 }
 
 template<typename value_type>
-typename List<value_type>::ListIterator List<value_type>::ListIterator::operator++(int)
+typename list<value_type>::ListIterator list<value_type>::ListIterator::operator++(int)
 {
     ListIterator it(*this);
     ++(*this);
@@ -64,7 +64,7 @@ typename List<value_type>::ListIterator List<value_type>::ListIterator::operator
 }
 
 template<typename value_type>
-typename List<value_type>::ListIterator List<value_type>::ListIterator::operator--(int)
+typename list<value_type>::ListIterator list<value_type>::ListIterator::operator--(int)
 {
     ListIterator it(*this);
     --(*this);
@@ -72,19 +72,19 @@ typename List<value_type>::ListIterator List<value_type>::ListIterator::operator
 }
 
 template<typename value_type>
-bool List<value_type>::ListIterator::operator==(const ListIterator& other) const
+bool list<value_type>::ListIterator::operator==(const ListIterator& other) const
 {
     return node_ == other.node_;
 }
 
 template<typename value_type>
-bool List<value_type>::ListIterator::operator!=(const ListIterator& other) const
+bool list<value_type>::ListIterator::operator!=(const ListIterator& other) const
 {
     return !(*this == other);
 }
 
 template<typename value_type>
-typename List<value_type>::ListIterator List<value_type>::ListIterator::operator+(size_type n) const
+typename list<value_type>::ListIterator list<value_type>::ListIterator::operator+(size_type n) const
 {
     ListIterator it(*this);
     for (; n != 0; --n) ++it;
@@ -92,7 +92,7 @@ typename List<value_type>::ListIterator List<value_type>::ListIterator::operator
 }
 
 template<typename value_type>
-typename List<value_type>::ListIterator List<value_type>::ListIterator::operator-(size_type n) const
+typename list<value_type>::ListIterator list<value_type>::ListIterator::operator-(size_type n) const
 {
     ListIterator it(*this);
     for (; n != 0; --n) --it;
@@ -100,7 +100,7 @@ typename List<value_type>::ListIterator List<value_type>::ListIterator::operator
 }
 
 template<typename value_type>
-typename List<value_type>::reference List<value_type>::ListIterator::operator*() const
+typename list<value_type>::reference list<value_type>::ListIterator::operator*() const
 {
     if (node_ == nullptr && tail_ != nullptr) // это если мы пытаемся разыменовать tail_->next, который в оригинале дублирует значение из tail_
     {

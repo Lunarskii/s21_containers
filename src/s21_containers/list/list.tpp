@@ -3,13 +3,13 @@
 
 namespace s21 {
 template<typename value_type>
-List<value_type>::Node::Node(const value_type& d, Node* p, Node* n) : data(d), prev(p), next(n) {}
+list<value_type>::Node::Node(const value_type& d, Node* p, Node* n) : data(d), prev(p), next(n) {}
 
 template<typename value_type>
-List<value_type>::List() : head(nullptr), tail(nullptr) {}
+list<value_type>::list() : head(nullptr), tail(nullptr) {}
 
 template<typename value_type>
-List<value_type>::List(size_type n)
+list<value_type>::list(size_type n)
 {
     for (; n > 0; --n)
     {
@@ -18,7 +18,7 @@ List<value_type>::List(size_type n)
 }
 
 template<typename value_type>
-List<value_type>::List(std::initializer_list<value_type> const &items)
+list<value_type>::list(std::initializer_list<value_type> const &items)
 {
     for (auto& i : items)
     {
@@ -27,7 +27,7 @@ List<value_type>::List(std::initializer_list<value_type> const &items)
 }
 
 template<typename value_type>
-List<value_type>::List(const List &other)
+list<value_type>::list(const list &other)
 {
     for (const_iterator it = other.cbegin(); it != other.cend(); ++it)
     {
@@ -36,25 +36,25 @@ List<value_type>::List(const List &other)
 }
 
 template<typename value_type>
-List<value_type>::List(List &&other)
+list<value_type>::list(list &&other)
 {
     swap(other);
 }
 
 template<typename value_type>
-List<value_type>::~List()
+list<value_type>::~list()
 {
     while (head != nullptr) pop_front();
 }
 
 template <typename value_type>
-typename List<value_type>::size_type List<value_type>::max_size()
+typename list<value_type>::size_type list<value_type>::max_size()
 {
     return std::numeric_limits<size_type>::max() / sizeof(Node) / 2;
 }
 
 template <typename value_type>
-typename List<value_type>::size_type List<value_type>::size()
+typename list<value_type>::size_type list<value_type>::size()
 {
     size_type n = 0;
     for (iterator it = begin(); it != end(); ++it) { ++n; }
@@ -62,7 +62,7 @@ typename List<value_type>::size_type List<value_type>::size()
 }
 
 template <typename value_type>
-typename List<value_type>::iterator List<value_type>::insert(iterator pos, const_reference value)
+typename list<value_type>::iterator list<value_type>::insert(iterator pos, const_reference value)
 {
     if (empty() || pos.node_ == nullptr) // список пуст или итератор находится за последним элементом
     {
@@ -88,7 +88,7 @@ typename List<value_type>::iterator List<value_type>::insert(iterator pos, const
 }
 
 template<typename value_type>
-typename List<value_type>::iterator List<value_type>::begin()
+typename list<value_type>::iterator list<value_type>::begin()
 {
     if (empty())
     {
@@ -101,7 +101,7 @@ typename List<value_type>::iterator List<value_type>::begin()
 }
 
 template<typename value_type>
-typename List<value_type>::iterator List<value_type>::end()
+typename list<value_type>::iterator list<value_type>::end()
 {
     if (empty())
     {
@@ -114,7 +114,7 @@ typename List<value_type>::iterator List<value_type>::end()
 }
 
 template<typename value_type>
-typename List<value_type>::const_iterator List<value_type>::cbegin() const
+typename list<value_type>::const_iterator list<value_type>::cbegin() const
 {
     if (head != nullptr)
     {
@@ -127,7 +127,7 @@ typename List<value_type>::const_iterator List<value_type>::cbegin() const
 }
 
 template<typename value_type>
-typename List<value_type>::const_iterator List<value_type>::cend() const
+typename list<value_type>::const_iterator list<value_type>::cend() const
 {
     if (tail != nullptr)
     {
@@ -140,7 +140,7 @@ typename List<value_type>::const_iterator List<value_type>::cend() const
 }
 
 template<typename value_type>
-typename List<value_type>::const_reference List<value_type>::front()
+typename list<value_type>::const_reference list<value_type>::front()
 {
     if (empty())
     {
@@ -154,7 +154,7 @@ typename List<value_type>::const_reference List<value_type>::front()
 }
 
 template<typename value_type>
-typename List<value_type>::const_reference List<value_type>::back()
+typename list<value_type>::const_reference list<value_type>::back()
 {
     if (empty())
     {
@@ -168,13 +168,13 @@ typename List<value_type>::const_reference List<value_type>::back()
 }
 
 template<typename value_type>
-bool List<value_type>::empty()
+bool list<value_type>::empty()
 {
     return head == nullptr && tail == nullptr;
 }
 
 template<typename value_type>
-void List<value_type>::splice(const_iterator pos, List& other)
+void list<value_type>::splice(const_iterator pos, list& other)
 {
     if (!other.empty())
     {
@@ -213,9 +213,9 @@ void List<value_type>::splice(const_iterator pos, List& other)
 }
 
 template<typename value_type>
-void List<value_type>::unique()
+void list<value_type>::unique()
 {
-    for (List<value_type>::iterator it = ++begin(); it != end(); ++it)
+    for (list<value_type>::iterator it = ++begin(); it != end(); ++it)
     {
         if (*it == *(it - 1))
         {
@@ -225,9 +225,9 @@ void List<value_type>::unique()
 }
 
 template<typename value_type>
-void List<value_type>::merge(List& other)
+void list<value_type>::merge(list& other)
 {
-    List<value_type> tempList(*this);
+    list<value_type> tempList(*this);
     iterator it_L1 = tempList.begin();
     iterator it_L2 = other.begin();
 
@@ -250,7 +250,7 @@ void List<value_type>::merge(List& other)
 }
 
 template<typename value_type>
-void List<value_type>::sort()
+void list<value_type>::sort()
 {
     for (iterator it_i = ++begin(); it_i != end(); ++it_i)
     {
@@ -266,7 +266,7 @@ void List<value_type>::sort()
 }
 
 template<typename value_type>
-void List<value_type>::erase(iterator pos)
+void list<value_type>::erase(iterator pos)
 {
     if (pos.node_ == nullptr)
     {
@@ -297,13 +297,13 @@ void List<value_type>::erase(iterator pos)
 }
 
 template<typename value_type>
-void List<value_type>::clear()
+void list<value_type>::clear()
 {
-    this->~List();
+    this->~list();
 }
 
 template<typename value_type>
-void List<value_type>::reverse()
+void list<value_type>::reverse()
 {
     iterator it_left = begin();
     iterator it_right = --end();
@@ -315,7 +315,7 @@ void List<value_type>::reverse()
 }
 
 template<typename value_type>
-void List<value_type>::swap(List& other)
+void list<value_type>::swap(list& other)
 {
     if (this != &other)
     {
@@ -326,7 +326,7 @@ void List<value_type>::swap(List& other)
 
 template<typename value_type>
 template<typename... Args>
-typename List<value_type>::iterator List<value_type>::emplace(const_iterator pos, Args&&... args)
+typename list<value_type>::iterator list<value_type>::emplace(const_iterator pos, Args&&... args)
 {
     auto args_list = std::initializer_list<value_type>{std::forward<Args>(args)...};
 
@@ -340,20 +340,20 @@ typename List<value_type>::iterator List<value_type>::emplace(const_iterator pos
 
 template<typename value_type>
 template<typename... Args>
-void List<value_type>::emplace_back(Args&&... args)
+void list<value_type>::emplace_back(Args&&... args)
 {
     emplace(end(), args...);
 }
 
 template<typename value_type>
 template<typename... Args>
-void List<value_type>::emplace_front(Args&&... args)
+void list<value_type>::emplace_front(Args&&... args)
 {
     emplace(begin(), args...);
 }
 
 template<typename value_type>
-void List<value_type>::push_front(const_reference data)
+void list<value_type>::push_front(const_reference data)
 {
     if (head == nullptr)
     {
@@ -367,7 +367,7 @@ void List<value_type>::push_front(const_reference data)
 }
 
 template<typename value_type>
-void List<value_type>::push_back(const_reference data)
+void list<value_type>::push_back(const_reference data)
 {
     if (tail == nullptr)
     {
@@ -381,7 +381,7 @@ void List<value_type>::push_back(const_reference data)
 }
 
 template<typename value_type>
-void List<value_type>::pop_front()
+void list<value_type>::pop_front()
 {
     if (head != nullptr)
     {
@@ -402,7 +402,7 @@ void List<value_type>::pop_front()
 }
 
 template<typename value_type>
-void List<value_type>::pop_back()
+void list<value_type>::pop_back()
 {
     if (tail != nullptr)
     {
@@ -423,24 +423,24 @@ void List<value_type>::pop_back()
 }
 
 template<typename value_type>
-List<value_type>& List<value_type>::operator=(const List& other)
+list<value_type>& list<value_type>::operator=(const list& other)
 {
     if (this != &other)
     {
         clear();
-        new (this) List(other);
+        new (this) list(other);
     }
     
     return *this;
 }
 
 template<typename value_type>
-List<value_type>& List<value_type>::operator=(List &&other)
+list<value_type>& list<value_type>::operator=(list &&other)
 {
     if (this != &other)
     {
         clear();
-        new (this) List(std::move(other));
+        new (this) list(std::move(other));
     }
 
     return *this;
