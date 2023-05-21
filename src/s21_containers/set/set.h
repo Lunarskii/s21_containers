@@ -8,13 +8,11 @@ namespace s21 {
 template<typename T>
 class set {
     public:
-        class SetIterator;
-
         using key_type = T;
         using value_type = T;
         using reference = T&;
         using const_reference = const T&;
-        using iterator = set<T>::SetIterator;
+        using iterator = typename BinaryTree<T>::BinaryTreeIterator;
         using const_iterator = iterator;
         using size_type = std::size_t;
 
@@ -53,35 +51,8 @@ class set {
         BinaryTree<value_type> tree;
 };
 
-template<typename value_type>
-class set<value_type>::SetIterator {
-    public:
-        SetIterator() = default;
-        SetIterator(typename BinaryTree<value_type>::iterator it);
-        
-        // Операторы инкремента и декремента
-        SetIterator& operator++();
-        SetIterator& operator--();
-        SetIterator operator++(int);
-        SetIterator operator--(int);
-
-        // Операторы сравнения
-        bool operator==(const SetIterator& other) const;
-        bool operator!=(const SetIterator& other) const;
-
-        // Операторы перемещения/сложения
-        // SetIterator operator+(size_type n) const;
-        // SetIterator operator-(size_type n) const;
-
-        // Операторы доступа к элементам
-        const_reference operator*() const;
-    private:
-        typename BinaryTree<value_type>::BinaryTreeIterator it_;
-};
-
 }  // namespace s21
 
 #include "set.tpp"
-#include "iterators.tpp"
 
 #endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_SET_SET_H_
