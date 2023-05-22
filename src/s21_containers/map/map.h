@@ -42,14 +42,16 @@ class map {
         std::pair<iterator, bool> emplace(Args&&... args);
 
 		bool contains(const_reference element);
-		T& at(const Key& key); // Bounds checking?
+		T& at(const Key& key);
 
 		map& operator=(const map &other);
 		map& operator=(map &&other);
-		T& operator[](const Key& key); // Проверить, работает ли на несуществующем ключе
+		T& operator[](const Key& key);
 	
 	private:
         BinaryTree<value_type> tree;
+
+        iterator findNodeByKey(const Key& key);
 
 };
 

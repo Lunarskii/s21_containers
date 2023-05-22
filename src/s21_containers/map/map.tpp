@@ -93,14 +93,27 @@ bool map<Key, T>::contains(const_reference element) {
 
 template<typename Key, typename T>
 T& map<Key, T>::at(const Key& key) {
-    auto find_pair = std::pair<Key, T>(key, 0);
-    iterator it = tree.find(find_pair);
-    if (contains(find_pair) == false)
-        throw std::out_of_range("key out of bounds");
-    std::pair<Key, T> value_pair = *it;
-    auto value = (mapped_type)value_pair.second;
+    const iterator it = findNodeByKey(key);
+    const auto& value = *it;
+    T& ret = value.second;
+//    auto find_pair = std::pair<Key, T>(key, 0);
+//    iterator it = tree.find(find_pair);
+//    if (contains(find_pair) == false)
+//        throw std::out_of_range("key out of bounds");
+//    std::pair<Key, T> value_pair = *it;
+//    auto value = (mapped_type)value_pair.second;
 
-	return value;
+	return ret;
+}
+
+template<typename Key, typename T>
+typename map<Key, T>::iterator map<Key, T>::findNodeByKey(const Key& key) {
+    for (iterator it = begin(); it != end(); ++it) {
+        if ((*it).first == key) {
+            return (it);
+        }
+    }
+    throw std::out_of_range("Found no mapped value stored by given key");
 }
 
 template<typename Key, typename T>
