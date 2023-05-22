@@ -5,20 +5,20 @@
 
 namespace s21 {
 
-template <typename T, typename Container = s21::List<T>>
-class Queue {
+template <typename T, typename Container = s21::list<T>>
+class queue {
  public:
   using value_type = typename Container::value_type;
   using reference = typename Container::reference;
   using const_reference = typename Container::const_reference;
   using size_type = typename Container::size_type;
 
-  Queue();
-  Queue(std::initializer_list<value_type> const &items);
-  Queue(const Queue &s);
-  Queue(Queue &&s);
-  ~Queue();
-  Queue &operator=(Queue &&s);
+  queue();
+  queue(std::initializer_list<value_type> const &items);
+  queue(const queue &s);
+  queue(queue &&s);
+  ~queue();
+  queue &operator=(queue &&s);
 
   const_reference front();
   const_reference back();
@@ -28,7 +28,7 @@ class Queue {
 
   void push(const_reference value);
   void pop();
-  void swap(Queue &other);
+  void swap(queue &other);
 
  private:
   Container cont;

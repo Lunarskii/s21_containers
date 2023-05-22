@@ -72,12 +72,7 @@ std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type
 }
 
 template<typename value_type>
-typename BinaryTree<value_type>::Node *BinaryTree<value_type>::erase(const_reference data, Node *node) {
-    if (node == nullptr) {
-        throw std::runtime_error("такого элемента нема");
-        // return;
-    }
-
+void BinaryTree<value_type>::erase(const_reference data, Node *node) {
     if (data < node->data) {
         erase(data, node->left);
     } else if (data > node->data) {
@@ -104,12 +99,7 @@ typename BinaryTree<value_type>::Node *BinaryTree<value_type>::erase(const_refer
         } else {
             removeNodeWithTwoChildren(node);
         }
-    } else {
-        throw std::runtime_error("data not found");
-        // Если такого элемента нет
     }
-
-    return node; // добавил для избежания ошибки, проверить потом чего не хватает
 }
 
 template<typename value_type>
@@ -148,7 +138,16 @@ void BinaryTree<value_type>::removeNodeWithTwoChildren(Node* node)
     {
         temp->right->parent = temp->parent;
     }
-    temp->parent->right = temp->right;
+
+    if (temp->parent->left == temp)
+    {
+        temp->parent->left = temp->right;
+    }
+    else
+    {
+        temp->parent->right = temp->right;
+    }
+
     temp->parent = node->parent;
     if (node->parent != nullptr)
     {
@@ -255,30 +254,19 @@ bool BinaryTree<value_type>::contains(const_reference key) {
     return false;
 }
 
-/**
-*
-* STL:
-*
-* Процесс слияния начинается с наименьшего элемента каждого множества.
-* Сравниваются два наименьших элемента, и наименьший из них добавляется в результирующее множество.
-* Затем процесс повторяется для следующих двух наименьших элементов,
-* и так далее, пока все элементы не будут добавлены в результирующее множество.
-*
-* Примечание: Если элементы в двух множествах имеют одинаковый ключ, то слияния не происходит и данный элемент
-* не будет перемещен(удален во втором множестве т.е.)
-*
-*/
 template<typename value_type>
-void BinaryTree<value_type>::merge(BinaryTree &other) {
+void BinaryTree<value_type>::merge(BinaryTree& other) {
     if (type == UNIQUE) {
-        for (iterator it = other.begin(); it != other.end(); ++it) {
+        for (auto it = other.begin(); it != other.end();) {
             if (!contains(*it)) {
                 insert(*it);
-                other.erase(*it);
+                other.erase(*(it++));
+            } else {
+                ++it;
             }
         }
     } else {
-        for (iterator it = other.begin(); it != other.end(); ++it) {
+        for (auto it = other.begin(); it != other.end(); ++it) {
             insert(*it);
         }
         other.clear();
@@ -317,7 +305,7 @@ template<typename... Args>
 std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type>::emplace(Args &&... args) {
     std::pair<iterator, bool> it;
 
-    for (auto &&item: {std::forward<Args>(args)...}) {
+    for (auto&& item: {std::forward<Args>(args)...}) {
         it = insert(item);
     }
 
@@ -329,7 +317,7 @@ template<typename... Args>
 std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type>::multiEmplace(Args &&... args) {
     std::pair<iterator, bool> it;
 
-    for (auto &&item: {std::forward<Args>(args)...}) {
+    for (auto&& item: {std::forward<Args>(args)...}) {
         it = insert(item);
     }
 

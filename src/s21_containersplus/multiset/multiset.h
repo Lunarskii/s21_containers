@@ -10,13 +10,10 @@ namespace s21 {
 template<typename T>
 class multiset {
     public:
-        class MultisetIterator;
-
-        using key_type = T;
         using value_type = T;
         using reference = T&;
         using const_reference = const T&;
-        using iterator = multiset<T>::MultisetIterator;
+        using iterator = typename BinaryTree<T>::BinaryTreeIterator;
         using const_iterator = iterator;
         using size_type = std::size_t;
 
@@ -59,35 +56,8 @@ class multiset {
         BinaryTree<value_type> tree = NUNIQUE;
 };
 
-template<typename value_type>
-class multiset<value_type>::MultisetIterator {
-    public:
-        MultisetIterator() = default;
-        MultisetIterator(typename BinaryTree<value_type>::iterator it);
-        
-        // Операторы инкремента и декремента
-        MultisetIterator& operator++();
-        MultisetIterator& operator--();
-        MultisetIterator operator++(int);
-        MultisetIterator operator--(int);
-
-        // Операторы сравнения
-        bool operator==(const MultisetIterator& other) const;
-        bool operator!=(const MultisetIterator& other) const;
-
-        // Операторы перемещения/сложения
-        // MultisetIterator operator+(size_type n) const;
-        // MultisetIterator operator-(size_type n) const;
-
-        // Операторы доступа к элементам
-        const_reference operator*() const;
-    private:
-        typename BinaryTree<value_type>::BinaryTreeIterator it_;
-};
-
 }  // namespace s21
 
 #include "multiset.tpp"
-#include "iterators.tpp"
 
 #endif  // CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_MULTISET_H_

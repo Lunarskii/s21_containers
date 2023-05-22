@@ -3,6 +3,7 @@
 
 #include <limits>
 #include <initializer_list>
+#include "../list/list.h"
 
 namespace s21 {
 #define UNIQUE 1
@@ -12,15 +13,11 @@ template<typename T>
 class BinaryTree {
 public:
     class Node;
-
     class BinaryTreeIterator;
 
-    using key_type = T;
     using value_type = T;
     using reference = T &;
     using const_reference = const T &;
-    using pointer = T *;
-    using const_pointer = const T *;
     using iterator = BinaryTree<T>::BinaryTreeIterator;
     using const_iterator = iterator;
     using size_type = std::size_t;
@@ -36,7 +33,7 @@ public:
     /*                  METHODS                                                             */
     std::pair<iterator, bool> insert(const_reference data, Node *&node, Node *parent = nullptr);
     std::pair<iterator, bool> insert(const_reference data);
-    Node *erase(const_reference data, Node *node);
+    void erase(const_reference data, Node *node);
     void erase(const_reference data);
     void removeNodeWithOneChild(Node*& node, Node* branch);
     void removeNodeWithTwoChildren(Node* node);
@@ -77,45 +74,27 @@ private:
 template<typename value_type>
 class BinaryTree<value_type>::Node {
 public:
-    // скорее всего left и right вообще не требуются в конструкторе
-    Node(const value_type &d = value_type{}, Node *l = nullptr, Node *r = nullptr, Node *p = nullptr);
-
+    explicit Node(const value_type &d = value_type{}, Node *l = nullptr, Node *r = nullptr, Node *p = nullptr);
     value_type data;
     Node *left;
     Node *right;
     Node *parent;
-private:
 };
 
 template<typename value_type>
 class BinaryTree<value_type>::BinaryTreeIterator {
 public:
-    // Конструктор по умолчанию
     BinaryTreeIterator() = default;
+    explicit BinaryTreeIterator(Node *node, Node *root = nullptr);
 
-    // Конструктор с указанием начального узла
-    BinaryTreeIterator(Node *node, Node *root = nullptr);
-
-    // Конструктор копирования из BinaryTreeConstIterator
-    // BinaryTreeIterator(BinaryTreeConstIterator& it);
-
-    // Операторы инкремента и декремента
-    BinaryTreeIterator &operator++();
-    BinaryTreeIterator &operator--();
+    BinaryTreeIterator& operator++();
+    BinaryTreeIterator& operator--();
     BinaryTreeIterator operator++(int);
     BinaryTreeIterator operator--(int);
-
-    // Операторы сравнения
     bool operator==(const BinaryTreeIterator &other) const;
     bool operator!=(const BinaryTreeIterator &other) const;
-
-    // Операторы перемещения/сложения
-    // BinaryTreeIterator operator+(size_type n) const;
-    // BinaryTreeIterator operator-(size_type n) const;
-
-    // Операторы доступа к элементам
     const_reference operator*() const;
-    // pointer operator->() const;
+
 private:
     Node *node_{nullptr};
     Node *root_{nullptr};

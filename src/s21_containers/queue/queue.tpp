@@ -4,59 +4,59 @@
 namespace s21 {
 
 template <typename T, typename Container>
-Queue<T, Container>::Queue() : cont() {}
+queue<T, Container>::queue() : cont() {}
 
 template <typename T, typename Container>
-Queue<T, Container>::Queue(std::initializer_list<value_type> const &items)
+queue<T, Container>::queue(std::initializer_list<value_type> const &items)
     : cont(items) {}
 
 template <typename T, typename Container>
-Queue<T, Container>::Queue(const Queue &s) : cont(s.cont) {}
+queue<T, Container>::queue(const queue &s) : cont(s.cont) {}
 
 template <typename T, typename Container>
-Queue<T, Container>::Queue(Queue &&s) : cont(std::move(s.cont)) {}
+queue<T, Container>::queue(queue &&s) : cont(std::move(s.cont)) {}
 
 template <typename T, typename Container>
-Queue<T, Container>::~Queue() {}
+queue<T, Container>::~queue() {}
 
 template <typename T, typename Container>
-typename Queue<T, Container>::Queue &Queue<T, Container>::operator=(Queue &&s) {
+typename queue<T, Container>::queue &queue<T, Container>::operator=(queue &&s) {
   this->cont = std::move(s.cont);
   return *this;
 }
 
 template <typename T, typename Container>
-typename Queue<T, Container>::const_reference Queue<T, Container>::front() {
+typename queue<T, Container>::const_reference queue<T, Container>::front() {
   return cont.front();
 }
 
 template <typename T, typename Container>
-typename Queue<T, Container>::const_reference Queue<T, Container>::back() {
+typename queue<T, Container>::const_reference queue<T, Container>::back() {
   return cont.back();
 }
 
 template <typename T, typename Container>
-bool Queue<T, Container>::empty() {
+bool queue<T, Container>::empty() {
   return cont.empty();
 }
 
 template <typename T, typename Container>
-typename Queue<T, Container>::size_type Queue<T, Container>::size() {
+typename queue<T, Container>::size_type queue<T, Container>::size() {
   return cont.size();
 }
 
 template <typename T, typename Container>
-void Queue<T, Container>::push(const_reference value) {
+void queue<T, Container>::push(const_reference value) {
   this->cont.push_back(value);
 }
 
 template <typename T, typename Container>
-void Queue<T, Container>::pop() {
+void queue<T, Container>::pop() {
   this->cont.pop_front();
 }
 
 template <typename T, typename Container>
-void Queue<T, Container>::swap(Queue &other) {
+void queue<T, Container>::swap(queue &other) {
   this->cont.swap(other.cont);
 }
 

@@ -5,8 +5,8 @@
 
 namespace s21 {
 
-template <class T, class Container = s21::Vector<T>>
-class Stack {
+template <class T, class Container = s21::vector<T>>
+class stack {
  public:
   using pointer = typename Container::pointer;
   using value_type = typename Container::value_type;
@@ -14,19 +14,19 @@ class Stack {
   using const_reference = typename Container::const_reference;
   using size_type = typename Container::size_type;
 
-  Stack();
-  Stack(std::initializer_list<value_type> const &items);
-  Stack(const Stack &s);
-  Stack(Stack &&s);
-  ~Stack();
-  Stack &operator=(Stack &&s);
+  stack();
+  stack(std::initializer_list<value_type> const &items);
+  stack(const stack &s);
+  stack(stack &&s);
+  ~stack();
+  stack &operator=(stack &&s);
 
   const_reference top();
   bool empty();
   size_type size();
   void push(const_reference value);
   void pop();
-  void swap(Stack &other);
+  void swap(stack &other);
 
  private:
   Container cont;
