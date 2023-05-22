@@ -8,7 +8,7 @@ map<Key, T>::map() {}
 template<typename Key, typename T>
 map<Key, T>::map(std::initializer_list<value_type> const &items) {
 	BinaryTree<value_type> temp(items);
-	tree = temp; // можно ли сразу в tree?
+	tree = temp;
 }
 
 template<typename Key, typename T>
@@ -93,8 +93,12 @@ bool map<Key, T>::contains(const_reference element) {
 
 template<typename Key, typename T>
 T& map<Key, T>::at(const Key& key) {
-    std::pair<Key, T> value = *(tree.find(std::pair<Key, T>(key, 0)));
-	return value.second;
+    auto find_pair = std::pair<Key, T>(key, 0);
+    iterator it = tree.find(find_pair);
+    std::pair<Key, T> value_pair = *it;
+    auto value = (mapped_type)value_pair.second;
+
+	return value;
 }
 
 template<typename Key, typename T>

@@ -8,35 +8,31 @@ array<T, Size>::array() {}
 
 template<typename T, std::size_t Size>
 array<T, Size>::array(std::initializer_list<value_type> const &items) {
-    iterator it = items.begin();
-    for(size_t n : it)
-        elems[n] = *it;
+    std::copy(items.begin(), items.end(), elems);
 }
 
 template<typename T, std::size_t Size>
 array<T, Size>::array(const array &other) {
-    elems = other.elems;
+    for(size_t i : other.elems) {
+        elems[i] = other.elems[i];
+    }
 }
 
 template<typename T, std::size_t Size>
 array<T, Size>::array(array &&other) {
-    elems = std::move(other.elems);
+    for(size_t i : other.elems) {
+        elems[i] = std::move(other.elems[i]);
+    }
 }
 
 template<typename T, std::size_t Size>
 typename array<T, Size>::iterator array<T, Size>::begin() {
-    if (Size == 0)
-        return nullptr;
-    iterator it = elems[0];
-    return it;
+    return elems;
 }
 
 template<typename T, std::size_t Size>
 typename array<T, Size>::iterator array<T, Size>::end() {
-    if (Size == 0)
-        return nullptr;
-    iterator it = elems[Size - 1];
-    return it;
+    return elems + capacity;
 }
 
 template<typename T, std::size_t Size>
@@ -46,7 +42,7 @@ typename array<T, Size>::iterator array<T, Size>::data() {
 
 template<typename T, std::size_t Size>
 typename array<T, Size>::reference array<T, Size>::at(size_type pos) {
-    return this[pos];
+    return (*this)[pos];
 }
 
 template<typename T, std::size_t Size>
@@ -63,45 +59,41 @@ typename array<T, Size>::const_reference array<T, Size>::back() {
 
 template<typename T, std::size_t Size>
 bool array<T, Size>::empty() {
-    for (int i : elems) {
-        if (elems[i] != 0)
-            return false;
-    }
+    if (capacity != 0)
+        return false;
     return true;
 }
 
 template<typename T, std::size_t Size>
 typename array<T, Size>::size_type array<T, Size>::size() {
-    int ret = 0;
-    for (int i : elems) {
-        if (elems[i] != 0)
-            ++ret;
-    }
-    return ret;
+    return capacity;
 }
 
 template<typename T, std::size_t Size>
 typename array<T, Size>::size_type array<T, Size>::max_size() {
-    return Size;
+    return capacity;
 }
 
 template<typename T, std::size_t Size>
 void array<T, Size>::swap(array& other) {
-    for (int i : other) {
-        std::swap(elems[i], other.elems[i]);
+    T temp;
+    for (size_t i = 0; i < capacity; ++i) {
+        temp = elems[i];
+        elems[i] = other.elems[i];
+        other.elems[i] = temp;
     }
 }
 
 template<typename T, std::size_t Size>
 void array<T, Size>::fill(const_reference value) {
-    for (int i : elems) {
+    for (size_t i = 0; i < capacity; ++i) {
         elems[i] = value;
     }
 }
 
 template<typename T, std::size_t Size>
 typename array<T, Size>::array& array<T, Size>::operator=(const array &other) {
-    for (int i : other) {
+    for (size_t i = 0; i < capacity; ++i) {
         elems[i] = other.elems[i];
     }
 
@@ -110,7 +102,7 @@ typename array<T, Size>::array& array<T, Size>::operator=(const array &other) {
 
 template<typename T, std::size_t Size>
 typename array<T, Size>::array& array<T, Size>::operator=(array &&other) {
-    for (int i : other) {
+    for (size_t i = 0; i < capacity; ++i) {
         elems[i] = std::move(other.elems[i]);
     }
 
@@ -119,8 +111,15 @@ typename array<T, Size>::array& array<T, Size>::operator=(array &&other) {
 
 template<typename T, std::size_t Size>
 typename array<T, Size>::reference array<T, Size>::operator[](size_type pos) {
-    if (pos > Size - 1)
-        return nullptr;
+    if (pos >= Size)
+        throw std::out_of_range("s21:array operator[] - Index out of range");
+    return elems[pos];
+}
+
+template<typename T, std::size_t Size>
+typename array<T, Size>::const_reference array<T, Size>::operator[](size_type pos) const {
+    if (pos >= Size)
+        throw std::out_of_range("s21:array operator[] - Index out of range");
     return elems[pos];
 }
 

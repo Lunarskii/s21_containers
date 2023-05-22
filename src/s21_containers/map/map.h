@@ -4,18 +4,17 @@
 #include "../binaryTree/binary_tree.h"
 
 namespace s21 {
+
 template<typename Key, typename T>
 class map {
 	public:
-		class MapIterator;
-
 		using key_type = Key;
 		using mapped_type = T;
 		using value_type = std::pair<const key_type, mapped_type>;
 		using reference = value_type&;
 		using const_reference = const value_type&;
-		using iterator = map<Key, T>::MapIterator;
-//		using const_iterator = const map<Key, T>::MapIterator; // Отдельный класс нужен Т-т
+        using iterator = typename BinaryTree<value_type>::BinaryTreeIterator;
+		using const_iterator = iterator; // а конст игнорить?
 		using size_type = std::size_t;
 
 		map();
@@ -54,36 +53,8 @@ class map {
 
 };
 
-template<typename Key, typename T>
-class map<Key, T>::MapIterator {
-    public:
-		using key_type = Key;
-		using mapped_type = T;
-		using value_type = std::pair<const key_type, mapped_type>;
-        using const_reference = const value_type&;
-
-        MapIterator() = default;
-       	MapIterator(typename BinaryTree<value_type>::iterator it);
-        
-        // Операторы инкремента и декремента
-        MapIterator& operator++();
-        MapIterator& operator--();
-        MapIterator operator++(int);
-        MapIterator operator--(int);
-
-        // Операторы сравнения
-        bool operator==(const MapIterator& other) const;
-        bool operator!=(const MapIterator& other) const;
-
-        // Оператор доступа к элементам
-        const_reference operator*() const;
-    private:
-        typename BinaryTree<value_type>::BinaryTreeIterator it_;
-};
-
 }  // namespace s21
 
 #include "map.tpp"
-#include "iterators.tpp"
 
 #endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_MAP_MAP_H_
