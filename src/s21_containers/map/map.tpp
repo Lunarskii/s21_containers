@@ -95,6 +95,8 @@ template<typename Key, typename T>
 T& map<Key, T>::at(const Key& key) {
     auto find_pair = std::pair<Key, T>(key, 0);
     iterator it = tree.find(find_pair);
+    if (contains(find_pair) == false)
+        throw std::out_of_range("key out of bounds");
     std::pair<Key, T> value_pair = *it;
     auto value = (mapped_type)value_pair.second;
 

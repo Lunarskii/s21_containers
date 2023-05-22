@@ -109,7 +109,8 @@ TEST(MAP_METHOD_AT, MAP_AT_OUT_OF_BOUNDS) {
             {2, 'b'},
             {3, 'c'}
     };
-    ASSERT_EQ(M1.at(36), M2.at(36));
+    ASSERT_THROW(M2.at(36), std::out_of_range);
+    ASSERT_THROW(M1.at(36), std::out_of_range);
 }
 
 TEST(MAP_METHOD_EMPTY, MAP_EMPTY_DEFAULT_CONSTRUCTOR) {
@@ -344,47 +345,47 @@ TEST(MAP_METHOD_INSERT_OR_ASSIGN, MAP_INSERT_MIDDLE_ELEMENT_CONTAINS) {
     ASSERT_EQ(res.second, false);
 }
 
-//TEST(MAP_METHOD_ERASE, MAP_ERASE_NO_CHILD) {
-//    s21::map<int, char> M1 = {
-//            {1, 'a'},
-//            {2, 'b'},
-//            {3, 'c'}
-//    };
-//    std::map<int, char> M2 = {
-//            {1, 'a'},
-//            {2, 'b'},
-//            {3, 'c'}
-//    };
-//    s21::map<int, char>::iterator it_M1 = --M1.end();
-//    std::map<int, char>::iterator it_M2 = --M2.end();
-//    M1.erase(it_M1);
-//    M2.erase(it_M2);
-//    ASSERT_EQ(mapsEqual(M1, M2), true);
-//}
-//
-//TEST(MAP_METHOD_ERASE, MAP_ERASE_TWO_CHILDREN) {
-//    s21::map<int, char> M1 = {
-//            {3, 'c'},
-//            {1, 'a'},
-//            {2, 'b'},
-//            {4, 'd'},
-//            {5, 'e'}
-//    };
-//    std::map<int, char> M2 = {
-//            {3, 'c'},
-//            {1, 'a'},
-//            {2, 'b'},
-//            {4, 'd'},
-//            {5, 'e'}
-//    };
-//    s21::map<int, char>::iterator it_M1 = ++M1.begin();
-//    std::map<int, char>::iterator it_M2 = ++M2.begin();
-//    ++it_M1;
-//    ++it_M2;
-//    M1.erase(it_M1);
-//    M2.erase(it_M2);
-//    ASSERT_EQ(mapsEqual(M1, M2), true);
-//}
+TEST(MAP_METHOD_ERASE, MAP_ERASE_NO_CHILD) {
+    s21::map<int, char> M1 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    std::map<int, char> M2 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    s21::map<int, char>::iterator it_M1 = --M1.end();
+    std::map<int, char>::iterator it_M2 = --M2.end();
+    M1.erase(it_M1);
+    M2.erase(it_M2);
+    ASSERT_EQ(mapsEqual(M1, M2), true);
+}
+
+TEST(MAP_METHOD_ERASE, MAP_ERASE_TWO_CHILDREN) {
+    s21::map<int, char> M1 = {
+            {3, 'c'},
+            {1, 'a'},
+            {2, 'b'},
+            {4, 'd'},
+            {5, 'e'}
+    };
+    std::map<int, char> M2 = {
+            {3, 'c'},
+            {1, 'a'},
+            {2, 'b'},
+            {4, 'd'},
+            {5, 'e'}
+    };
+    s21::map<int, char>::iterator it_M1 = ++M1.begin();
+    std::map<int, char>::iterator it_M2 = ++M2.begin();
+    ++it_M1;
+    ++it_M2;
+    M1.erase(it_M1);
+    M2.erase(it_M2);
+    ASSERT_EQ(mapsEqual(M1, M2), true);
+}
 
 TEST(MAP_METHOD_SWAP, MAP_SWAP_ONE_LIST_EMPTY1) {
     s21::map<int, char> M1 = {
