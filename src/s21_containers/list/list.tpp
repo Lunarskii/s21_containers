@@ -64,12 +64,12 @@ typename list<value_type>::size_type list<value_type>::size()
 template <typename value_type>
 typename list<value_type>::iterator list<value_type>::insert(iterator pos, const_reference value)
 {
-    if (empty() || pos.node_ == nullptr) // список пуст или итератор находится за последним элементом
+    if (empty() || pos == end()) // список пуст или итератор находится за последним элементом
     {
         push_back(value);
         return iterator(tail);
     }
-    else if (pos.node_->prev == nullptr) // итератор находится на первом элементе
+    else if (pos == begin()) // итератор находится на первом элементе
     {
         push_front(value);
         return iterator(head);

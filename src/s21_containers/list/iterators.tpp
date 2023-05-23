@@ -10,7 +10,7 @@ list<value_type>::ListIterator::ListIterator(Node *node, Node *head, Node *tail)
 {}
 
 template<typename value_type>
-list<value_type>::ListIterator::ListIterator(ListConstIterator& it)
+list<value_type>::ListIterator::ListIterator(const ListConstIterator& it)
     : node_(it.it_.node_)
 {}
 
@@ -102,7 +102,7 @@ typename list<value_type>::ListIterator list<value_type>::ListIterator::operator
 template<typename value_type>
 typename list<value_type>::reference list<value_type>::ListIterator::operator*() const
 {
-    if (node_ == nullptr && tail_ != nullptr) // это если мы пытаемся разыменовать tail_->next, который в оригинале дублирует значение из tail_
+    if (node_ == nullptr && tail_ != nullptr)
     {
         return tail_->data;
     }
