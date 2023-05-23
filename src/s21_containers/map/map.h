@@ -14,7 +14,7 @@ class map {
 		using reference = value_type&;
 		using const_reference = const value_type&;
         using iterator = typename BinaryTree<value_type>::BinaryTreeIterator;
-		using const_iterator = iterator; // а конст игнорить?
+		using const_iterator = iterator;
 		using size_type = std::size_t;
 
 		map();
@@ -42,11 +42,11 @@ class map {
         std::pair<iterator, bool> emplace(Args&&... args);
 
 		bool contains(const_reference element);
-		T& at(const Key& key); // Bounds checking?
+		T& at(const Key& key);
 
 		map& operator=(const map &other);
 		map& operator=(map &&other);
-		T& operator[](const Key& key); // Проверить, работает ли на несуществующем ключе
+		T& operator[](const Key& key);
 
         iterator findNodeByKey(const Key& key);
 	

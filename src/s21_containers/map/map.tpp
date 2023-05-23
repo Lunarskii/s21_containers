@@ -94,16 +94,12 @@ bool map<Key, T>::contains(const_reference element) {
 
 template<typename Key, typename T>
 T& map<Key, T>::at(const Key& key) {
-    const iterator it = findNodeByKey(key);
-    auto& value = *it;
-    T& ret = value.second;
-
-    return ret;
+    return (*findNodeByKey(key)).second;
 }
 
 template<typename Key, typename T>
 typename map<Key, T>::iterator map<Key, T>::findNodeByKey(const Key& key) {
-    for (iterator it = begin(); it != end(); ++it) {
+    for (auto it = begin(); it != end(); ++it) {
         if ((*it).first == key) {
             return (it);
         }
