@@ -113,6 +113,22 @@ TEST(MAP_METHOD_AT, MAP_AT_OUT_OF_BOUNDS) {
     ASSERT_THROW(M1.at(36), std::out_of_range);
 }
 
+TEST(MAP_METHOD_AT, MAP_AT_ENTERING_VALUE) {
+    s21::map<int, char> M1 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    std::map<int, char> M2 = {
+            {1, 'a'},
+            {2, 'b'},
+            {3, 'c'}
+    };
+    M1.at(2) = 'q';
+    M2.at(2) = 'q';
+    ASSERT_EQ(mapsEqual(M1, M2), true);
+}
+
 TEST(MAP_METHOD_EMPTY, MAP_EMPTY_DEFAULT_CONSTRUCTOR) {
     s21::map<int, char> M1;
     std::map<int, char> M2;
@@ -573,9 +589,7 @@ TEST(MAP_OPERATOR_OVERLOADS, MAP_OPERATOR_INSERT) {
             {75, 'c'},
             {10, 'd'}
     };
-    M1[75] = 'a';
-    M2[75] = 'a';
-    ASSERT_EQ(M1[75], M2[75]);
+    ASSERT_EQ(mapsEqual(M1, M2), true);
 }
 
 TEST(MAP_ITERATORS, MAP_PLUS_PLUS_OPERATOR) {
