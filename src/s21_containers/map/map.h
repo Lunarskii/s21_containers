@@ -47,6 +47,8 @@ class map {
 		map& operator=(const map &other);
 		map& operator=(map &&other);
 		T& operator[](const Key& key); // Проверить, работает ли на несуществующем ключе
+
+        iterator findNodeByKey(const Key& key);
 	
 	private:
         BinaryTree<value_type> tree;

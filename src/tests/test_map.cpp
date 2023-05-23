@@ -332,6 +332,7 @@ TEST(MAP_METHOD_INSERT_OR_ASSIGN, MAP_INSERT_MIDDLE_ELEMENT_DOES_NOT_CONTAIN) {
             {4, 'd'}
     };
     auto res = M1.insert_or_assign(3, 'c');
+
     ASSERT_EQ(res.second, true);
 }
 
@@ -630,7 +631,9 @@ TEST(MAP_ITERATORS, MAP_OPERATOR_PLUS_PLUS) {
     };
     s21::map<int, char>::iterator it_M1 = M1.begin();
     std::map<int, char>::iterator it_M2 = M2.begin();
-    ASSERT_EQ((*it_M1++).first, (*it_M2++).first);
+    it_M1++;
+    it_M2++;
+    ASSERT_EQ((*it_M1).first, (*it_M2).first);
     ASSERT_EQ((*it_M1).second, (*it_M2).second);
 }
 
@@ -645,12 +648,13 @@ TEST(MAP_ITERATORS, MAP_OPERATOR_MINUS_MINUS) {
             {50, 'a'},
             {25, 'b'},
             {75, 'c'},
-            {10, 'd'}
+            {10, 'd'},
     };
     s21::map<int, char>::iterator it_M1 = M1.end();
     std::map<int, char>::iterator it_M2 = M2.end();
-    ASSERT_EQ((*it_M1--).first, (*it_M2--).first);
-    ASSERT_EQ((*it_M1).second, (*it_M2).second);
+    it_M1--;
+    it_M2--;
+    ASSERT_EQ(*it_M1, *it_M2);
 }
 
 TEST(MAP_ITERATORS, MAP_DEREFERENCE_OPERATOR_EXISTING_LIST) {
