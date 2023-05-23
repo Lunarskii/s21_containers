@@ -1,5 +1,5 @@
-#ifndef SRC_S21_CONTAINERS_H_VECTOR_VECTOR_ITERATORS_TPP_
-#define SRC_S21_CONTAINERS_H_VECTOR_VECTOR_ITERATORS_TPP_
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_VECTOR_ITERATORS_TPP_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_VECTOR_ITERATORS_TPP_
 namespace s21 {
 
 //==================================================================================
@@ -85,7 +85,8 @@ ptrdiff_t vector<value_type>::VectorIterator::operator-(
 
 template <typename value_type>
 vector<value_type>::VectorConstIterator::VectorConstIterator(const_pointer ptr)
-    : ptr_(ptr) {}
+    : ptr_(ptr)
+{}
 
 template <typename value_type>
 typename vector<value_type>::const_reference
@@ -158,4 +159,4 @@ ptrdiff_t vector<value_type>::VectorConstIterator::operator-(
 }
 
 }  // namespace s21
-#endif  // SRC_S21_CONTAINERS_H_VECTOR_VECTOR_ITERATORS_TPP_
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_VECTOR_ITERATORS_TPP_

@@ -1,5 +1,5 @@
-#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_MULTISET_H_
-#define CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_MULTISET_H_
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_S21_MULTISET_H_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_S21_MULTISET_H_
 
 #include <initializer_list>
 #include <limits>
@@ -10,21 +10,20 @@ namespace s21 {
 template<typename T>
 class multiset {
     public:
-        using value_type = T;
+        using key_type = T;
+        using value_type = key_type;
         using reference = T&;
         using const_reference = const T&;
         using iterator = typename BinaryTree<T, T>::BinaryTreeConstIterator;
         using const_iterator = iterator;
         using size_type = std::size_t;
 
-        /*                  CONSTRUCTORS/DESTRUCTORS                                            */
         multiset();
         multiset(std::initializer_list<value_type> const &items);
         multiset(const multiset& other);
         multiset(multiset&& other);
         ~multiset() = default;
 
-        /*                  METHODS                                                             */
         iterator begin();
         iterator end();
 
@@ -48,7 +47,6 @@ class multiset {
         template <typename... Args>
         std::pair<iterator, bool> emplace(Args&&... args);
 
-        /*                  OPERATORS                                                           */
         multiset& operator=(multiset&& other);
         multiset& operator=(const multiset& other);
 
@@ -60,4 +58,4 @@ class multiset {
 
 #include "multiset.tpp"
 
-#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_MULTISET_H_
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_MULTISET_S21_MULTISET_H_

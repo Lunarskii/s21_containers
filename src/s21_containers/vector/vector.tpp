@@ -122,12 +122,12 @@ typename vector<value_type>::iterator vector<value_type>::end() {
 }
 
 template <typename value_type>
-typename vector<value_type>::const_iterator vector<value_type>::begin() const {
+typename vector<value_type>::const_iterator vector<value_type>::cbegin() const {
   return const_iterator(data_);
 }
 
 template <typename value_type>
-typename vector<value_type>::const_iterator vector<value_type>::end() const {
+typename vector<value_type>::const_iterator vector<value_type>::cend() const {
   return const_iterator(data_ + size_);
 }
 

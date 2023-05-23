@@ -1,7 +1,7 @@
-#ifndef SRC_S21_CONTAINERSPLUS_H_S21_CONTAINERSPLUS_H_
-#define SRC_S21_CONTAINERSPLUS_H_S21_CONTAINERSPLUS_H_
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_S21_CONTAINERSPLUS_H_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_S21_CONTAINERSPLUS_H_
 
-#include "s21_containersplus/array/array.h"
-#include "s21_containersplus/multiset/multiset.h"
+#include "s21_containersplus/array/s21_array.h"
+#include "s21_containersplus/multiset/s21_multiset.h"
 
 #endif  // SRC_S21_CONTAINERSPLUS_H_S21_CONTAINERSPLUS_H_

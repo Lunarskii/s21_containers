@@ -186,12 +186,10 @@ TEST(VectorTest, Data) {
 
 TEST(VectorTest, Data_Correct) {
   s21::vector<int> v1{1, 2, 3};
-  EXPECT_EQ(*(++v1.data()), 2);
-}
-
-TEST(VectorTest, Data_Incorrect) {
-  s21::vector<int> v1{1, 2, 3};
-  EXPECT_NE(*(++v1.data()), 1);
+  std::vector<int> v2{1, 2, 3};
+  int* ar1 = v1.data();
+  int* ar2 = v2.data();
+  EXPECT_EQ(ar1[1], ar2[1]);
 }
 
 TEST(VectorTest, Empty) {
@@ -453,7 +451,7 @@ TEST(VectorIteratorTest, Equality_Incorrect) {
 
 TEST(VectorConstIteratorTest, Increment_Correct) {
   const s21::vector<int> v{1, 2, 3};
-  s21::vector<int>::const_iterator it = v.begin();
+  s21::vector<int>::const_iterator it = v.cbegin();
   ++it;
   EXPECT_EQ(*it, 2);
   ++it;
@@ -462,7 +460,7 @@ TEST(VectorConstIteratorTest, Increment_Correct) {
 
 TEST(VectorConstIteratorTest, Increment_Incorrect) {
   const s21::vector<int> v{1, 2, 3};
-  s21::vector<int>::const_iterator it = v.begin();
+  s21::vector<int>::const_iterator it = v.cbegin();
   ++it;
   EXPECT_NE(*it, 1);
   ++it;
@@ -471,7 +469,7 @@ TEST(VectorConstIteratorTest, Increment_Incorrect) {
 
 TEST(VectorConstIteratorTest, Decrement_Correct) {
   const s21::vector<int> v{1, 2, 3};
-  s21::vector<int>::const_iterator it = v.end();
+  s21::vector<int>::const_iterator it = v.cend();
   --it;
   EXPECT_EQ(*it, 3);
   --it;
@@ -480,7 +478,7 @@ TEST(VectorConstIteratorTest, Decrement_Correct) {
 
 TEST(VectorConstIteratorTest, Decrement_Incorrect) {
   const s21::vector<int> v{1, 2, 3};
-  s21::vector<int>::const_iterator it = v.end();
+  s21::vector<int>::const_iterator it = v.cend();
   --it;
   EXPECT_NE(*it, 2);
   --it;
@@ -489,7 +487,7 @@ TEST(VectorConstIteratorTest, Decrement_Incorrect) {
 
 TEST(VectorConstIteratorTest, Dereference_Correct) {
   const s21::vector<int> v{1, 2, 3};
-  s21::vector<int>::const_iterator it = v.begin();
+  s21::vector<int>::const_iterator it = v.cbegin();
   EXPECT_EQ(*it, 1);
   ++it;
   EXPECT_EQ(*it, 2);
@@ -497,7 +495,7 @@ TEST(VectorConstIteratorTest, Dereference_Correct) {
 
 TEST(VectorConstIteratorTest, Dereference_Incorrect) {
   const s21::vector<int> v{1, 2, 3};
-  s21::vector<int>::const_iterator it = v.begin();
+  s21::vector<int>::const_iterator it = v.cbegin();
   EXPECT_NE(*it, 2);
   ++it;
   EXPECT_NE(*it, 1);
@@ -505,8 +503,8 @@ TEST(VectorConstIteratorTest, Dereference_Incorrect) {
 
 TEST(VectorConstIteratorTest, Equality_Correct) {
   const s21::vector<int> v{1, 2, 3};
-  s21::vector<int>::const_iterator it1 = v.begin();
-  s21::vector<int>::const_iterator it2 = v.begin();
+  s21::vector<int>::const_iterator it1 = v.cbegin();
+  s21::vector<int>::const_iterator it2 = v.cbegin();
   EXPECT_TRUE(it1 == it2);
   ++it1;
   EXPECT_FALSE(it1 == it2);
@@ -514,8 +512,8 @@ TEST(VectorConstIteratorTest, Equality_Correct) {
 
 TEST(VectorConstIteratorTest, Equality_Incorrect) {
   const s21::vector<int> v{1, 2, 3};
-  s21::vector<int>::const_iterator it1 = v.begin();
-  s21::vector<int>::const_iterator it2 = v.begin();
+  s21::vector<int>::const_iterator it1 = v.cbegin();
+  s21::vector<int>::const_iterator it2 = v.cbegin();
   EXPECT_FALSE(it1 != it2);
   ++it1;
   EXPECT_TRUE(it1 != it2);
@@ -525,7 +523,7 @@ TEST(VectorConstIteratorTest, Equality_Incorrect) {
 TEST(VectorConstIteratorTest2, ConstIteratorOperatorPlusTest1) {
   const s21::vector<int> v{1,2,3};
 
-  s21::vector<int>::const_iterator it = v.begin();
+  s21::vector<int>::const_iterator it = v.cbegin();
   s21::vector<int>::const_iterator result = it + 2;
 
   EXPECT_EQ(*result, 3);
@@ -534,7 +532,7 @@ TEST(VectorConstIteratorTest2, ConstIteratorOperatorPlusTest1) {
 // Test for const iterator's operator-
 TEST(VectorConstIteratorTest2, ConstIteratorOperatorMinusTest1) {
   const s21::vector<int> v{1,2,3};
-  s21::vector<int>::const_iterator it = v.end();
+  s21::vector<int>::const_iterator it = v.cend();
   s21::vector<int>::const_iterator result = it - 2;
 
   EXPECT_EQ(*result, 2);
@@ -543,7 +541,7 @@ TEST(VectorConstIteratorTest2, ConstIteratorOperatorMinusTest1) {
 // Test for const iterator's operator++
 TEST(VectorConstIteratorTest2, ConstIteratorOperatorPlusPlusTest1) {
   const s21::vector<int> v{1,2,3};
-  s21::vector<int>::const_iterator it = v.begin();
+  s21::vector<int>::const_iterator it = v.cbegin();
   it++;
 
   EXPECT_EQ(*it, 2);
@@ -552,7 +550,7 @@ TEST(VectorConstIteratorTest2, ConstIteratorOperatorPlusPlusTest1) {
 // Test for const iterator's operator--
 TEST(VectorConstIteratorTest2, ConstIteratorOperatorMinusMinusTest1) {
   const s21::vector<int> v{1,2,3};
-  s21::vector<int>::const_iterator it = v.end();
+  s21::vector<int>::const_iterator it = v.cend();
   it--;
 
   EXPECT_EQ(*it, 3);
@@ -562,8 +560,8 @@ TEST(VectorConstIteratorTest2, ConstIteratorOperatorMinusMinusTest1) {
 TEST(VectorConstIteratorTest2, ConstIteratorOperatorMinusTest2) {
   const s21::vector<int> v{1,2,3};
 
-  s21::vector<int>::const_iterator it1 = v.begin();
-  s21::vector<int>::const_iterator it2 = v.end();
+  s21::vector<int>::const_iterator it1 = v.cbegin();
+  s21::vector<int>::const_iterator it2 = v.cend();
 
   ptrdiff_t result = it2 - it1;
 
@@ -738,7 +736,6 @@ TEST(VectorTest, BracketOutOfRange) {
 
 TEST(VectorTest, OperatorBracketThrowTest) {
   s21::vector<int> v;
-  std::cout << v.size() << std::endl;
   EXPECT_THROW(v[0], std::out_of_range);
   EXPECT_THROW(v[5], std::out_of_range);
 

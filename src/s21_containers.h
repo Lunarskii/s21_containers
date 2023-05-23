@@ -1,11 +1,11 @@
-#ifndef SRC_S21_CONTAINERS_H_S21_CONTAINERS_H_
-#define SRC_S21_CONTAINERS_H_S21_CONTAINERS_H_
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_S21_CONTAINERS_H_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_S21_CONTAINERS_H_
 
-#include "s21_containers/list/list.h"
-#include "s21_containers/map/map.h"
-#include "s21_containers/queue/queue.h"
-#include "s21_containers/set/set.h"
-#include "s21_containers/stack/stack.h"
-#include "s21_containers/vector/vector.h"
+#include "s21_containers/list/s21_list.h"
+#include "s21_containers/map/s21_map.h"
+#include "s21_containers/queue/s21_queue.h"
+#include "s21_containers/set/s21_set.h"
+#include "s21_containers/stack/s21_stack.h"
+#include "s21_containers/vector/s21_vector.h"
 
-#endif  // SRC_S21_CONTAINERS_H_S21_CONTAINERS_H_
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_S21_CONTAINERS_H_

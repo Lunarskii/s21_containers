@@ -1,5 +1,5 @@
-#ifndef SRC_S21_CONTAINERSPLUS_H_ARRAY_TPP_
-#define SRC_S21_CONTAINERSPLUS_H_ARRAY_TPP_
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_ARRAY_ARRAY_TPP_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_ARRAY_ARRAY_TPP_
 
 namespace s21 {
 
@@ -123,4 +123,4 @@ typename array<T, Size>::const_reference array<T, Size>::operator[](size_type po
 
 }  // namespace s21
 
-#endif  // SRC_S21_CONTAINERSPLUS_H_ARRAY_TPP_
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERSPLUS_ARRAY_ARRAY_TPP_

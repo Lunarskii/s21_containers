@@ -1,6 +1,5 @@
-#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_VECTOR_H_
-#define CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_VECTOR_H_
-#pragma once
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_S21_VECTOR_H_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_S21_VECTOR_H_
 
 #include <algorithm>
 #include <cstddef>
@@ -10,12 +9,6 @@
 #include <utility>
 
 namespace s21 {
-
-template <class T>
-class VectorIterator;
-
-template <class T>
-class VectorConstIterator;
 
 template <typename T>
 class vector {
@@ -49,8 +42,8 @@ class vector {
 
   iterator begin();
   iterator end();
-  const_iterator begin() const;
-  const_iterator end() const;
+  const_iterator cbegin() const;
+  const_iterator cend() const;
 
   bool empty() const;
   size_type size() const;
@@ -80,6 +73,7 @@ class vector {
 template <typename value_type>
 class vector<value_type>::VectorIterator {
  public:
+    VectorIterator() = default;
   VectorIterator(pointer ptr);
 
   reference operator*();
@@ -98,8 +92,9 @@ class vector<value_type>::VectorIterator {
 };
 
 template <typename value_type>
-class vector<value_type>::VectorConstIterator {
+class vector<value_type>::VectorConstIterator : public VectorIterator {
  public:
+    VectorConstIterator() = default;
   VectorConstIterator(const_pointer ptr);
 
   const_reference operator*() const;
@@ -120,4 +115,4 @@ class vector<value_type>::VectorConstIterator {
 }  // namespace s21
 #include "vector.tpp"
 #include "vector_iterators.tpp"
-#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_VECTOR_H_
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_S21_VECTOR_H_

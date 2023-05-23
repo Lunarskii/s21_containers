@@ -1,14 +1,13 @@
-#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_STACK_STACK_H_
-#define CPP2_S21_CONTAINERS_S21_CONTAINERS_STACK_STACK_H_
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_STACK_S21_STACK_H_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_STACK_S21_STACK_H_
 
-#include "../vector/vector.h"
+#include "../vector/s21_vector.h"
 
 namespace s21 {
 
 template <class T, class Container = s21::vector<T>>
 class stack {
  public:
-  using pointer = typename Container::pointer;
   using value_type = typename Container::value_type;
   using reference = typename Container::reference;
   using const_reference = typename Container::const_reference;
@@ -35,4 +34,4 @@ class stack {
 }  // namespace s21
 
 #include "stack.tpp"
-#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_STACK_STACK_H_
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_STACK_S21_STACK_H_
