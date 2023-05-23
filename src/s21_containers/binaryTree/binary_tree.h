@@ -14,12 +14,13 @@ class BinaryTree {
 public:
     class Node;
     class BinaryTreeIterator;
+    class BinaryTreeConstIterator;
 
     using value_type = T;
     using reference = T &;
-    using const_reference = const T &;
+    using const_reference = const T&;
     using iterator = BinaryTree<T>::BinaryTreeIterator;
-    using const_iterator = iterator;
+    using const_iterator = BinaryTree<T>::BinaryTreeConstIterator;
     using size_type = std::size_t;
 
     /*                  CONSTRUCTORS/DESTRUCTORS                                            */
@@ -55,11 +56,13 @@ public:
     template<typename... Args>
     std::pair<iterator, bool> multiEmplace(Args &&... args);
 
-    static Node *findMinValue(Node *node);
-    static Node *findMaxValue(Node *node);
+    static Node* findMinValue(Node *node);
+    static Node* findMaxValue(Node *node);
 
-    iterator begin() const;
-    iterator end() const;
+    iterator begin();
+    iterator end();
+    const_iterator cbegin() const;
+    const_iterator cend() const;
 
 
     /*                  OPERATORS                                                           */
@@ -93,15 +96,36 @@ public:
     BinaryTreeIterator operator--(int);
     bool operator==(const BinaryTreeIterator &other) const;
     bool operator!=(const BinaryTreeIterator &other) const;
-    const_reference operator*() const;
+    reference operator*() const;
 
 private:
     Node *node_{nullptr};
     Node *root_{nullptr};
 };
 
+template<typename value_type>
+class BinaryTree<value_type>::BinaryTreeConstIterator : public BinaryTreeIterator
+{
+public:
+    BinaryTreeConstIterator() = default;
+    explicit BinaryTreeConstIterator(Node *node, Node *root = nullptr);
+    BinaryTreeConstIterator(const BinaryTreeIterator& it);
+
+    BinaryTreeConstIterator& operator++();
+    BinaryTreeConstIterator& operator--();
+    BinaryTreeConstIterator operator++(int);
+    BinaryTreeConstIterator operator--(int);
+    bool operator==(const BinaryTreeConstIterator &other) const;
+    bool operator!=(const BinaryTreeConstIterator &other) const;
+    const_reference operator*() const;
+
+public:
+    BinaryTreeIterator it;
+};
+
 }  // namespace s21
 #include "binary_tree.tpp"
 #include "iterators.tpp"
+#include "const_iterators.tpp"
 
 #endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_BINARYTREE_BINARY_TREE_H_

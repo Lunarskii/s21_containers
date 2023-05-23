@@ -21,7 +21,7 @@ BinaryTree<value_type>::BinaryTree(std::initializer_list<value_type> const &item
 
 template<typename value_type>
 BinaryTree<value_type>::BinaryTree(const BinaryTree &other) : type(other.type) {
-    for (iterator it = other.begin(); it != other.end(); ++it) {
+    for (auto it = other.cbegin(); it != other.cend(); ++it) {
         insert(*it);
     }
 }
@@ -44,9 +44,9 @@ BinaryTree<value_type>::insert(const_reference data, Node *&node, Node *parent) 
         return { iterator(node), true };
     } else {
         if (data < node->data) {
-            insert(data, node->left, node);
+            return insert(data, node->left, node);
         } else if (data > node->data) {
-            insert(data, node->right, node);
+            return insert(data, node->right, node);
         } else {
             if (type == UNIQUE) {
                 return {iterator(node), false};
@@ -62,8 +62,6 @@ BinaryTree<value_type>::insert(const_reference data, Node *&node, Node *parent) 
             }
         }
     }
-
-    return { iterator(nullptr), false }; // добавил для избежания ошибки, проверить потом чего не хватает
 }
 
 template<typename value_type>
@@ -73,6 +71,7 @@ std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type
 
 template<typename value_type>
 void BinaryTree<value_type>::erase(const_reference data, Node *node) {
+    if (node == nullptr) return;
     if (data < node->data) {
         erase(data, node->left);
     } else if (data > node->data) {
@@ -190,7 +189,7 @@ template<typename value_type>
 typename BinaryTree<value_type>::size_type BinaryTree<value_type>::size() const {
     size_type size = 0;
 
-    for (iterator it = begin(); it != end(); ++it) {
+    for (auto it = cbegin(); it != cend(); ++it) {
         ++size;
     }
 
@@ -284,20 +283,46 @@ typename BinaryTree<value_type>::size_type BinaryTree<value_type>::count(const_r
 
 template<typename value_type>
 typename BinaryTree<value_type>::iterator BinaryTree<value_type>::lower_bound(const_reference key) {
-    iterator it = begin();
+    Node* lowerBound = nullptr;
 
-    for (; it != end() && *it < key; ++it) {}
+    for (Node* current = root; current; )
+    {
+        if (key < current->data)
+        {
+            lowerBound = current;
+            current = current->left;
+        }
+        else if (key > current->data)
+        {
+            current = current->right;
+        }
+        else
+        {
+            return iterator(current);
+        }
+    }
 
-    return it;
+    return iterator(lowerBound);
 }
 
 template<typename value_type>
 typename BinaryTree<value_type>::iterator BinaryTree<value_type>::upper_bound(const_reference key) {
-    iterator it = begin();
+    Node* upperBound = nullptr;
 
-    for (; it != end() && *it <= key; ++it) {}
+    for (Node* current = root; current; )
+    {
+        if (key < current->data)
+        {
+            upperBound = current;
+            current = current->left;
+        }
+        else
+        {
+            current = current->right;
+        }
+    }
 
-    return it;
+    return iterator(upperBound);
 }
 
 template<typename value_type>
@@ -343,8 +368,8 @@ typename BinaryTree<value_type>::Node *BinaryTree<value_type>::findMaxValue(Node
 }
 
 template<typename value_type>
-typename BinaryTree<value_type>::iterator BinaryTree<value_type>::begin() const {
-    if (root != nullptr) {
+typename BinaryTree<value_type>::iterator BinaryTree<value_type>::begin() {
+    if (!empty()) {
         return iterator(findMinValue(root), root);
     } else {
         return iterator(nullptr);
@@ -352,8 +377,24 @@ typename BinaryTree<value_type>::iterator BinaryTree<value_type>::begin() const 
 }
 
 template<typename value_type>
-typename BinaryTree<value_type>::iterator BinaryTree<value_type>::end() const {
+typename BinaryTree<value_type>::iterator BinaryTree<value_type>::end() {
     return iterator(nullptr, root);
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::const_iterator BinaryTree<value_type>::cbegin() const
+{
+    if (!empty()) {
+        return const_iterator(findMinValue(root), root);
+    } else {
+        return const_iterator(nullptr);
+    }
+}
+
+template<typename value_type>
+typename BinaryTree<value_type>::const_iterator BinaryTree<value_type>::cend() const
+{
+    return const_iterator(nullptr, root);
 }
 
 template<typename value_type>

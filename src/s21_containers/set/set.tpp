@@ -22,12 +22,12 @@ set<value_type>::set(set&& other) {
 
 template<typename value_type>
 typename set<value_type>::iterator set<value_type>::begin() {
-    return iterator(tree.begin());
+    return iterator(tree.cbegin());
 }
 
 template<typename value_type>
 typename set<value_type>::iterator set<value_type>::end() {
-    return iterator(tree.end());
+    return iterator(tree.cend());
 }
 
 template<typename value_type>

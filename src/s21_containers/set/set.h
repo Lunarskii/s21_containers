@@ -1,6 +1,5 @@
 #ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_SET_SET_H_
 #define CPP2_S21_CONTAINERS_S21_CONTAINERS_SET_SET_H_
-// #pragma once
 
 #include "../binaryTree/binary_tree.h"
 
@@ -11,7 +10,7 @@ public:
     using value_type = T;
     using reference = T&;
     using const_reference = const T&;
-    using iterator = typename BinaryTree<T>::BinaryTreeIterator;
+    using iterator = typename BinaryTree<T>::BinaryTreeConstIterator;
     using const_iterator = iterator;
     using size_type = std::size_t;
 

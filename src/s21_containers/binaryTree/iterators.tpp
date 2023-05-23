@@ -64,13 +64,12 @@ bool BinaryTree<value_type>::BinaryTreeIterator::operator!=(const BinaryTreeIter
 }
 
 template<typename value_type>
-typename BinaryTree<value_type>::const_reference BinaryTree<value_type>::BinaryTreeIterator::operator*() const {
+typename BinaryTree<value_type>::reference BinaryTree<value_type>::BinaryTreeIterator::operator*() const {
     if (node_ != nullptr) {
         return node_->data;
     } else {
-        static const const_reference default_value{};
+        static value_type default_value{};
         return default_value;
-        // return size(); если элемента не существует, то нужно вернуть размер бинарного дерева
     }
 }
 

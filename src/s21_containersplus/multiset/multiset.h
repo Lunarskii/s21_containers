@@ -13,7 +13,7 @@ class multiset {
         using value_type = T;
         using reference = T&;
         using const_reference = const T&;
-        using iterator = typename BinaryTree<T>::BinaryTreeIterator;
+        using iterator = typename BinaryTree<T>::BinaryTreeConstIterator;
         using const_iterator = iterator;
         using size_type = std::size_t;
 
