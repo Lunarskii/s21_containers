@@ -13,7 +13,7 @@ class map {
 		using value_type = std::pair<const key_type, mapped_type>;
 		using reference = value_type&;
 		using const_reference = const value_type&;
-        using iterator = typename BinaryTree<value_type>::BinaryTreeIterator;
+        using iterator = typename BinaryTree<Key, value_type>::BinaryTreeIterator;
 		using const_iterator = iterator;
 		using size_type = std::size_t;
 
@@ -47,11 +47,9 @@ class map {
 		map& operator=(const map &other);
 		map& operator=(map &&other);
 		T& operator[](const Key& key);
-
-        iterator findNodeByKey(const Key& key);
 	
 	private:
-        BinaryTree<value_type> tree;
+        BinaryTree<Key, value_type> tree;
 
 };
 

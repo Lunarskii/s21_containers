@@ -2,11 +2,11 @@
 #define CPP2_S21_CONTAINERS_S21_CONTAINERS_BINARYTREE_ITERATORS_TPP_
 
 namespace s21 {
-template<typename value_type>
-BinaryTree<value_type>::BinaryTreeIterator::BinaryTreeIterator(Node *node, Node *root) : node_(node), root_(root) {}
+template<typename Key, typename value_type>
+BinaryTree<Key, value_type>::BinaryTreeIterator::BinaryTreeIterator(Node *node, Node *root) : node_(node), root_(root) {}
 
-template<typename value_type>
-typename BinaryTree<value_type>::BinaryTreeIterator &BinaryTree<value_type>::BinaryTreeIterator::operator++() {
+template<typename Key, typename value_type>
+typename BinaryTree<Key, value_type>::BinaryTreeIterator &BinaryTree<Key, value_type>::BinaryTreeIterator::operator++() {
     if (node_->right != nullptr) {
         node_ = BinaryTree::findMinValue(node_->right);
     } else {
@@ -20,8 +20,8 @@ typename BinaryTree<value_type>::BinaryTreeIterator &BinaryTree<value_type>::Bin
     return *this;
 }
 
-template<typename value_type>
-typename BinaryTree<value_type>::BinaryTreeIterator &BinaryTree<value_type>::BinaryTreeIterator::operator--() {
+template<typename Key, typename value_type>
+typename BinaryTree<Key, value_type>::BinaryTreeIterator &BinaryTree<Key, value_type>::BinaryTreeIterator::operator--() {
     if (node_ == nullptr && root_ != nullptr) {
         node_ = BinaryTree::findMaxValue(root_);
     } else {
@@ -39,32 +39,32 @@ typename BinaryTree<value_type>::BinaryTreeIterator &BinaryTree<value_type>::Bin
     return *this;
 }
 
-template<typename value_type>
-typename BinaryTree<value_type>::BinaryTreeIterator BinaryTree<value_type>::BinaryTreeIterator::operator++(int) {
+template<typename Key, typename value_type>
+typename BinaryTree<Key, value_type>::BinaryTreeIterator BinaryTree<Key, value_type>::BinaryTreeIterator::operator++(int) {
     iterator it(*this);
     ++(*this);
     return it;
 }
 
-template<typename value_type>
-typename BinaryTree<value_type>::BinaryTreeIterator BinaryTree<value_type>::BinaryTreeIterator::operator--(int) {
+template<typename Key, typename value_type>
+typename BinaryTree<Key, value_type>::BinaryTreeIterator BinaryTree<Key, value_type>::BinaryTreeIterator::operator--(int) {
     iterator it(*this);
     --(*this);
     return it;
 }
 
-template<typename value_type>
-bool BinaryTree<value_type>::BinaryTreeIterator::operator==(const BinaryTreeIterator &other) const {
+template<typename Key, typename value_type>
+bool BinaryTree<Key, value_type>::BinaryTreeIterator::operator==(const BinaryTreeIterator &other) const {
     return node_ == other.node_;
 }
 
-template<typename value_type>
-bool BinaryTree<value_type>::BinaryTreeIterator::operator!=(const BinaryTreeIterator &other) const {
+template<typename Key, typename value_type>
+bool BinaryTree<Key, value_type>::BinaryTreeIterator::operator!=(const BinaryTreeIterator &other) const {
     return !(*this == other);
 }
 
-template<typename value_type>
-typename BinaryTree<value_type>::reference BinaryTree<value_type>::BinaryTreeIterator::operator*() const {
+template<typename Key, typename value_type>
+typename BinaryTree<Key, value_type>::reference BinaryTree<Key, value_type>::BinaryTreeIterator::operator*() const {
     if (node_ != nullptr) {
         return node_->data;
     } else {

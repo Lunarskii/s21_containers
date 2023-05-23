@@ -7,8 +7,7 @@ map<Key, T>::map() {}
 
 template<typename Key, typename T>
 map<Key, T>::map(std::initializer_list<value_type> const &items) {
-	BinaryTree<value_type> temp(items);
-	tree = temp;
+	tree = BinaryTree<Key, value_type>(items);
 }
 
 template<typename Key, typename T>
@@ -94,17 +93,7 @@ bool map<Key, T>::contains(const_reference element) {
 
 template<typename Key, typename T>
 T& map<Key, T>::at(const Key& key) {
-    return (*findNodeByKey(key)).second;
-}
-
-template<typename Key, typename T>
-typename map<Key, T>::iterator map<Key, T>::findNodeByKey(const Key& key) {
-    for (auto it = begin(); it != end(); ++it) {
-        if ((*it).first == key) {
-            return (it);
-        }
-    }
-    throw std::out_of_range("Found no mapped value stored by given key");
+    return (*tree.at(key)).second;
 }
 
 template<typename Key, typename T>

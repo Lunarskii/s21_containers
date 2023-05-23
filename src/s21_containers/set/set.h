@@ -10,7 +10,7 @@ public:
     using value_type = T;
     using reference = T&;
     using const_reference = const T&;
-    using iterator = typename BinaryTree<T>::BinaryTreeConstIterator;
+    using iterator = typename BinaryTree<T, T>::BinaryTreeConstIterator;
     using const_iterator = iterator;
     using size_type = std::size_t;
 
@@ -46,7 +46,7 @@ public:
     set& operator=(const set& other);
 
 private:
-    BinaryTree<value_type> tree;
+    BinaryTree<value_type, value_type> tree;
 };
 
 }  // namespace s21

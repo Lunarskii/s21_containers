@@ -7,7 +7,7 @@ set<value_type>::set() {}
 
 template<typename value_type>
 set<value_type>::set(std::initializer_list<value_type> const& items) {
-     tree = BinaryTree<value_type>(items);
+     tree = BinaryTree<value_type, value_type>(items);
 }
 
 template<typename value_type>

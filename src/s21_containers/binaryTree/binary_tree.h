@@ -9,18 +9,19 @@ namespace s21 {
 #define UNIQUE 1
 #define NUNIQUE 2
 
-template<typename T>
+template<typename Key, typename T>
 class BinaryTree {
 public:
     class Node;
     class BinaryTreeIterator;
     class BinaryTreeConstIterator;
 
+    using key_type = Key;
     using value_type = T;
     using reference = T &;
     using const_reference = const T&;
-    using iterator = BinaryTree<T>::BinaryTreeIterator;
-    using const_iterator = BinaryTree<T>::BinaryTreeConstIterator;
+    using iterator = BinaryTree<Key, T>::BinaryTreeIterator;
+    using const_iterator = BinaryTree<Key, T>::BinaryTreeConstIterator;
     using size_type = std::size_t;
 
     /*                  CONSTRUCTORS/DESTRUCTORS                                            */
@@ -44,6 +45,7 @@ public:
     void clear(Node *node);
     void clear();
     iterator find(const_reference key);
+    iterator at(const key_type& key);
     bool contains(const_reference key);
     void merge(BinaryTree &other);
     size_type count(const_reference key);
@@ -71,8 +73,8 @@ private:
     int type{UNIQUE};
 };
 
-template<typename value_type>
-class BinaryTree<value_type>::Node {
+template<typename Key, typename value_type>
+class BinaryTree<Key, value_type>::Node {
 public:
     explicit Node(const value_type &d = value_type{}, Node *l = nullptr, Node *r = nullptr, Node *p = nullptr);
     value_type data;
@@ -81,8 +83,8 @@ public:
     Node *parent;
 };
 
-template<typename value_type>
-class BinaryTree<value_type>::BinaryTreeIterator {
+template<typename Key, typename value_type>
+class BinaryTree<Key, value_type>::BinaryTreeIterator {
 public:
     BinaryTreeIterator() = default;
     explicit BinaryTreeIterator(Node *node, Node *root = nullptr);
@@ -100,8 +102,8 @@ private:
     Node *root_{nullptr};
 };
 
-template<typename value_type>
-class BinaryTree<value_type>::BinaryTreeConstIterator : public BinaryTreeIterator
+template<typename Key, typename value_type>
+class BinaryTree<Key, value_type>::BinaryTreeConstIterator : public BinaryTreeIterator
 {
 public:
     BinaryTreeConstIterator() = default;

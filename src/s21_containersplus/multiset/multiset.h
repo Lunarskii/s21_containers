@@ -13,7 +13,7 @@ class multiset {
         using value_type = T;
         using reference = T&;
         using const_reference = const T&;
-        using iterator = typename BinaryTree<T>::BinaryTreeConstIterator;
+        using iterator = typename BinaryTree<T, T>::BinaryTreeConstIterator;
         using const_iterator = iterator;
         using size_type = std::size_t;
 
@@ -53,7 +53,7 @@ class multiset {
         multiset& operator=(const multiset& other);
 
     private:
-        BinaryTree<value_type> tree = NUNIQUE;
+        BinaryTree<value_type, value_type> tree = NUNIQUE;
 };
 
 }  // namespace s21
