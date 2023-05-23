@@ -63,25 +63,25 @@ TEST(QueueTest, MoveConstructor1) {
   }
 }
 
-// TEST(QueueTest, AssignmentOperator) {
-//   s21::queue<int> q1{1, 2, 3, 4};
-//   s21::queue<int> q2;
-//   q2 = q1;
-//   std::queue<int> q3;
-//   q3.push(1);
-//   q3.push(2);
-//   q3.push(3);
-//   q3.push(4);
-//   std::queue<int> q4;
-//   q4 = q3;
-//   EXPECT_EQ(q2.empty(), q4.empty());
-//   EXPECT_EQ(q2.size(), q4.size());
-//   while (!q2.empty()) {
-//     EXPECT_EQ(q2.front(), q4.front());
-//     q2.pop();
-//     q4.pop();
-//   }
-// }
+TEST(QueueTest, Push) {
+  s21::queue<int> q;
+  std::queue<int> std_q;
+
+  q.push(1);
+  std_q.push(1);
+  EXPECT_EQ(q.front(), std_q.front());
+  EXPECT_EQ(q.back(), std_q.back());
+
+  q.push(2);
+  std_q.push(2);
+  EXPECT_EQ(q.front(), std_q.front());
+  EXPECT_EQ(q.back(), std_q.back());
+
+  q.push(3);
+  std_q.push(3);
+  EXPECT_EQ(q.front(), std_q.front());
+  EXPECT_EQ(q.back(), std_q.back());
+}
 
 TEST(QueueTest, MoveAssignmentOperator) {
   s21::queue<int> q1{1, 2, 3, 4};

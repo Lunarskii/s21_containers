@@ -67,7 +67,7 @@ typename vector<value_type>::reference vector<value_type>::at(size_type pos) {
 template <typename value_type>
 typename vector<value_type>::reference vector<value_type>::operator[](
     size_type pos) {
-  if (this->size() < pos || 0 > pos) {
+  if (this->size() <= pos || 0 > pos) {
     throw std::out_of_range("Index out of range");
   }
   return data_[pos];
@@ -76,7 +76,7 @@ typename vector<value_type>::reference vector<value_type>::operator[](
 template <typename value_type>
 typename vector<value_type>::const_reference vector<value_type>::operator[](
     size_type pos) const {
-  if (this->size() < pos || 0 > pos) {
+  if (this->size() <= pos || 0 > pos) {
     throw std::out_of_range("Index out of range");
   }
   return data_[pos];
@@ -218,6 +218,11 @@ typename vector<value_type>::iterator vector<value_type>::insert(
 
 template <typename value_type>
 void vector<value_type>::erase(iterator pos) {
+  size_type position = &(*pos) - this->data_;
+  size_type zero = 0;
+  if (zero > position || position > this->size_) {
+    throw std::out_of_range("Index out ot range");
+  }
   for (iterator it = pos; it != end() - 1; ++it) {
     *it = *(it + 1);
   }

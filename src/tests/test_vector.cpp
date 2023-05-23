@@ -521,6 +521,56 @@ TEST(VectorConstIteratorTest, Equality_Incorrect) {
   EXPECT_TRUE(it1 != it2);
 }
 
+// Test for const iterator's operator+
+TEST(VectorConstIteratorTest2, ConstIteratorOperatorPlusTest1) {
+  const s21::vector<int> v{1,2,3};
+
+  s21::vector<int>::const_iterator it = v.begin();
+  s21::vector<int>::const_iterator result = it + 2;
+
+  EXPECT_EQ(*result, 3);
+}
+
+// Test for const iterator's operator-
+TEST(VectorConstIteratorTest2, ConstIteratorOperatorMinusTest1) {
+  const s21::vector<int> v{1,2,3};
+  s21::vector<int>::const_iterator it = v.end();
+  s21::vector<int>::const_iterator result = it - 2;
+
+  EXPECT_EQ(*result, 2);
+}
+
+// Test for const iterator's operator++
+TEST(VectorConstIteratorTest2, ConstIteratorOperatorPlusPlusTest1) {
+  const s21::vector<int> v{1,2,3};
+  s21::vector<int>::const_iterator it = v.begin();
+  it++;
+
+  EXPECT_EQ(*it, 2);
+}
+
+// Test for const iterator's operator--
+TEST(VectorConstIteratorTest2, ConstIteratorOperatorMinusMinusTest1) {
+  const s21::vector<int> v{1,2,3};
+  s21::vector<int>::const_iterator it = v.end();
+  it--;
+
+  EXPECT_EQ(*it, 3);
+}
+
+// Test for const iterator's operator-
+TEST(VectorConstIteratorTest2, ConstIteratorOperatorMinusTest2) {
+  const s21::vector<int> v{1,2,3};
+
+  s21::vector<int>::const_iterator it1 = v.begin();
+  s21::vector<int>::const_iterator it2 = v.end();
+
+  ptrdiff_t result = it2 - it1;
+
+  EXPECT_EQ(result, 3);
+}
+
+
 //==================================================================================
 // VectorBonus
 //==================================================================================
@@ -680,3 +730,86 @@ TEST(VectorTest, BracketOutOfRange) {
   s21::vector<int> v1{1,2,4};
   EXPECT_THROW(v1[5], std::out_of_range);
 }
+
+
+
+//
+
+
+TEST(VectorTest, OperatorBracketThrowTest) {
+  s21::vector<int> v;
+  std::cout << v.size() << std::endl;
+  EXPECT_THROW(v[0], std::out_of_range);
+  EXPECT_THROW(v[5], std::out_of_range);
+
+  v.push_back(42);
+  EXPECT_NO_THROW(v[0]);
+  EXPECT_THROW(v[1], std::out_of_range);
+}
+
+TEST(VectorTest, FrontThrowTest) {
+  s21::vector<int> v;
+  EXPECT_THROW(v.front(), std::out_of_range);
+
+  v.push_back(42);
+  EXPECT_NO_THROW(v.front());
+
+  v.clear();
+  EXPECT_THROW(v.front(), std::out_of_range);
+}
+
+TEST(VectorTest, BackThrowTest) {
+  s21::vector<int> v;
+  EXPECT_THROW(v.back(), std::out_of_range);
+
+  v.push_back(42);
+  EXPECT_NO_THROW(v.back());
+
+  v.clear();
+  EXPECT_THROW(v.back(), std::out_of_range);
+}
+
+
+TEST(VectorTest, InsertThrowTest) {
+  s21::vector<int> v;
+  v.push_back(1);
+  v.push_back(2);
+  v.push_back(3);
+
+  // Insert at valid position
+  EXPECT_NO_THROW(v.insert(v.begin() + 1, 42));
+
+  // Insert at invalid position
+  EXPECT_THROW(v.insert(v.begin() + 5, 42), std::out_of_range);
+}
+
+TEST(VectorTest, EraseThrowTest) {
+  s21::vector<int> v;
+  v.push_back(1);
+  v.push_back(2);
+  v.push_back(3);
+
+  // Erase at valid position
+  EXPECT_NO_THROW(v.erase(v.begin() + 1));
+
+  // Erase at invalid position
+  EXPECT_THROW(v.erase(v.begin() + 5), std::out_of_range);
+}
+
+
+// Test for throw in operator[]
+TEST(VectorTest, OperatorIndexOutOfRangeTest) {
+  const s21::vector<int> v{1,2,3};
+
+  EXPECT_THROW({ int value = v[3]; }, std::out_of_range);
+  EXPECT_THROW({ int value = v[4]; }, std::out_of_range);
+  EXPECT_THROW({ int value = v[-1]; }, std::out_of_range);
+}
+
+// Test for throw in reserve
+TEST(VectorTest, ReserveExceedsMaxSizeTest) {
+  s21::vector<int> v;
+
+  EXPECT_THROW({ v.reserve(v.max_size() + 1); }, std::length_error);
+}
+
