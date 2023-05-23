@@ -103,7 +103,7 @@ typename vector<value_type>::const_reference vector<value_type>::back() const {
 }
 
 template <typename value_type>
-typename vector<value_type>::iterator vector<value_type>::data() {
+typename vector<value_type>::pointer vector<value_type>::data() {
   return data_;
 }
 

@@ -1,5 +1,5 @@
-#ifndef SRC_S21_CONTAINERS_H_VECTOR_VECTOR_H_
-#define SRC_S21_CONTAINERS_H_VECTOR_VECTOR_H_
+#ifndef CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_VECTOR_H_
+#define CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_VECTOR_H_
 #pragma once
 
 #include <algorithm>
@@ -23,7 +23,6 @@ class vector {
   class VectorConstIterator;
   class VectorIterator;
 
-  // Member types
   using value_type = T;
   using reference = T&;
   using const_reference = const T&;
@@ -31,9 +30,8 @@ class vector {
   using const_pointer = const T*;
   using iterator = vector<T>::VectorIterator;
   using const_iterator = vector<T>::VectorConstIterator;
-  using size_type = size_t;
+  using size_type = std::size_t;
 
-  // Member functions
   vector();
   vector(size_type n);
   vector(std::initializer_list<value_type> const& items);
@@ -42,21 +40,18 @@ class vector {
   ~vector();
   vector& operator=(vector&& v);
 
-  // // Element access
   reference at(size_type pos);
   reference operator[](size_type pos);
   const_reference operator[](size_type pos) const;
   const_reference front() const;
   const_reference back() const;
-  iterator data();
+  pointer data();
 
-  // Iterators
   iterator begin();
   iterator end();
   const_iterator begin() const;
   const_iterator end() const;
 
-  // Capacity
   bool empty() const;
   size_type size() const;
   size_type max_size() const;
@@ -64,7 +59,6 @@ class vector {
   size_type capacity() const;
   void shrink_to_fit();
 
-  // Modifiers
   void clear();
   iterator insert(iterator pos, const_reference value);
   void erase(iterator pos);
@@ -72,13 +66,10 @@ class vector {
   void pop_back();
   void swap(vector& other);
 
-  //>>>>>>>>>>>>>>>bonus part<<<<<<<<<<<<<<<<
   template <typename... Args>
   iterator emplace(iterator pos, Args&&... args);
-
   template <typename... Args>
   void emplace_back(Args&&... args);
-  //>>>>>>>>>>>>>>>bonus part<<<<<<<<<<<<<<<<
 
  private:
   pointer data_{nullptr};
@@ -89,30 +80,15 @@ class vector {
 template <typename value_type>
 class vector<value_type>::VectorIterator {
  public:
-  // Constructor
   VectorIterator(pointer ptr);
 
-  // Access the element pointed to by the iterator
   reference operator*();
-
-  // Move the iterator forward to the next element
   VectorIterator& operator++();
-
-  // Move the iterator backward to the previous element
   VectorIterator& operator--();
-
-  // Post-increment iterator
   VectorIterator operator++(int);
-
-  // Post-decrement iterator
   VectorIterator operator--(int);
-
-  // Compare two iterators for equality
   bool operator==(const VectorIterator& other) const;
-
-  // Compare two iterators for inequality
   bool operator!=(const VectorIterator& other) const;
-
   VectorIterator operator+(int n) const;
   VectorIterator operator-(int n) const;
   ptrdiff_t operator-(const VectorIterator& other) const;
@@ -124,30 +100,15 @@ class vector<value_type>::VectorIterator {
 template <typename value_type>
 class vector<value_type>::VectorConstIterator {
  public:
-  // Constructor
   VectorConstIterator(const_pointer ptr);
 
-  // Access the element pointed to by the iterator
   const_reference operator*() const;
-
-  // Move the iterator forward to the next element
   VectorConstIterator& operator++();
-
-  // Move the iterator backward to the previous element
   VectorConstIterator& operator--();
-
-  // Post-increment iterator
   VectorConstIterator operator++(int);
-
-  // Post-decrement iterator
   VectorConstIterator operator--(int);
-
-  // Compare two iterators for equality
   bool operator==(const VectorConstIterator& other) const;
-
-  // Compare two iterators for inequality
   bool operator!=(const VectorConstIterator& other) const;
-
   VectorConstIterator operator+(int n) const;
   VectorConstIterator operator-(int n) const;
   ptrdiff_t operator-(const VectorConstIterator& other) const;
@@ -159,4 +120,4 @@ class vector<value_type>::VectorConstIterator {
 }  // namespace s21
 #include "vector.tpp"
 #include "vector_iterators.tpp"
-#endif  // SRC_S21_CONTAINERS_H_VECTOR_VECTOR_H_
+#endif  // CPP2_S21_CONTAINERS_S21_CONTAINERS_VECTOR_VECTOR_H_
