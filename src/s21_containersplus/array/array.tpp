@@ -59,9 +59,7 @@ typename array<T, Size>::const_reference array<T, Size>::back() {
 
 template<typename T, std::size_t Size>
 bool array<T, Size>::empty() {
-    if (capacity != 0)
-        return false;
-    return true;
+    return !capacity;
 }
 
 template<typename T, std::size_t Size>
