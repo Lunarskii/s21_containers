@@ -52,7 +52,7 @@ BinaryTree<value_type>::insert(const_reference data, Node *&node, Node *parent) 
                 return {iterator(node), false};
             } else {
                 if (node->left == nullptr) {
-                    insert(data, node->left, node);
+                    return insert(data, node->left, node);
                 } else {
                     Node *newNode = new Node(data, node->left, nullptr, node);
                     node->left->parent = newNode;
@@ -328,18 +328,6 @@ typename BinaryTree<value_type>::iterator BinaryTree<value_type>::upper_bound(co
 template<typename value_type>
 template<typename... Args>
 std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type>::emplace(Args &&... args) {
-    std::pair<iterator, bool> it;
-
-    for (auto&& item: {std::forward<Args>(args)...}) {
-        it = insert(item);
-    }
-
-    return it;
-}
-
-template<typename value_type>
-template<typename... Args>
-std::pair<typename BinaryTree<value_type>::iterator, bool> BinaryTree<value_type>::multiEmplace(Args &&... args) {
     std::pair<iterator, bool> it;
 
     for (auto&& item: {std::forward<Args>(args)...}) {

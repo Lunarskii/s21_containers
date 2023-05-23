@@ -106,7 +106,7 @@ typename multiset<value_type>::iterator multiset<value_type>::upper_bound(const_
 template <typename value_type>
 template <typename... Args>
 std::pair<typename multiset<value_type>::iterator, bool> multiset<value_type>::emplace(Args&&... args) {
-    return tree.multiEmplace(std::forward<Args>(args)...);
+    return tree.emplace(std::forward<Args>(args)...);
 }
 
 template <typename value_type>

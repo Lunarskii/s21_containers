@@ -53,9 +53,6 @@ public:
     template<typename... Args>
     std::pair<iterator, bool> emplace(Args &&... args);
 
-    template<typename... Args>
-    std::pair<iterator, bool> multiEmplace(Args &&... args);
-
     static Node* findMinValue(Node *node);
     static Node* findMaxValue(Node *node);
 
@@ -119,7 +116,7 @@ public:
     bool operator!=(const BinaryTreeConstIterator &other) const;
     const_reference operator*() const;
 
-public:
+private:
     BinaryTreeIterator it;
 };
 
