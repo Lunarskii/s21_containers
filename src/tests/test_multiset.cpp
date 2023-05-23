@@ -11,24 +11,6 @@ bool setsEqual(s21::multiset<int> M1, std::multiset<int> M2) {
     return true;
 }
 
-void printM1(s21::multiset<int> M1) {
-    s21::multiset<int>::iterator it_M1 = M1.begin();
-    std::cout << std::endl;
-    for (; it_M1 != M1.end(); ++it_M1) {
-        std::cout << *it_M1 << " ";
-    }
-    std::cout << std::endl;
-}
-
-void printM2(std::multiset<int> M2) {
-    std::multiset<int>::iterator it_M2 = M2.begin();
-    std::cout << std::endl;
-    for (; it_M2 != M2.end(); ++it_M2) {
-        std::cout << *it_M2 << " ";
-    }
-    std::cout << std::endl;
-}
-
 TEST(CONSTRUCTORS, MULTISET_DEFAULT_CONSTRUCTOR) {
     s21::multiset<int> M1;
     std::multiset<int> M2;

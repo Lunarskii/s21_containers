@@ -11,24 +11,6 @@
      return true;
  }
 
- void printS1(s21::set<int> S1) {
-     auto it_S1 = S1.begin();
-     std::cout << std::endl;
-     for (; it_S1 != S1.end(); ++it_S1) {
-         std::cout << *it_S1 << " ";
-     }
-     std::cout << std::endl;
- }
-
- void printS2(std::set<int> S2) {
-     auto it_S2 = S2.begin();
-     std::cout << std::endl;
-     for (; it_S2 != S2.end(); ++it_S2) {
-         std::cout << *it_S2 << " ";
-     }
-     std::cout << std::endl;
- }
-
  TEST(CONSTRUCTORS, SET_DEFAULT_CONSTRUCTOR) {
      s21::set<int> S1;
      std::set<int> S2;

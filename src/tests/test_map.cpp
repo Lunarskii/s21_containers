@@ -84,7 +84,21 @@ TEST(MAP_CONSTRUCTORS, MAP_MOVE_CONSTRUCTOR) {
     ASSERT_EQ(mapsEqual(M1, M3), true);
 }
 
-TEST(MAP_METHOD_AT, MAP_AT_IN_BOUNDS) {
+TEST(MAP_METHOD_AT, MAP_AT_IN_BOUNDS1) {
+    s21::map<int, char> M1 = {
+            {3, 'a'},
+            {2, 'b'},
+            {1, 'c'}
+    };
+    std::map<int, char> M2 = {
+            {3, 'a'},
+            {2, 'b'},
+            {1, 'c'}
+    };
+    ASSERT_EQ(M1.at(2), M2.at(2));
+}
+
+TEST(MAP_METHOD_AT, MAP_AT_IN_BOUNDS2) {
     s21::map<int, char> M1 = {
             {1, 'a'},
             {2, 'b'},
@@ -469,32 +483,30 @@ TEST(MAP_METHOD_SWAP, MAP_SWAP_NUMBER_OF_ELEMENTS) {
     ASSERT_EQ(mapsEqual(M2, M4), true);
 }
 
-//TEST(MAP_METHOD_MERGE, MAP_MERGE_DIFFERENT_ELEMENTS) {
-//    s21::map<int, char> M1 = {
-//            {1, 'a'},
-//            {3, 'c'},
-//            {5, 'e'}
-//    };
-//    s21::map<int, char> M2 = {
-//            {2, 'b'},
-//            {4, 'd'},
-//            {6, 'f'}
-//    };
-//    std::map<int, char> M3 = {
-//            {1, 'a'},
-//            {3, 'c'},
-//            {5, 'e'}
-//    };
-//    std::map<int, char> M4 = {
-//            {2, 'b'},
-//            {4, 'd'},
-//            {6, 'f'}
-//    };
-//    M1.merge(M2);
-//    M3.merge(M4);
-//    ASSERT_EQ(mapsEqual(M1, M3), true);
-//    ASSERT_EQ(mapsEqual(M2, M4), true);
-//}
+TEST(MAP_METHOD_MERGE, MAP_MERGE_DIFFERENT_ELEMENTS) {
+    s21::map<int, char> M1 = {
+            {1, 'a'},
+            {3, 'c'},
+            {5, 'e'}
+    };
+    s21::map<int, char> M2 = {
+            {2, 'b'},
+            {4, 'd'},
+            {6, 'f'}
+    };
+    std::map<int, char> M3 = {
+            {1, 'a'},
+            {3, 'c'},
+            {5, 'e'},
+            {2, 'b'},
+            {4, 'd'},
+            {6, 'f'}
+    };
+    std::map<int, char> empty;
+    M1.merge(M2);
+    ASSERT_EQ(mapsEqual(M1, M3), true);
+    ASSERT_EQ(mapsEqual(M2, empty), true);
+}
 
 TEST(MAP_METHOD_CONTAINS, MAP_CONTAINS_EXISTING_ELEMENT) {
     s21::map<int, char> M1 = {
@@ -540,6 +552,37 @@ TEST(MAP_OPERATOR_OVERLOADS, MAP_OPERATOR_ASSIGNMENT_COPY_SAME_SET) {
     M1 = M1;
     M2 = M2;
     ASSERT_EQ(mapsEqual(M1, M2), true);
+}
+
+TEST(MAP_OPERATOR_OVERLOADS, MAP_OPERATOR_ASSIGNMENT_COPY) {
+    s21::map<int, char> M1 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    s21::map<int, char> M2 = {
+            {10, 'q'},
+            {20, 'w'},
+            {30, 'e'},
+            {40, 'r'}
+    };
+    std::map<int, char> M3 = {
+            {50, 'a'},
+            {25, 'b'},
+            {75, 'c'},
+            {10, 'd'}
+    };
+    std::map<int, char> M4 = {
+            {10, 'q'},
+            {20, 'w'},
+            {30, 'e'},
+            {40, 'r'}
+    };
+    M1 = M2;
+    M3 = M4;
+    ASSERT_EQ(mapsEqual(M1, M3), true);
+    ASSERT_EQ(mapsEqual(M2, M4), true);
 }
 
 TEST(MAP_OPERATOR_OVERLOADS, MAP_OPERATOR_ASSIGNMENT_MOVE_SAME_SET) {
